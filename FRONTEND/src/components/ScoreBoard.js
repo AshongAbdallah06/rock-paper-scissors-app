@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import logo from "../images/logo.svg";
+import { GameContext } from "../App";
 
 const ScoreBoard = () => {
+	const { score } = useContext(GameContext);
 	return (
 		<section className="scoreBoard">
 			<div className="imgCont">
@@ -12,7 +14,7 @@ const ScoreBoard = () => {
 			</div>
 			<div className="score">
 				<p>score</p>
-				<p>12</p>
+				<p>{score}</p>
 			</div>
 		</section>
 	);
