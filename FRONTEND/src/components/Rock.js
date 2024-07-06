@@ -3,7 +3,7 @@ import rockIcon from "../images/icon-rock.svg";
 
 const Rock = () => {
 	return (
-		<div class="gameOpt">
+		<div className="gameOpt">
 			<img
 				src={rockIcon}
 				alt="rock"

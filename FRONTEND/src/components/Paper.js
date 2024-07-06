@@ -3,10 +3,11 @@ import paperIcon from "../images/icon-paper.svg";
 
 const Paper = () => {
 	return (
-		<div class="gameOpt">
+		<div className="gameOpt">
 			<img
 				src={paperIcon}
 				alt="paper"
+				
 			/>
 		</div>
 	);

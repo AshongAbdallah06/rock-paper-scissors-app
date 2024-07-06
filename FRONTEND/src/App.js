@@ -10,7 +10,7 @@ function App() {
 
 			<GameBoard />
 
-			<button class="rules">RULES</button>
+			<button className="rules">RULES</button>
 		</div>
 	);
 }

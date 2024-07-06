@@ -3,7 +3,7 @@ import scissorsIcon from "../images/icon-scissors.svg";
 
 const Scissors = () => {
 	return (
-		<div class="gameOpt">
+		<div className="gameOpt">
 			<img
 				src={scissorsIcon}
 				alt="scissors"

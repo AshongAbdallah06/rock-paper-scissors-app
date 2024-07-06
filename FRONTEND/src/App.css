@@ -10,6 +10,7 @@ body {
 	min-height: 100vh;
 	position: relative;
 	background: no-repeat radial-gradient(circle, hsl(214, 47%, 23%), hsl(237, 49%, 15%));
+	overflow: hidden;
 }
 
 .scoreBoard {
@@ -58,8 +59,9 @@ body {
 	background: no-repeat center url("./images/bg-triangle.svg");
 	background-size: contain;
 	position: relative;
+	display: none;
 }
-.gameOpt {
+.gameOpt, .picked, .hPicked {
 	width: 9.375rem;
 	height: 9.375rem;
 	border-radius: 50%;
@@ -70,7 +72,7 @@ body {
 	box-shadow: inset 0 -0.5rem 0 rgba(0, 0, 0, 0.3);
 	cursor: pointer;
 }
-.gameOpt::before {
+.gameOpt::before, .picked::before , .hPicked::before{
 	content: "";
 	width: calc(100% - 1.875rem);
 	height: calc(100% - 1.875rem);
@@ -79,7 +81,7 @@ body {
 	border-radius: 50%;
 	box-shadow: inset 0rem 0.5rem 0 rgba(0, 0, 0, 0.1);
 }
-.gameOpt img {
+.gameOpt img, .picked img, .hPicked img {
 	z-index: 3;
 }
 .gameOpt:nth-child(1) {
@@ -107,4 +109,57 @@ body {
 	border: 0.125rem solid hsla(0, 4%, 80%, 0.1);
 	color: #f9f9f9;
 	cursor: pointer;
+}
+
+
+/* DESKTOP STEP2 */
+.Desktop-step2{
+	display: flex;
+	align-items: center;
+	gap: 100px;
+	color: #f9f9f9;
+	height: 80%;
+}
+.you-picked, .house-picked{
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	align-items: center;
+	height: 100%;
+}
+
+.picked, .hPicked{
+	position: relative;
+	height: 15.625rem;
+	width: 15.625rem;
+	background: linear-gradient(hsl(39, 89%, 49%), hsl(40, 84%, 53%));
+}
+.picked::before, .hPicked::before{
+	width: calc(100% - 3.75rem);
+	height: calc(100% - 3.75rem);
+}
+.hPicked{
+	background: linear-gradient(hsl(349, 71%, 52%), hsl(349, 70%, 56%));
+}
+.results > h1{
+	word-spacing: 10px;
+	font-size: 50px;
+}
+.results button{
+	width: 100%;
+	height: 40px;
+	border-radius: 5px;
+	border: none;
+	margin-top: 30px;
+	cursor: pointer;
+}
+.winner::after{
+	content: '';
+	position: absolute;
+	height: 250%;
+	width: 250%;
+	border-radius: 50%;
+	z-index: -1;
+	background: repeat radial-gradient(circle, rgba(0,0,0,0.1) 10%, hsl(0, 2%, 37%) 20%,  transparent);
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
