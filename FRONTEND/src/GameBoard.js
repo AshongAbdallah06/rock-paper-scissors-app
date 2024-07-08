@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Paper from "./components/Paper";
 import Scissors from "./components/Scissors";
 import Rock from "./components/Rock";
 import AfterChoice from "./components/AfterChoice";
-import { GameContext } from "./App";
 import MakingMove from "./components/MakingMove";
+import useCheckContext from "./hooks/useCheckContext";
 
 const GameBoard = () => {
-	const { playerMove, computerMove } = useContext(GameContext);
+	const { playerMove, computerMove } = useCheckContext();
 	const [showAfterChoice, setShowAfterChoice] = useState(null);
 
 	useEffect(() => {

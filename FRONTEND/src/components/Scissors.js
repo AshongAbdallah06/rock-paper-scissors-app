@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React, { useEffect } from "react";
 import scissorsIcon from "../images/icon-scissors.svg";
-import { GameContext } from "../App";
 import useFunctions from "../hooks/useFunctions";
+import useCheckContext from "../hooks/useCheckContext";
 
 const Scissors = () => {
-	const { setPlayerMove, setComputerMove } = useContext(GameContext);
+	const { playerMove, setPlayerMove, setComputerMove } = useCheckContext();
 
 	const { generateComputerMove } = useFunctions();
 	return (

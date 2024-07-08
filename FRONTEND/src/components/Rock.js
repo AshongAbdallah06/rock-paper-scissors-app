@@ -1,10 +1,10 @@
-import React, { useContext } from "react";
+import React from "react";
 import rockIcon from "../images/icon-rock.svg";
-import { GameContext } from "../App";
 import useFunctions from "../hooks/useFunctions";
+import useCheckContext from "../hooks/useCheckContext";
 
 const Rock = () => {
-	const { setPlayerMove, setComputerMove } = useContext(GameContext);
+	const { setPlayerMove, setComputerMove } = useCheckContext();
 
 	const { generateComputerMove } = useFunctions();
 	return (

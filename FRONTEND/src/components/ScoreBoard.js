@@ -1,15 +1,16 @@
-import React, { useContext } from "react";
+import React from "react";
 import logo from "../images/logo.svg";
-import { GameContext } from "../App";
+import useCheckContext from "../hooks/useCheckContext";
 
 const ScoreBoard = () => {
-	const { score } = useContext(GameContext);
+	const { score } = useCheckContext();
+
 	return (
 		<section className="scoreBoard">
 			<div className="imgCont">
 				<img
 					src={logo}
-					alt=""
+					alt="logo"
 				/>
 			</div>
 			<div className="score">

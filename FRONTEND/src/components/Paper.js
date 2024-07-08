@@ -1,10 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import paperIcon from "../images/icon-paper.svg";
-import { GameContext } from "../App";
+import {} from "../App";
 import useFunctions from "../hooks/useFunctions";
+import useCheckContext from "../hooks/useCheckContext";
 
 const Paper = () => {
-	const { setPlayerMove, setComputerMove } = useContext(GameContext);
+	const { setPlayerMove, setComputerMove } = useCheckContext();
 
 	const { generateComputerMove } = useFunctions();
 	return (

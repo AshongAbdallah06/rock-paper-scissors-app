@@ -1,5 +1,4 @@
-import { useContext } from "react";
-import { GameContext } from "../App";
+import useCheckContext from "../hooks/useCheckContext";
 
 const AfterChoice = () => {
 	const {
@@ -9,7 +8,7 @@ const AfterChoice = () => {
 		result,
 		setComputerMove,
 		setResult,
-	} = useContext(GameContext);
+	} = useCheckContext();
 
 	return (
 		<div className="Desktop-step2">
