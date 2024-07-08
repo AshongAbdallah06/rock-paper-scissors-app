@@ -2,6 +2,8 @@ import useCheckContext from "../hooks/useCheckContext";
 
 const AfterChoice = () => {
 	const {
+		playerMove,
+		computerMove,
 		setPlayerMove,
 		playerMoveImage,
 		computerMoveImage,
@@ -17,7 +19,7 @@ const AfterChoice = () => {
 				<div className={`picked ${result === "Player wins" ? "winner" : ""}`}>
 					<img
 						src={playerMoveImage}
-						alt="paper"
+						alt={playerMove}
 					/>
 				</div>
 			</div>
@@ -44,7 +46,7 @@ const AfterChoice = () => {
 				<div className={`hPicked ${result === "Computer wins" ? "winner" : ""}`}>
 					<img
 						src={computerMoveImage}
-						alt="paper"
+						alt={computerMove}
 					/>
 				</div>
 			</div>

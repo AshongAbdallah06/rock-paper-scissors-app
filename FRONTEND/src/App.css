@@ -12,6 +12,11 @@ body {
 	background: no-repeat radial-gradient(circle, hsl(214, 47%, 23%), hsl(237, 49%, 15%));
 	overflow: hidden;
 }
+img[alt="rock"],
+img[alt="paper"],
+img[alt="scissors"] {
+	color: black;
+}
 
 .scoreBoard {
 	border: 0.125rem solid hsla(0, 4%, 80%, 0.1);

@@ -18,16 +18,16 @@ const CheckContextProvider = ({ children }) => {
 		setResult("...");
 
 		switch (playerMove) {
-			case "r":
+			case "rock":
 				setPlayerMoveImage(rockIcon);
 
-				if (playerMove === "r" && computerMove === "r") {
+				if (playerMove === "rock" && computerMove === "rock") {
 					setResult("Tie");
 					setComputerMoveImage(rockIcon);
-				} else if (playerMove === "r" && computerMove === "p") {
+				} else if (playerMove === "rock" && computerMove === "paper") {
 					setResult("Computer wins");
 					setComputerMoveImage(paperIcon);
-				} else if (playerMove === "r" && computerMove === "s") {
+				} else if (playerMove === "rock" && computerMove === "scissors") {
 					setResult("Player wins");
 					setComputerMoveImage(scissorsIcon);
 					setTimeout(() => {
@@ -35,35 +35,35 @@ const CheckContextProvider = ({ children }) => {
 					}, 3000);
 				}
 				break;
-			case "p":
+			case "paper":
 				setPlayerMoveImage(paperIcon);
-				if (playerMove === "p" && computerMove === "r") {
+				if (playerMove === "paper" && computerMove === "rock") {
 					setResult("Player wins");
 					setComputerMoveImage(rockIcon);
 					setTimeout(() => {
 						setScore(score + 1);
 					}, 3000);
-				} else if (playerMove === "p" && computerMove === "p") {
+				} else if (playerMove === "paper" && computerMove === "paper") {
 					setResult("Tie");
 					setComputerMoveImage(paperIcon);
-				} else if (playerMove === "p" && computerMove === "s") {
+				} else if (playerMove === "paper" && computerMove === "scissors") {
 					setResult("Computer wins");
 					setComputerMoveImage(scissorsIcon);
 				}
 
 				break;
-			case "s":
+			case "scissors":
 				setPlayerMoveImage(scissorsIcon);
-				if (playerMove === "s" && computerMove === "r") {
+				if (playerMove === "scissors" && computerMove === "rock") {
 					setResult("Computer wins");
 					setComputerMoveImage(rockIcon);
-				} else if (playerMove === "s" && computerMove === "p") {
+				} else if (playerMove === "scissors" && computerMove === "paper") {
 					setResult("Player wins");
 					setComputerMoveImage(paperIcon);
 					setTimeout(() => {
 						setScore(score + 1);
 					}, 3000);
-				} else if (playerMove === "s" && computerMove === "s") {
+				} else if (playerMove === "scissors" && computerMove === "scissors") {
 					setResult("Tie");
 					setComputerMoveImage(scissorsIcon);
 				}

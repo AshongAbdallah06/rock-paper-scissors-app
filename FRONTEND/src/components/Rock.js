@@ -11,7 +11,7 @@ const Rock = () => {
 		<div
 			className="gameOpt"
 			onClick={() => {
-				setPlayerMove("r");
+				setPlayerMove("rock");
 				generateComputerMove(setComputerMove);
 			}}
 		>

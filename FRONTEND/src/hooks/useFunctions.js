@@ -4,11 +4,11 @@ const useFunctions = () => {
 		const randomNumber = Math.floor(Math.random() * 3);
 
 		if (randomNumber === 0) {
-			setComputerMove("r");
+			setComputerMove("rock");
 		} else if (randomNumber === 1) {
-			setComputerMove("p");
+			setComputerMove("paper");
 		} else {
-			setComputerMove("s");
+			setComputerMove("scissors");
 		}
 	};
 

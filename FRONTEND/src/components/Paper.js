@@ -12,7 +12,7 @@ const Paper = () => {
 		<div
 			className="gameOpt"
 			onClick={() => {
-				setPlayerMove("p");
+				setPlayerMove("paper");
 				generateComputerMove(setComputerMove);
 			}}
 		>

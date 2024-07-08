@@ -11,7 +11,7 @@ const Scissors = () => {
 		<div
 			className="gameOpt"
 			onClick={() => {
-				setPlayerMove("s");
+				setPlayerMove("scissors");
 				generateComputerMove(setComputerMove);
 			}}
 		>
