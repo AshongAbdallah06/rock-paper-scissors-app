@@ -11,6 +11,11 @@ body {
 	position: relative;
 	background: no-repeat radial-gradient(circle, hsl(214, 47%, 23%), hsl(237, 49%, 15%));
 	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	min-height: 100vh;
 }
 img[alt="rock"],
 img[alt="paper"],
@@ -26,7 +31,7 @@ img[alt="scissors"] {
 	height: 6.25rem;
 	padding: 0.625rem;
 	border-radius: 0.625rem;
-	width: 80%;
+	width: 40rem;
 	margin: 1.25rem auto;
 }
 .scoreBoard .imgCont {
@@ -157,6 +162,7 @@ img[alt="scissors"] {
 .results > h1 {
 	word-spacing: 0.625rem;
 	font-size: 3.125rem;
+	text-align: center;
 }
 .results {
 	display: flex;
@@ -210,4 +216,39 @@ img[alt="scissors"] {
 .making-move {
 	color: white;
 	font-size: 2rem;
+}
+
+/* Form */
+form {
+	color: white;
+	width: 20rem;
+	padding: 2rem;
+	border: 1px solid white;
+}
+form div {
+	display: flex;
+	flex-direction: column;
+	margin: 1rem 0;
+}
+form input {
+	padding: 0.4rem;
+	width: 100%;
+	outline: none;
+}
+form button {
+	text-align: right;
+	width: 100%;
+	margin-top: 1rem;
+	background-color: hsl(214, 47%, 23%);
+	color: white;
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+form a {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	color: white;
+	font-weight: 700;
+	font-size: 1.3rem;
 }

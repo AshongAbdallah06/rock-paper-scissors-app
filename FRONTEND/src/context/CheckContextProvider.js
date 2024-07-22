@@ -1,4 +1,4 @@
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 import scissorsIcon from "../images/icon-scissors.svg";
 import paperIcon from "../images/icon-paper.svg";
 import rockIcon from "../images/icon-rock.svg";
@@ -10,9 +10,17 @@ const CheckContextProvider = ({ children }) => {
 	const [result, setResult] = useState("");
 	const [score, setScore] = useState(JSON.parse(localStorage.getItem("score")) || 0);
 
+	// User Status
+	const [userExist, setUserExist] = useState();
+
 	// Images for player and computer moves
 	const [playerMoveImage, setPlayerMoveImage] = useState("");
 	const [computerMoveImage, setComputerMoveImage] = useState("");
+
+	// Save score to localStorage
+	useEffect(() => {
+		localStorage.setItem("score", JSON.stringify(score));
+	}, [score]);
 
 	const checkOptions = () => {
 		setResult("...");
@@ -74,6 +82,10 @@ const CheckContextProvider = ({ children }) => {
 		}
 	};
 
+	useEffect(() => {
+		checkOptions();
+	}, [playerMove, computerMove]);
+
 	return (
 		<CheckContext.Provider
 			value={{
@@ -87,6 +99,8 @@ const CheckContextProvider = ({ children }) => {
 				score,
 				playerMoveImage,
 				computerMoveImage,
+				userExist,
+				setUserExist,
 			}}
 		>
 			{children}
