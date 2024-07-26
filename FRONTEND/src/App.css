@@ -252,3 +252,121 @@ form a {
 	font-weight: 700;
 	font-size: 1.3rem;
 }
+
+/* Chat */
+aside {
+	position: absolute;
+	top: 10px;
+	right: 0;
+	bottom: 10px;
+	color: white;
+	border: 1px solid white;
+	border-right: none;
+	width: 300px;
+	padding: 1rem;
+	background-color: hsl(237, 49%, 15%);
+	border-top-left-radius: 10px;
+	border-bottom-left-radius: 10px;
+	z-index: 1000;
+}
+
+.content {
+	position: relative;
+	height: 100%;
+}
+
+aside header {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	justify-content: space-between;
+}
+
+aside header .close-icon {
+	height: 1rem;
+	cursor: pointer;
+}
+
+/* .chat-container {
+	display: flex;
+	flex-direction: ;
+} */
+
+.input-container {
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.input-container textarea {
+	width: 80%;
+	max-width: 80%;
+	padding: 0.5rem;
+	font-size: 1rem;
+	max-height: 40px;
+	outline: none;
+	resize: none;
+	border-radius: 0.5rem;
+	margin-right: 0.5rem;
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.input-container textarea::-webkit-scrollbar {
+	display: none;
+}
+
+/* Hide scrollbar for IE, Edge, and Firefox */
+textarea {
+	-ms-overflow-style: none; /* IE and Edge */
+	scrollbar-width: none; /* Firefox */
+}
+
+.input-container button {
+	width: 20%;
+	padding: 0.5rem;
+	cursor: pointer;
+	background-color: white;
+	border: none;
+	color: #000;
+	font-weight: bold;
+	border-radius: 3px;
+}
+
+.person {
+	word-wrap: break-word;
+	margin-bottom: 5px;
+	/* word-break: break-word; */
+}
+
+.messages {
+	margin: 1rem;
+	max-height: 480px;
+	overflow-y: scroll;
+}
+.messages::-webkit-scrollbar {
+	display: none;
+}
+.messages .name {
+	font-size: 0.9rem;
+	color: hsl(39, 89%, 49%);
+}
+
+.messages .message {
+	text-wrap: wrap;
+	width: 80%;
+	font-weight: bold;
+	white-space: pre-wrap;
+}
+.menu {
+	position: absolute;
+	right: 20px;
+	top: 50px;
+}
+.menu img {
+	height: 2rem;
+	cursor: pointer;
+}

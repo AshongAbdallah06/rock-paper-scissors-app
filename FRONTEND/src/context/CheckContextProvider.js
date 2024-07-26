@@ -1,105 +1,80 @@
 import React, { createContext, useEffect, useState } from "react";
-import scissorsIcon from "../images/icon-scissors.svg";
-import paperIcon from "../images/icon-paper.svg";
-import rockIcon from "../images/icon-rock.svg";
 import io from "socket.io-client";
+import useFunctions from "../hooks/useFunctions";
 
-const socket = io("http://localhost:4001");
+const socket = io("http://192.168.8.188:4001");
 export const CheckContext = createContext();
+
 const CheckContextProvider = ({ children }) => {
+	const {
+		checkPlayersMoves,
+		checkOptions,
+		playerMoveImage,
+		setPlayerMoveImage,
+		computerMoveImage,
+		setComputerMoveImage,
+	} = useFunctions();
+
+	// Player moves and result states
+	// PlayerMove and ComputerMove are used as Player1 and Player2 in dual-mode respectively
 	const [playerMove, setPlayerMove] = useState(null);
 	const [computerMove, setComputerMove] = useState(null);
 	const [result, setResult] = useState("");
+
 	const [score, setScore] = useState(JSON.parse(localStorage.getItem("score")) || 0);
+
+	//Check if it's a one player game
+	const [isOnePlayer, setIsOnePlayer] = useState(false);
 
 	// User Status
 	const [userExist, setUserExist] = useState();
-
-	// Images for player and computer moves
-	const [playerMoveImage, setPlayerMoveImage] = useState("");
-	const [computerMoveImage, setComputerMoveImage] = useState("");
 
 	// Save score to localStorage
 	useEffect(() => {
 		localStorage.setItem("score", JSON.stringify(score));
 	}, [score]);
 
-	const [chatIsShowing, setChatIsShowing] = useState(false);
-
-	const checkOptions = () => {
-		setResult("...");
-
-		switch (playerMove) {
-			case "rock":
-				setPlayerMoveImage(rockIcon);
-
-				if (playerMove === "rock" && computerMove === "rock") {
-					setResult("Tie");
-					setComputerMoveImage(rockIcon);
-				} else if (playerMove === "rock" && computerMove === "paper") {
-					setResult("Computer wins");
-					setComputerMoveImage(paperIcon);
-				} else if (playerMove === "rock" && computerMove === "scissors") {
-					setResult("Player wins");
-					setComputerMoveImage(scissorsIcon);
-					setTimeout(() => {
-						setScore(score + 1);
-					}, 3000);
-				}
-				break;
-			case "paper":
-				setPlayerMoveImage(paperIcon);
-				if (playerMove === "paper" && computerMove === "rock") {
-					setResult("Player wins");
-					setComputerMoveImage(rockIcon);
-					setTimeout(() => {
-						setScore(score + 1);
-					}, 3000);
-				} else if (playerMove === "paper" && computerMove === "paper") {
-					setResult("Tie");
-					setComputerMoveImage(paperIcon);
-				} else if (playerMove === "paper" && computerMove === "scissors") {
-					setResult("Computer wins");
-					setComputerMoveImage(scissorsIcon);
-				}
-
-				break;
-			case "scissors":
-				setPlayerMoveImage(scissorsIcon);
-				if (playerMove === "scissors" && computerMove === "rock") {
-					setResult("Computer wins");
-					setComputerMoveImage(rockIcon);
-				} else if (playerMove === "scissors" && computerMove === "paper") {
-					setResult("Player wins");
-					setComputerMoveImage(paperIcon);
-					setTimeout(() => {
-						setScore(score + 1);
-					}, 3000);
-				} else if (playerMove === "scissors" && computerMove === "scissors") {
-					setResult("Tie");
-					setComputerMoveImage(scissorsIcon);
-				}
-				break;
-			default:
-				setResult(result);
-				break;
-		}
-	};
-
 	useEffect(() => {
-		checkOptions();
-	}, [playerMove, computerMove]);
+		isOnePlayer &&
+			checkOptions(
+				playerMove,
+				computerMove,
+				setPlayerMoveImage,
+				setComputerMoveImage,
+				result,
+				setResult,
+				score,
+				setScore
+			);
+	}, [playerMove, computerMove, isOnePlayer, result, score]);
+
+	const [gameState, setGameState] = useState({ p1: null, p2: null, result: null });
+	useEffect(() => {
+		socket.on("move", (newGameState) => {
+			setGameState(newGameState);
+		});
+
+		// Clean up the socket connection when the component unmounts
+		return () => {
+			socket.off("move");
+		};
+	}, []);
 
 	const makeMove = (move) => {
 		socket.emit("move", move);
-
-		// setTextMessage("");
 	};
+
+	useEffect(() => {
+		setPlayerMove(!isOnePlayer && gameState.p1);
+		setComputerMove(!isOnePlayer && gameState.p2);
+		setResult(!isOnePlayer && gameState.result);
+
+		!isOnePlayer && checkPlayersMoves(gameState, setPlayerMoveImage, setComputerMoveImage);
+	}, [isOnePlayer, gameState.p1 && gameState.p2]);
 
 	return (
 		<CheckContext.Provider
 			value={{
-				checkOptions,
 				playerMove,
 				computerMove,
 				setPlayerMove,
@@ -111,10 +86,11 @@ const CheckContextProvider = ({ children }) => {
 				computerMoveImage,
 				userExist,
 				setUserExist,
-				chatIsShowing,
-				setChatIsShowing,
 				socket,
 				makeMove,
+				gameState,
+				isOnePlayer,
+				setIsOnePlayer,
 			}}
 		>
 			{children}

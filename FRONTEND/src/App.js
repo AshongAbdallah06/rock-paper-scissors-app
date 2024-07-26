@@ -8,21 +8,24 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import useGetHome from "./hooks/useGetHome";
+import Chat from "./components/Chat";
 
 export const GameContext = createContext();
 function App() {
-	const { userExist } = useCheckContext();
+	const { userExist, gameState } = useCheckContext();
 
-	const { getHome } = useGetHome();
+	// const { getHome } = useGetHome();
 
-	useEffect(() => {
-		getHome();
-	}, []);
+	// useEffect(() => {
+	// 	getHome();
+	// }, []);
+
+	const [chatIsShowing, setChatIsShowing] = useState(false);
 
 	return (
 		<div>
 			<Router>
-				<Routes>
+				{/* *<Routes>
 					<Route
 						path="/"
 						element={
@@ -47,7 +50,16 @@ function App() {
 						path={"/signup"}
 						element={!userExist ? <Signup /> : <Navigate to="/" />}
 					/>
-				</Routes>
+				</Routes>* */}
+
+				<ScoreBoard
+					setChatIsShowing={setChatIsShowing}
+					chatIsShowing={chatIsShowing}
+				/>
+				<GameBoard />
+				<Dialog />
+
+				{chatIsShowing && <Chat setChatIsShowing={setChatIsShowing} />}
 			</Router>
 		</div>
 	);

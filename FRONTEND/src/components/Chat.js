@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from "react";
 import closeIcon from "../images/icon-close-chat.svg";
 import useCheckContext from "../hooks/useCheckContext";
 
-const Chat = () => {
-	const { playerMove, setChatIsShowing, socket } = useCheckContext();
+const Chat = ({ setChatIsShowing }) => {
+	const { playerMove, socket } = useCheckContext();
 	const [textMessage, setTextMessage] = useState("");
 	const [messages, setMessages] = useState(JSON.parse(localStorage.getItem("messages")) || []);
 
@@ -40,7 +40,9 @@ const Chat = () => {
 						src={closeIcon}
 						alt="close-icon"
 						className="close-icon"
-						onClick={() => setChatIsShowing(false)}
+						onClick={() => {
+							setChatIsShowing(false);
+						}}
 					/>
 				</header>
 
@@ -53,9 +55,9 @@ const Chat = () => {
 							>
 								<p className="name">Ashong</p>
 								<p className="message">{message}</p>
+								<div ref={messagesEndRef} />
 							</div>
 						))}
-						<div ref={messagesEndRef} />
 					</div>
 
 					<div className="input-container">

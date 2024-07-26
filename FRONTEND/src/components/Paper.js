@@ -1,19 +1,20 @@
 import React from "react";
 import paperIcon from "../images/icon-paper.svg";
-import {} from "../App";
 import useFunctions from "../hooks/useFunctions";
 import useCheckContext from "../hooks/useCheckContext";
 
 const Paper = () => {
-	const { setPlayerMove, setComputerMove } = useCheckContext();
+	const { setPlayerMove, setComputerMove, makeMove, isOnePlayer } = useCheckContext();
 
 	const { generateComputerMove } = useFunctions();
+
 	return (
 		<div
 			className="gameOpt"
 			onClick={() => {
-				setPlayerMove("paper");
-				generateComputerMove(setComputerMove);
+				!isOnePlayer && makeMove("p");
+				isOnePlayer && setPlayerMove("p");
+				isOnePlayer && generateComputerMove(setComputerMove);
 			}}
 		>
 			<img

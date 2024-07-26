@@ -10,31 +10,54 @@ const AfterChoice = () => {
 		result,
 		setComputerMove,
 		setResult,
+		isOnePlayer,
+		gameState,
 	} = useCheckContext();
 
 	return (
 		<div className="Desktop-step2">
 			<div className="you-picked">
-				<h1>YOU PICKED</h1>
-				<div className={`picked ${result === "Player wins" ? "winner" : ""}`}>
+				<h1>{isOnePlayer ? "YOU PICKED" : "PLAYER 1 PICKED"}</h1>
+				<div
+					className={`picked ${
+						isOnePlayer
+							? result === "Player wins"
+								? "winner"
+								: ""
+							: result === "Player1 wins"
+							? "winner"
+							: ""
+					}`}
+				>
 					<img
 						src={playerMoveImage}
-						alt={playerMove}
+						alt={
+							(playerMove === "r" && "rock") ||
+							(playerMove === "p" && "paper") ||
+							(playerMove === "s" && "scissors")
+						}
 					/>
 				</div>
 			</div>
 
 			<div className="results">
 				<h1>
-					{result === "Computer wins" && "YOU LOSE"}
-					{result === "Player wins" && "YOU WIN"}
-					{result === "Tie" && "TIE"}
+					{isOnePlayer
+						? result === "Computer wins" && "YOU LOSE"
+						: gameState.result === "Player2 wins" && "Player2 wins"}
+
+					{isOnePlayer
+						? result === "Player wins" && "YOU WIN"
+						: gameState.result === "Player1 wins" && "Player1 wins"}
+
+					{isOnePlayer ? result === "Tie" && "TIE" : gameState.result === "Tie" && "Tie"}
 				</h1>
 				<button
 					onClick={() => {
 						setPlayerMove(null);
 						setComputerMove(null);
 						setResult("");
+						// setGameState(null);
 					}}
 				>
 					PLAY AGAIN
@@ -42,11 +65,25 @@ const AfterChoice = () => {
 			</div>
 
 			<div className="house-picked">
-				<h1>THE HOUSE PICKED</h1>
-				<div className={`hPicked ${result === "Computer wins" ? "winner" : ""}`}>
+				<h1>{isOnePlayer ? "THE HOUSE PICKED" : "PLAYER 2 PICKED"}</h1>
+				<div
+					className={`hPicked ${
+						isOnePlayer
+							? result === "Computer wins"
+								? "winner"
+								: ""
+							: result === "Player2 wins"
+							? "winner"
+							: ""
+					}`}
+				>
 					<img
 						src={computerMoveImage}
-						alt={computerMove}
+						alt={
+							(computerMove === "r" && "rock") ||
+							(computerMove === "p" && "paper") ||
+							(computerMove === "s" && "scissors")
+						}
 					/>
 				</div>
 			</div>
