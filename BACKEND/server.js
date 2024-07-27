@@ -123,6 +123,14 @@ io.on("connect", (socket) => {
 			io.to(roomId).emit("move", game[roomId]);
 		}
 	});
+
+	socket.on("leaveRoom", (roomId) => {
+		if (game[roomId]) {
+			game[roomId] = { p1: null, p2: null, result: null };
+			io.to(roomId).emit("clearMoves", game[roomId]);
+			console.log(`Cleared moves for room: ${roomId}`);
+		}
+	});
 });
 
 app.use("/api/user", userRoutes);

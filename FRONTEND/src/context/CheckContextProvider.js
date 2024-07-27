@@ -83,7 +83,7 @@ const CheckContextProvider = ({ children }) => {
 		return () => {
 			socket.off("clearMoves");
 		};
-	}, [socket]);
+	}, [gameState]);
 
 	const makeMove = (move) => {
 		socket.emit("move", { move });
@@ -100,6 +100,20 @@ const CheckContextProvider = ({ children }) => {
 	const clearMoves = () => {
 		socket.emit("clearMoves");
 	};
+
+	// Clear all states when page reloads
+	useEffect(() => {
+		const handleBeforeUnload = () => {
+			socket.emit("leaveRoom", roomID);
+		};
+
+		window.addEventListener("beforeunload", handleBeforeUnload);
+
+		// Clean up the event listener when the component unmounts
+		return () => {
+			window.removeEventListener("beforeunload", handleBeforeUnload);
+		};
+	}, [socket, roomID]);
 
 	return (
 		<CheckContext.Provider
