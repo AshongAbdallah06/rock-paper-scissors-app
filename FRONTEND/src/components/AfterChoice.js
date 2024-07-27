@@ -12,6 +12,7 @@ const AfterChoice = () => {
 		setResult,
 		isOnePlayer,
 		gameState,
+		clearMoves,
 	} = useCheckContext();
 
 	return (
@@ -57,7 +58,8 @@ const AfterChoice = () => {
 						setPlayerMove(null);
 						setComputerMove(null);
 						setResult("");
-						// setGameState(null);
+
+						clearMoves();
 					}}
 				>
 					PLAY AGAIN

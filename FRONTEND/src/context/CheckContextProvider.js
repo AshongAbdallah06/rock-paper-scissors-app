@@ -72,17 +72,34 @@ const CheckContextProvider = ({ children }) => {
 		};
 	}, [socket]);
 
+	useEffect(() => {
+		socket.on("clearMoves", (newGameState) => {
+			setGameState(newGameState);
+
+			console.log("New Gamestate: ", gameState);
+		});
+
+		// Clean up the socket connection when the component unmounts
+		return () => {
+			socket.off("clearMoves");
+		};
+	}, [socket]);
+
 	const makeMove = (move) => {
-		socket.emit("move", move);
+		socket.emit("move", { move });
 	};
 
 	useEffect(() => {
-		setPlayerMove(!isOnePlayer && gameState.p1);
-		setComputerMove(!isOnePlayer && gameState.p2);
+		setPlayerMove(!isOnePlayer && gameState.p1?.move);
+		setComputerMove(!isOnePlayer && gameState.p2?.move);
 		setResult(!isOnePlayer && gameState.result);
 
 		!isOnePlayer && checkPlayersMoves(gameState, setPlayerMoveImage, setComputerMoveImage);
 	}, [isOnePlayer, gameState.p1 && gameState.p2]);
+
+	const clearMoves = () => {
+		socket.emit("clearMoves");
+	};
 
 	return (
 		<CheckContext.Provider
@@ -110,6 +127,7 @@ const CheckContextProvider = ({ children }) => {
 				joinRoom,
 				roomIsSelected,
 				setRoomIsSelected,
+				clearMoves,
 			}}
 		>
 			{children}

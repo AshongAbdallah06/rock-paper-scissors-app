@@ -6,9 +6,7 @@ import trashCan from "../images/trash-outline.svg";
 const Chat = ({ setChatIsShowing }) => {
 	const { socket, roomID } = useCheckContext();
 	const [textMessage, setTextMessage] = useState("");
-	const [messages, setMessages] = useState(
-		JSON.parse(localStorage.getItem(`room${roomID}_messages`)) || []
-	);
+	const [messages, setMessages] = useState([]);
 
 	useEffect(() => {
 		socket.on("message", (message) => {
@@ -28,11 +26,15 @@ const Chat = ({ setChatIsShowing }) => {
 
 	const messagesEndRef = useRef(null);
 	useEffect(() => {
-		localStorage.setItem(`room${roomID}_messages`, JSON.stringify(messages));
+		localStorage.setItem("messages", JSON.stringify(messages));
 
 		// Scroll to bottom
 		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
 	}, [messages]);
+
+	useEffect(() => {
+		localStorage.removeItem("messages");
+	}, []);
 
 	const sendMessage = () => {
 		socket.emit("message", textMessage);
@@ -42,7 +44,7 @@ const Chat = ({ setChatIsShowing }) => {
 
 	const deleteChat = () => {
 		socket.emit("deleteMessage");
-		localStorage.removeItem(`room${roomID}_messages`);
+		localStorage.removeItem("messages");
 		setMessages([]);
 	};
 

@@ -1,7 +1,7 @@
 import scissorsIcon from "../images/icon-scissors.svg";
 import paperIcon from "../images/icon-paper.svg";
 import rockIcon from "../images/icon-rock.svg";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const useFunctions = () => {
 	// Generate the computer's move
@@ -87,19 +87,19 @@ const useFunctions = () => {
 	};
 
 	const checkPlayersMoves = (gameState, setPlayerMoveImage, setComputerMoveImage) => {
-		if (gameState.p1 === "r") {
+		if (gameState.p1?.move === "r") {
 			setPlayerMoveImage(rockIcon);
-		} else if (gameState.p1 === "p") {
+		} else if (gameState.p1?.move === "p") {
 			setPlayerMoveImage(paperIcon);
-		} else if (gameState.p1 === "s") {
+		} else if (gameState.p1?.move === "s") {
 			setPlayerMoveImage(scissorsIcon);
 		}
 
-		if (gameState.p2 === "r") {
+		if (gameState.p2?.move === "r") {
 			setComputerMoveImage(rockIcon);
-		} else if (gameState.p2 === "p") {
+		} else if (gameState.p2?.move === "p") {
 			setComputerMoveImage(paperIcon);
-		} else if (gameState.p2 === "s") {
+		} else if (gameState.p2?.move === "s") {
 			setComputerMoveImage(scissorsIcon);
 		}
 	};

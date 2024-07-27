@@ -10,7 +10,7 @@ const PlayerSelection = () => {
 	}, []);
 	return (
 		<div className="selection">
-			<h1>{roomID ? `You are joining ${roomID}` : "Enter a room name"}</h1>
+			<h1>{roomID ? `ROOM NAME: ${roomID}` : "Enter a room name"}</h1>
 
 			<div className="room">
 				<input

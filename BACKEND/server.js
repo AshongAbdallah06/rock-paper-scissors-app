@@ -79,39 +79,42 @@ io.on("connect", (socket) => {
 
 		// Check if both moves are present and calculate the result
 		if (game[roomId].p1 && game[roomId].p2) {
-			switch (game[roomId].p1) {
+			switch (game[roomId].p1?.move) {
 				case "r":
-					if (game[roomId].p2 === "r") {
+					if (game[roomId].p2?.move === "r") {
 						game[roomId].result = "Tie";
-					} else if (game[roomId].p2 === "p") {
+					} else if (game[roomId].p2?.move === "p") {
 						game[roomId].result = "Player2 wins";
-					} else if (game[roomId].p2 === "s") {
+					} else if (game[roomId].p2?.move === "s") {
 						game[roomId].result = "Player1 wins";
 					}
 					break;
 				case "p":
-					if (game[roomId].p2 === "r") {
+					if (game[roomId].p2?.move === "r") {
 						game[roomId].result = "Player1 wins";
-					} else if (game[roomId].p2 === "p") {
+					} else if (game[roomId].p2?.move === "p") {
 						game[roomId].result = "Tie";
-					} else if (game[roomId].p2 === "s") {
+					} else if (game[roomId].p2?.move === "s") {
 						game[roomId].result = "Player2 wins";
 					}
 					break;
 				case "s":
-					if (game[roomId].p2 === "r") {
+					if (game[roomId].p2?.move === "r") {
 						game[roomId].result = "Player2 wins";
-					} else if (game[roomId].p2 === "p") {
+					} else if (game[roomId].p2?.move === "p") {
 						game[roomId].result = "Player1 wins";
-					} else if (game[roomId].p2 === "s") {
+					} else if (game[roomId].p2?.move === "s") {
 						game[roomId].result = "Tie";
 					}
 					break;
 			}
 
-			setTimeout(() => {
-				game[roomId] = null;
-			}, 2000);
+			socket.on("clearMoves", (newGameState) => {
+				game[roomId] = { p1: null, p2: null, result: null };
+
+				io.to(roomId).emit("clearMoves", game[roomId]);
+				console.log(game[roomId]);
+			});
 
 			console.log(game);
 		}
