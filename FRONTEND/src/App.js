@@ -1,27 +1,23 @@
 import "./App.css";
-import ScoreBoard from "./components/ScoreBoard";
-import GameBoard from "./GameBoard";
-import { createContext, useState } from "react";
-import Dialog from "./components/Dialog";
+
+import { createContext } from "react";
 import useCheckContext from "./hooks/useCheckContext";
 import { BrowserRouter as Router, Routes, Route, Navigate, Link } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
-import useGetHome from "./hooks/useGetHome";
-import Chat from "./components/Chat";
 import PlayerSelection from "./pages/PlayerSelection";
+import Room from "./pages/Room";
+import Home from "./pages/Home";
 
 export const GameContext = createContext();
 function App() {
-	const { userExist, gameState, playerIsChosen, setPlayerIsChosen } = useCheckContext();
+	const { playerIsChosen, roomIsSelected } = useCheckContext();
 
 	// const { getHome } = useGetHome();
 
 	// useEffect(() => {
 	// 	getHome();
 	// }, []);
-
-	const [chatIsShowing, setChatIsShowing] = useState(false);
 
 	return (
 		<div>
@@ -30,23 +26,12 @@ function App() {
 					<Route
 						path="/"
 						element={
-							playerIsChosen ? (
-								<>
-									<ScoreBoard
-										setChatIsShowing={setChatIsShowing}
-										chatIsShowing={chatIsShowing}
-									/>
-									<GameBoard />
-									<Dialog />
-
-									{chatIsShowing ? (
-										<Chat setChatIsShowing={setChatIsShowing} />
-									) : (
-										""
-									)}
-								</>
+							playerIsChosen && roomIsSelected ? (
+								<Home />
+							) : !playerIsChosen ? (
+								<PlayerSelection />
 							) : (
-								<Navigate to="/select-player" />
+								!roomIsSelected && <Room />
 							)
 						}
 					/>
@@ -54,6 +39,11 @@ function App() {
 					<Route
 						path="/select-player"
 						element={!playerIsChosen ? <PlayerSelection /> : <Navigate to="/" />}
+					/>
+
+					<Route
+						path="/select-room"
+						element={!roomIsSelected ? <Room /> : <Navigate to="/" />}
 					/>
 
 					<Route

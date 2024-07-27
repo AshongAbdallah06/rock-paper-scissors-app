@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import useCheckContext from "../hooks/useCheckContext";
 
 const PlayerSelection = () => {
-	const { setIsOnePlayer, setPlayerIsChosen } = useCheckContext();
+	const { setIsOnePlayer, setPlayerIsChosen, setRoomID, setRoomIsSelected } = useCheckContext();
 	return (
 		<div className="selection">
 			<h1>Welcome!</h1>
@@ -16,7 +16,7 @@ const PlayerSelection = () => {
 						setIsOnePlayer(false);
 						setPlayerIsChosen(true);
 					}}
-					to="/"
+					to="/select-room"
 				>
 					DUAL
 				</Link>
@@ -24,6 +24,7 @@ const PlayerSelection = () => {
 					onClick={() => {
 						setIsOnePlayer(true);
 						setPlayerIsChosen(true);
+						setRoomIsSelected(true);
 					}}
 					to="/"
 				>

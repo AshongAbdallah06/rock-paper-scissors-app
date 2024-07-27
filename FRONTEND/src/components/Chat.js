@@ -4,9 +4,11 @@ import useCheckContext from "../hooks/useCheckContext";
 import trashCan from "../images/trash-outline.svg";
 
 const Chat = ({ setChatIsShowing }) => {
-	const { socket } = useCheckContext();
+	const { socket, roomID } = useCheckContext();
 	const [textMessage, setTextMessage] = useState("");
-	const [messages, setMessages] = useState(JSON.parse(localStorage.getItem("messages")) || []);
+	const [messages, setMessages] = useState(
+		JSON.parse(localStorage.getItem(`room${roomID}_messages`)) || []
+	);
 
 	useEffect(() => {
 		socket.on("message", (message) => {
@@ -15,20 +17,18 @@ const Chat = ({ setChatIsShowing }) => {
 
 		// Delete all messages
 		socket.on("deleteMessage", () => {
-			localStorage.removeItem("messages");
+			localStorage.removeItem(`room${roomID}_messages`);
 			setMessages([]);
 		});
 
 		return () => {
 			socket.off("message");
 		};
-	}, []);
-	useEffect(() => {
-		localStorage.removeItem("messages");
-	}, []);
+	}, [socket]);
+
 	const messagesEndRef = useRef(null);
 	useEffect(() => {
-		localStorage.setItem("messages", JSON.stringify(messages));
+		localStorage.setItem(`room${roomID}_messages`, JSON.stringify(messages));
 
 		// Scroll to bottom
 		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -42,7 +42,7 @@ const Chat = ({ setChatIsShowing }) => {
 
 	const deleteChat = () => {
 		socket.emit("deleteMessage");
-		localStorage.removeItem("messages");
+		localStorage.removeItem(`room${roomID}_messages`);
 		setMessages([]);
 	};
 

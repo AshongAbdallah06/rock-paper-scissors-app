@@ -29,15 +29,26 @@ app.get("/", (req, res) => {
 
 io.on("connect", (socket) => {
 	// Handle incoming messages
-	const roomId = "game-room";
+	let roomId = undefined;
 
-	// if (gameRooms[roomId]?.p1_ID && gameRooms[roomId]?.p2_ID) {
-	// 	socket.emit("roomFull", "Room is full. Cannot join.");
-	// 	console.log("roomFull", "Room is full. Cannot join.");
-	// 	return;
-	// }
+	socket.on("join_room", (id) => {
+		roomId = id;
 
-	socket.join(roomId);
+		socket.join(roomId);
+
+		// Initialize game room if not exists
+		if (!gameRooms[roomId]) {
+			gameRooms[roomId] = { p1_ID: null, p2_ID: null };
+		}
+
+		// Assign player to room
+		if (!gameRooms[roomId].p1_ID) {
+			gameRooms[roomId].p1_ID = socket.id;
+		} else if (!gameRooms[roomId].p2_ID) {
+			gameRooms[roomId].p2_ID = socket.id;
+		}
+	});
+
 	socket.on("message", async (message) => {
 		// Broadcast message to all clients
 		io.to(roomId).emit("message", `${socket.id.substr(0, 2)} ${message}`);
@@ -46,17 +57,6 @@ io.on("connect", (socket) => {
 	socket.on("deleteMessage", () => {
 		io.to(roomId).emit("deleteMessage");
 	});
-	// Initialize game room if not exists
-	if (!gameRooms[roomId]) {
-		gameRooms[roomId] = { p1_ID: null, p2_ID: null };
-	}
-
-	// Assign player to room
-	if (!gameRooms[roomId].p1_ID) {
-		gameRooms[roomId].p1_ID = socket.id;
-	} else if (!gameRooms[roomId].p2_ID) {
-		gameRooms[roomId].p2_ID = socket.id;
-	}
 
 	if (!game[roomId]) {
 		game[roomId] = { p1: null, p2: null, result: null };

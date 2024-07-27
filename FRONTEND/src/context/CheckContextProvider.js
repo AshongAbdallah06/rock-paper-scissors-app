@@ -27,6 +27,9 @@ const CheckContextProvider = ({ children }) => {
 	const [isOnePlayer, setIsOnePlayer] = useState(false);
 	const [playerIsChosen, setPlayerIsChosen] = useState(false);
 
+	//
+	const [roomIsSelected, setRoomIsSelected] = useState(false);
+
 	// User Status
 	const [userExist, setUserExist] = useState();
 
@@ -50,6 +53,14 @@ const CheckContextProvider = ({ children }) => {
 	}, [playerMove, computerMove]);
 
 	const [gameState, setGameState] = useState({ p1: null, p2: null, result: null });
+
+	// Join room
+	const [roomID, setRoomID] = useState(null);
+	const joinRoom = () => {
+		socket.emit("join_room", roomID);
+	};
+
+	// Send move in dual player mode
 	useEffect(() => {
 		socket.on("move", (newGameState) => {
 			setGameState(newGameState);
@@ -59,7 +70,7 @@ const CheckContextProvider = ({ children }) => {
 		return () => {
 			socket.off("move");
 		};
-	}, []);
+	}, [socket]);
 
 	const makeMove = (move) => {
 		socket.emit("move", move);
@@ -94,6 +105,11 @@ const CheckContextProvider = ({ children }) => {
 				setIsOnePlayer,
 				playerIsChosen,
 				setPlayerIsChosen,
+				roomID,
+				setRoomID,
+				joinRoom,
+				roomIsSelected,
+				setRoomIsSelected,
 			}}
 		>
 			{children}
