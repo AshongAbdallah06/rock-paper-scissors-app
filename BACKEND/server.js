@@ -39,9 +39,13 @@ io.on("connect", (socket) => {
 
 	socket.join(roomId);
 	socket.on("message", async (message) => {
-		io.to(roomId).emit("message", message); // Broadcast message to all clients
+		// Broadcast message to all clients
+		io.to(roomId).emit("message", `${socket.id.substr(0, 2)} ${message}`);
 	});
 
+	socket.on("deleteMessage", () => {
+		io.to(roomId).emit("deleteMessage");
+	});
 	// Initialize game room if not exists
 	if (!gameRooms[roomId]) {
 		gameRooms[roomId] = { p1_ID: null, p2_ID: null };

@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from "react";
 import io from "socket.io-client";
 import useFunctions from "../hooks/useFunctions";
 
-const socket = io("http://192.168.8.188:4001");
+const socket = io("http://localhost:4001");
 export const CheckContext = createContext();
 
 const CheckContextProvider = ({ children }) => {
@@ -25,6 +25,7 @@ const CheckContextProvider = ({ children }) => {
 
 	//Check if it's a one player game
 	const [isOnePlayer, setIsOnePlayer] = useState(false);
+	const [playerIsChosen, setPlayerIsChosen] = useState(false);
 
 	// User Status
 	const [userExist, setUserExist] = useState();
@@ -46,7 +47,7 @@ const CheckContextProvider = ({ children }) => {
 				score,
 				setScore
 			);
-	}, [playerMove, computerMove, isOnePlayer, result, score]);
+	}, [playerMove, computerMove]);
 
 	const [gameState, setGameState] = useState({ p1: null, p2: null, result: null });
 	useEffect(() => {
@@ -91,6 +92,8 @@ const CheckContextProvider = ({ children }) => {
 				gameState,
 				isOnePlayer,
 				setIsOnePlayer,
+				playerIsChosen,
+				setPlayerIsChosen,
 			}}
 		>
 			{children}

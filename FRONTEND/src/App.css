@@ -17,6 +17,19 @@ body {
 	flex-direction: column;
 	min-height: 100vh;
 }
+.header2 {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.delete {
+	background-color: transparent;
+	border: none;
+	cursor: pointer;
+}
+.trash {
+	height: 1.5rem;
+}
 img[alt="rock"],
 img[alt="paper"],
 img[alt="scissors"] {
@@ -369,4 +382,41 @@ textarea {
 .menu img {
 	height: 2rem;
 	cursor: pointer;
+}
+
+.selection {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	color: white;
+}
+
+.mode-links {
+	margin-top: 2rem;
+}
+
+.mode-links a {
+	width: 13rem;
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	font-size: 1.3rem;
+	padding: 1rem;
+	color: hsl(237, 49%, 15%);
+	background-color: white;
+	font-weight: bold;
+	margin-right: 1rem;
+	border-radius: 0.3rem;
+	border: none;
+	cursor: pointer;
+	transition: all 0.15s;
+}
+
+.mode-links a:hover {
+	/* background-color: rgb(205, 205, 205); */
+	background-color: hsl(39, 89%, 49%);
+	color: white;
+	width: 13.5rem;
+	padding: 1.2rem;
 }
