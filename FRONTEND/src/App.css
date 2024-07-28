@@ -46,6 +46,7 @@ img[alt="scissors"] {
 	border-radius: 0.625rem;
 	width: 40rem;
 	margin: 1.25rem auto;
+	position: relative;
 }
 .scoreBoard .imgCont {
 	height: 100%;
@@ -68,6 +69,15 @@ img[alt="scissors"] {
 .score p:nth-child(2) {
 	height: 100%;
 	font-size: 3.125rem;
+}
+.p2 {
+	display: flex;
+	width: 100%;
+	position: absolute;
+	right: -360px;
+}
+.p2 div {
+	margin-right: 10px;
 }
 .Gboard {
 	height: calc(100vh - 9.6875rem);
@@ -257,7 +267,7 @@ form button {
 	font-size: 1.5rem;
 	cursor: pointer;
 }
-form a {
+form .links {
 	position: absolute;
 	top: 1rem;
 	right: 1rem;
@@ -390,6 +400,7 @@ textarea {
 	align-items: center;
 	justify-content: center;
 	color: white;
+	text-align: center;
 }
 .room {
 	margin-top: 1rem;

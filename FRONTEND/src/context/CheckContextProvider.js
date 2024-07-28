@@ -21,7 +21,13 @@ const CheckContextProvider = ({ children }) => {
 	const [computerMove, setComputerMove] = useState(null);
 	const [result, setResult] = useState("");
 
+	const [roomID, setRoomID] = useState(null);
+
 	const [score, setScore] = useState(JSON.parse(localStorage.getItem("score")) || 0);
+	const [p1Score, setP1Score] = useState(0);
+	const [p2Score, setP2Score] = useState(
+		JSON.parse(localStorage.getItem(`${roomID}_p2score`)) || 0
+	);
 
 	//Check if it's a one player game
 	const [isOnePlayer, setIsOnePlayer] = useState(false);
@@ -38,6 +44,8 @@ const CheckContextProvider = ({ children }) => {
 		localStorage.setItem("score", JSON.stringify(score));
 	}, [score]);
 
+	const [gameState, setGameState] = useState({ p1: null, p2: null, result: null });
+
 	useEffect(() => {
 		isOnePlayer &&
 			checkOptions(
@@ -50,20 +58,41 @@ const CheckContextProvider = ({ children }) => {
 				score,
 				setScore
 			);
+
+		if (!isOnePlayer) {
+			if (result === "Player1 wins") {
+				setTimeout(() => {
+					setP1Score(p1Score + 1);
+				}, 3000);
+			} else if (result === "Player2 wins") {
+				setTimeout(() => {
+					setP2Score(p2Score + 1);
+				}, 3000);
+			}
+		}
 	}, [playerMove, computerMove]);
 
-	const [gameState, setGameState] = useState({ p1: null, p2: null, result: null });
+	useEffect(() => {
+		setPlayerMove(!isOnePlayer && gameState.p1);
+		setComputerMove(!isOnePlayer && gameState.p2);
+		setResult(!isOnePlayer && gameState.result);
+
+		!isOnePlayer && checkPlayersMoves(gameState, setPlayerMoveImage, setComputerMoveImage);
+	}, [isOnePlayer, gameState.p1 && gameState.p2]);
 
 	// Join room
-	const [roomID, setRoomID] = useState(null);
 	const joinRoom = () => {
 		socket.emit("join_room", roomID);
+
+		socket.emit("clearMoves");
 	};
 
 	// Send move in dual player mode
 	useEffect(() => {
 		socket.on("move", (newGameState) => {
 			setGameState(newGameState);
+
+			console.log("New Gamestate: ", newGameState);
 		});
 
 		// Clean up the socket connection when the component unmounts
@@ -86,34 +115,12 @@ const CheckContextProvider = ({ children }) => {
 	}, [gameState]);
 
 	const makeMove = (move) => {
-		socket.emit("move", { move });
+		socket.emit("move", move);
 	};
-
-	useEffect(() => {
-		setPlayerMove(!isOnePlayer && gameState.p1?.move);
-		setComputerMove(!isOnePlayer && gameState.p2?.move);
-		setResult(!isOnePlayer && gameState.result);
-
-		!isOnePlayer && checkPlayersMoves(gameState, setPlayerMoveImage, setComputerMoveImage);
-	}, [isOnePlayer, gameState.p1 && gameState.p2]);
 
 	const clearMoves = () => {
 		socket.emit("clearMoves");
 	};
-
-	// Clear all states when page reloads
-	useEffect(() => {
-		const handleBeforeUnload = () => {
-			socket.emit("leaveRoom", roomID);
-		};
-
-		window.addEventListener("beforeunload", handleBeforeUnload);
-
-		// Clean up the event listener when the component unmounts
-		return () => {
-			window.removeEventListener("beforeunload", handleBeforeUnload);
-		};
-	}, [socket, roomID]);
 
 	return (
 		<CheckContext.Provider
@@ -142,6 +149,10 @@ const CheckContextProvider = ({ children }) => {
 				roomIsSelected,
 				setRoomIsSelected,
 				clearMoves,
+				p1Score,
+				setP1Score,
+				p2Score,
+				setP2Score,
 			}}
 		>
 			{children}
