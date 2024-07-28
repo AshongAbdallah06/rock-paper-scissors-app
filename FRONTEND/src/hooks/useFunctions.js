@@ -87,19 +87,19 @@ const useFunctions = () => {
 	};
 
 	const checkPlayersMoves = (gameState, setPlayerMoveImage, setComputerMoveImage) => {
-		if (gameState.p1?.move === "r") {
+		if (gameState.p1 === "r") {
 			setPlayerMoveImage(rockIcon);
-		} else if (gameState.p1?.move === "p") {
+		} else if (gameState.p1 === "p") {
 			setPlayerMoveImage(paperIcon);
-		} else if (gameState.p1?.move === "s") {
+		} else if (gameState.p1 === "s") {
 			setPlayerMoveImage(scissorsIcon);
 		}
 
-		if (gameState.p2?.move === "r") {
+		if (gameState.p2 === "r") {
 			setComputerMoveImage(rockIcon);
-		} else if (gameState.p2?.move === "p") {
+		} else if (gameState.p2 === "p") {
 			setComputerMoveImage(paperIcon);
-		} else if (gameState.p2?.move === "s") {
+		} else if (gameState.p2 === "s") {
 			setComputerMoveImage(scissorsIcon);
 		}
 	};

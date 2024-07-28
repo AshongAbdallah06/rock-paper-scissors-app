@@ -4,7 +4,7 @@ import plane from "../images/paper-plane-outline.svg";
 import useCheckContext from "../hooks/useCheckContext";
 
 const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
-	const { score, gameState, isOnePlayer } = useCheckContext();
+	const { score, p1Score, p2Score, gameState, isOnePlayer } = useCheckContext();
 
 	return (
 		<div>
@@ -15,14 +15,24 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 						alt="logo"
 					/>
 				</div>
-				<div className="score">
-					<p>score</p>
-					<p>{score}</p>
-				</div>
+				{isOnePlayer ? (
+					<div className="score">
+						<p>score</p>
+						<p>{score}</p>
+					</div>
+				) : (
+					<div className="p2">
+						<div className="score">
+							<p>Player1</p>
+							<p>{p1Score}</p>
+						</div>
+						<div className="score">
+							<p>Player2</p>
+							<p>{p2Score}</p>
+						</div>
+					</div>
+				)}
 			</section>
-			{/* <h3 style={{ textAlign: "center", color: "white" }}>
-				{(!gameState.p1 || !gameState.p2) && "Make your move"}
-			</h3> */}
 
 			{!isOnePlayer && !chatIsShowing ? (
 				<div

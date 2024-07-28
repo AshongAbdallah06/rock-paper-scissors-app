@@ -43,7 +43,17 @@ function App() {
 
 					<Route
 						path="/select-room"
-						element={!roomIsSelected ? <Room /> : <Navigate to="/" />}
+						element={
+							!roomIsSelected ? (
+								!playerIsChosen ? (
+									<Room />
+								) : (
+									<Navigate to="/select-player" />
+								)
+							) : (
+								<Navigate to="/" />
+							)
+						}
 					/>
 
 					<Route

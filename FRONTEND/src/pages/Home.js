@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Dialog from "../components/Dialog";
 import Chat from "../components/Chat";
 import ScoreBoard from "../components/ScoreBoard";
@@ -21,7 +21,7 @@ const Home = () => {
 
 			{chatIsShowing ? <Chat setChatIsShowing={setChatIsShowing} /> : ""}
 
-			<footer>Room Name: {roomID}</footer>
+			{!isOnePlayer && <footer>Room Name: {roomID}</footer>}
 		</>
 	);
 };

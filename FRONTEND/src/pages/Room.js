@@ -1,15 +1,19 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import useCheckContext from "../hooks/useCheckContext";
 
 const PlayerSelection = () => {
-	const { isOnePlayer, roomID, setRoomID, joinRoom, setRoomIsSelected } = useCheckContext();
+	const { roomID, setRoomID, joinRoom, setRoomIsSelected } = useCheckContext();
 
-	useEffect(() => {
-		!isOnePlayer && alert("Two players should join the same room to play with each other");
-	}, []);
 	return (
-		<div className="selection">
+		<form
+			className="selection"
+			onSubmit={(e) => {
+				e.preventDefault();
+				roomID && joinRoom();
+				roomID && setRoomIsSelected(true);
+			}}
+		>
 			<h1>{roomID ? `ROOM NAME: ${roomID}` : "Enter a room name"}</h1>
 
 			<div className="room">
@@ -32,7 +36,7 @@ const PlayerSelection = () => {
 					JOIN ROOM
 				</Link>
 			</div>
-		</div>
+		</form>
 	);
 };
 

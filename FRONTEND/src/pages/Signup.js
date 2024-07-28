@@ -71,7 +71,12 @@ const Login = () => {
 
 	return (
 		<form onSubmit={handleSubmit(onsubmit)}>
-			<Link to="/login">Login</Link>
+			<Link
+				to="/login"
+				className="links"
+			>
+				Login
+			</Link>
 			<h1>Signup</h1>
 
 			<div>
