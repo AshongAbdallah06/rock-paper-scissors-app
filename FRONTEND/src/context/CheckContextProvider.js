@@ -91,8 +91,6 @@ const CheckContextProvider = ({ children }) => {
 	useEffect(() => {
 		socket.on("move", (newGameState) => {
 			setGameState(newGameState);
-
-			console.log("New Gamestate: ", newGameState);
 		});
 
 		// Clean up the socket connection when the component unmounts
@@ -104,8 +102,6 @@ const CheckContextProvider = ({ children }) => {
 	useEffect(() => {
 		socket.on("clearMoves", (newGameState) => {
 			setGameState(newGameState);
-
-			console.log("New Gamestate: ", gameState);
 		});
 
 		// Clean up the socket connection when the component unmounts

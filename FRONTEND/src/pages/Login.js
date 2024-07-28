@@ -34,24 +34,6 @@ const Login = () => {
 	const [error, setError] = useState({ email: "", password: "", username: "" });
 
 	const onsubmit = async (data) => {
-		// const body = { email: data?.email, password: data?.password };
-		// try {
-		// 	const res = await Axios.post("http://localhost:4000/api/user/login", body);
-		// 	const userData = res.data;
-		// 	// Save user details to localStorage
-		// 	localStorage.setItem("user", JSON.stringify(userData));
-		// 	// Reset Errors
-		// 	setError({
-		// 		email: "",
-		// 		password: "",
-		// 	});
-		// 	window.location.href = "/";
-		// } catch (error) {
-		// 	setError({
-		// 		email: error.response.data.email,
-		// 		password: error.response.data.password,
-		// 	});
-		// }
 		console.log("Login");
 	};
 	return (

@@ -52,8 +52,6 @@ io.on("connect", (socket) => {
 		if (!game[roomId]) {
 			game[roomId] = { p1: null, p2: null, result: null };
 		}
-
-		console.log("Rooms Moves: ", game[roomId]);
 	});
 
 	socket.on("move", (move) => {
@@ -93,7 +91,6 @@ io.on("connect", (socket) => {
 					break;
 			}
 
-			console.log(game);
 			io.to(roomId).emit("move", game[roomId]);
 		}
 	});
