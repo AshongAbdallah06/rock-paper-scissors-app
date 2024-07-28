@@ -14,7 +14,7 @@ const io = socketIo(server, {
 	},
 });
 
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: "https://rock-paper-scissors-app-nine.vercel.app/" }));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

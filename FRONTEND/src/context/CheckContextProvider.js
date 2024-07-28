@@ -2,7 +2,7 @@ import React, { createContext, useEffect, useState } from "react";
 import io from "socket.io-client";
 import useFunctions from "../hooks/useFunctions";
 
-const socket = io("http://localhost:4001");
+const socket = io("https://rock-paper-scissors-app-iybf.onrender.com");
 export const CheckContext = createContext();
 
 const CheckContextProvider = ({ children }) => {
