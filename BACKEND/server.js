@@ -105,6 +105,11 @@ io.on("connect", (socket) => {
 		}
 	});
 
+	socket.on("message", async (message) => {
+		// Broadcast message to all clients
+		io.to(roomId).emit("message", `${socket.id.substr(0, 2)} ${message}`);
+	});
+
 	socket.on("deleteMessage", () => {
 		io.to(roomId).emit("deleteMessage");
 	});
