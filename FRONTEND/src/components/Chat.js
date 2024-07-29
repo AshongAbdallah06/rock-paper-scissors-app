@@ -9,6 +9,7 @@ const Chat = ({ setChatIsShowing }) => {
 	const [messages, setMessages] = useState(
 		JSON.parse(localStorage.getItem(`room_${roomID}_messages`)) || []
 	);
+	const user = JSON.parse(localStorage.getItem("user"));
 
 	useEffect(() => {
 		socket.on("message", (message) => {
@@ -35,7 +36,7 @@ const Chat = ({ setChatIsShowing }) => {
 	}, [messages]);
 
 	const sendMessage = () => {
-		socket.emit("message", textMessage);
+		socket.emit("message", { username: user.username, textMessage });
 
 		setTextMessage("");
 	};
@@ -91,10 +92,10 @@ const Chat = ({ setChatIsShowing }) => {
 										className="name"
 										style={{ textTransform: "lowercase", fontWeight: "normal" }}
 									>
-										user_{message[0] + message[1]}
+										{message.username}
 									</span>
 								</p>
-								<p className="message">{message.substring(3)}</p>
+								<p className="message">{message.textMessage}</p>
 								<div ref={messagesEndRef} />
 							</div>
 						))}

@@ -104,7 +104,8 @@ io.on("connect", (socket) => {
 
 	socket.on("message", async (message) => {
 		// Broadcast message to all clients
-		io.to(roomId).emit("message", `${socket.id.substr(0, 2)} ${message}`);
+		const { username, textMessage } = message;
+		io.to(roomId).emit("message", { username, textMessage });
 	});
 
 	socket.on("deleteMessage", () => {
