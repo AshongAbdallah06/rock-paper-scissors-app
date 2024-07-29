@@ -42,7 +42,22 @@ const Login = () => {
 	const [error, setError] = useState({ email: "", password: "", username: "" });
 
 	const onsubmit = async (data) => {
-		console.log("sIGNUP");
+		try {
+			const response = await Axios.post("http://localhost:4001/api/user/signup", {
+				email: data?.email,
+				username: data?.username,
+				password: data?.password,
+			});
+
+			const user = await response.data;
+			localStorage.setItem("user", JSON.stringify(user));
+
+			window.location.href = "/";
+		} catch (err) {
+			const { error } = err.response.data;
+
+			setError({ email: error.email, username: error.username });
+		}
 	};
 
 	return (
