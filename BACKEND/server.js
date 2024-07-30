@@ -14,8 +14,19 @@ const io = socketIo(server, {
 	},
 });
 
-app.use(cors({ origin: "https://rock-paper-scissors-app-nine.vercel.app" }));
+const allowedOrigins = ["http://localhost:3000", "https://rock-paper-scissors-app-nine.vercel.app"];
 
+app.use(
+	cors({
+		origin: function (origin, callback) {
+			if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+				callback(null, true);
+			} else {
+				callback(new Error("Not allowed by CORS"));
+			}
+		},
+	})
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const gameRooms = {};

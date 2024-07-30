@@ -49,6 +49,7 @@ const signup = async (req, res) => {
 	} catch (err) {
 		const error = handleErrors(err);
 
+		console.log(err);
 		res.status(401).json({ error });
 	}
 };
@@ -75,6 +76,7 @@ const login = async (req, res) => {
 		}
 	} catch (err) {
 		const error = handleErrors(err);
+		console.log(err);
 		res.status(401).json({ error });
 	}
 };

@@ -48,11 +48,12 @@ const Login = () => {
 
 			if (user) {
 				setError({ email: "", password: "" });
+				window.location.href = "/";
 			}
-
-			window.location.href = "/";
 		} catch (err) {
 			const error = err.response?.data?.error;
+
+			console.log(err);
 
 			if (error) {
 				setError({ email: error.email, username: error.username });
