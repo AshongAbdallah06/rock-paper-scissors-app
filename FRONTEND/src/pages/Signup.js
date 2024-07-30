@@ -43,11 +43,14 @@ const Login = () => {
 
 	const onsubmit = async (data) => {
 		try {
-			const response = await Axios.post("http://localhost:4001/api/user/signup", {
-				email: data?.email,
-				username: data?.username,
-				password: data?.password,
-			});
+			const response = await Axios.post(
+				"https://rock-paper-scissors-app-iybf.onrender.com/api/user/signup",
+				{
+					email: data?.email,
+					username: data?.username,
+					password: data?.password,
+				}
+			);
 
 			const user = await response.data;
 			localStorage.setItem("user", JSON.stringify(user));
