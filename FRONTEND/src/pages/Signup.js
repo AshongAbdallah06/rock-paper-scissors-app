@@ -52,11 +52,19 @@ const Login = () => {
 			const user = await response.data;
 			localStorage.setItem("user", JSON.stringify(user));
 
+			if (user) {
+				setError({ email: "", username: "", password: "" });
+			}
+
 			window.location.href = "/";
 		} catch (err) {
-			const { error } = err.response.data;
+			const error = err.response?.data?.error;
 
-			setError({ email: error.email, username: error.username });
+			if (error) {
+				setError({ email: error.email, username: error.username });
+			} else {
+				setError({ email: null, username: null });
+			}
 		}
 	};
 

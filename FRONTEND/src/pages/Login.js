@@ -34,11 +34,39 @@ const Login = () => {
 	const [error, setError] = useState({ email: "", password: "", username: "" });
 
 	const onsubmit = async (data) => {
-		console.log("Login");
+		try {
+			const response = await Axios.post("http://localhost:4001/api/user/login", {
+				email: data?.email,
+				password: data?.password,
+			});
+
+			const user = await response.data;
+			localStorage.setItem("user", JSON.stringify(user));
+
+			if (user) {
+				setError({ email: "", password: "" });
+			}
+
+			window.location.href = "/";
+		} catch (err) {
+			const error = err.response?.data?.error;
+
+			if (error) {
+				setError({ email: error.email, username: error.username });
+			} else {
+				setError({ email: null, username: null });
+			}
+		}
 	};
+
 	return (
 		<form onSubmit={handleSubmit(onsubmit)}>
-			<Link to="/signup">Signup</Link>
+			<Link
+				to="/signup"
+				className="links"
+			>
+				Signup
+			</Link>
 			<h1>Login</h1>
 
 			<div>
