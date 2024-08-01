@@ -3,8 +3,6 @@ const pool = require("../db");
 const { v4: uuid } = require("uuid");
 const { genSalt, hash, compare } = require("bcrypt");
 
-const getHome = async (req, res) => {};
-
 const handleErrors = (err) => {
 	const errors = { email: "", username: "", password: "" };
 
@@ -27,6 +25,16 @@ const handleErrors = (err) => {
 
 const createToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET_KEY, { expiresIn: "3d" });
+};
+
+const getHome = async (req, res) => {
+	const token = req.headers.authorization;
+
+	try {
+		res.json({ token: token.split(" ")[1] });
+	} catch (error) {
+		res.status(401).json({ msg: "Invalid Token. Access Unauthorized" });
+	}
 };
 
 const signup = async (req, res) => {

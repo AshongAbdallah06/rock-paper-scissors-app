@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dialog from "../components/Dialog";
 import Chat from "../components/Chat";
 import ScoreBoard from "../components/ScoreBoard";
@@ -7,7 +7,11 @@ import useCheckContext from "../hooks/useCheckContext";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
-	const { roomID, isOnePlayer } = useCheckContext();
+	const { roomID, isOnePlayer, authorize } = useCheckContext();
+
+	useEffect(() => {
+		authorize();
+	}, [authorize]);
 
 	return (
 		<>

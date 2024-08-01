@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import useCheckContext from "../hooks/useCheckContext";
 
 const PlayerSelection = () => {
-	const { setIsOnePlayer, setPlayerIsChosen, setRoomID, setRoomIsSelected } = useCheckContext();
+	const { setIsOnePlayer, setPlayerIsChosen, setRoomIsSelected, authorize } = useCheckContext();
+
+	useEffect(() => {
+		authorize();
+	}, [authorize]);
+
 	return (
 		<div className="selection">
 			<h1>Welcome!</h1>

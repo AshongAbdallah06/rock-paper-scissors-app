@@ -13,12 +13,6 @@ export const GameContext = createContext();
 function App() {
 	const { playerIsChosen, roomIsSelected } = useCheckContext();
 
-	// const { getHome } = useGetHome();
-
-	// useEffect(() => {
-	// 	getHome();
-	// }, []);
-
 	return (
 		<div>
 			<Router>

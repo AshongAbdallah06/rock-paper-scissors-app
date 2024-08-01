@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import io from "socket.io-client";
+import Axios from "axios";
 import useFunctions from "../hooks/useFunctions";
 
 const socket = io("https://rock-paper-scissors-app-iybf.onrender.com");
@@ -37,7 +38,7 @@ const CheckContextProvider = ({ children }) => {
 	const [roomIsSelected, setRoomIsSelected] = useState(false);
 
 	// User Status
-	const [userExist, setUserExist] = useState();
+	const [isAuthorized, setIsAuthorized] = useState(false);
 
 	// Save score to localStorage
 	useEffect(() => {
@@ -97,7 +98,7 @@ const CheckContextProvider = ({ children }) => {
 		return () => {
 			socket.off("move");
 		};
-	}, [socket]);
+	}, []);
 
 	useEffect(() => {
 		socket.on("clearMoves", (newGameState) => {
@@ -118,6 +119,22 @@ const CheckContextProvider = ({ children }) => {
 		socket.emit("clearMoves");
 	};
 
+	const user = JSON.parse(localStorage.getItem("user"));
+	const authorize = async () => {
+		try {
+			await Axios.get("http://localhost:4001/api/user", {
+				headers: { Authorization: `Bearer ${user.token}` },
+			});
+
+			setIsAuthorized(true);
+			localStorage.setItem("auth", JSON.stringify({ isAuthorized: true }));
+		} catch (error) {
+			setIsAuthorized(false);
+			localStorage.setItem("auth", JSON.stringify({ isAuthorized: false }));
+			window.location.href = "/login";
+		}
+	};
+
 	return (
 		<CheckContext.Provider
 			value={{
@@ -130,8 +147,8 @@ const CheckContextProvider = ({ children }) => {
 				score,
 				playerMoveImage,
 				computerMoveImage,
-				userExist,
-				setUserExist,
+				isAuthorized,
+				setIsAuthorized,
 				socket,
 				makeMove,
 				gameState,
@@ -149,6 +166,7 @@ const CheckContextProvider = ({ children }) => {
 				setP1Score,
 				p2Score,
 				setP2Score,
+				authorize,
 			}}
 		>
 			{children}

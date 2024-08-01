@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -31,7 +31,7 @@ const Login = () => {
 	} = useForm({
 		resolver: yupResolver(Schema),
 	});
-	const [error, setError] = useState({ email: "", password: "", username: "" });
+	const [error, setError] = useState({ email: "", password: "" });
 
 	const onsubmit = async (data) => {
 		try {
@@ -53,15 +53,20 @@ const Login = () => {
 		} catch (err) {
 			const error = err.response?.data?.error;
 
-			console.log(err);
-
 			if (error) {
-				setError({ email: error.email, username: error.username });
+				setError({ email: error.email, password: error.password });
 			} else {
-				setError({ email: null, username: null });
+				setError({ email: null, password: null });
 			}
 		}
 	};
+
+	const auth = JSON.parse(localStorage.getItem("auth"));
+	useEffect(() => {
+		if (auth.isAuthorized) {
+			window.location.href = "/";
+		}
+	}, [auth]);
 
 	return (
 		<form onSubmit={handleSubmit(onsubmit)}>
