@@ -11,7 +11,7 @@ const Home = () => {
 
 	useEffect(() => {
 		authorize();
-	}, [authorize]);
+	}, []);
 
 	return (
 		<>

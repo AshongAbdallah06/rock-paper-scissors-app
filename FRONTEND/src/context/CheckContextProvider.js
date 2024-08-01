@@ -127,11 +127,14 @@ const CheckContextProvider = ({ children }) => {
 			});
 
 			setIsAuthorized(true);
-			localStorage.setItem("auth", JSON.stringify({ isAuthorized: true }));
+			localStorage.setItem("auth", JSON.stringify(true));
 		} catch (error) {
 			setIsAuthorized(false);
-			localStorage.setItem("auth", JSON.stringify({ isAuthorized: false }));
-			window.location.href = "/login";
+			localStorage.setItem("auth", JSON.stringify(false));
+
+			if (window.location.pathname !== "/signup") {
+				window.location.href = "/login";
+			}
 		}
 	};
 

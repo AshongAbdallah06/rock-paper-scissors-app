@@ -61,12 +61,20 @@ const Login = () => {
 		}
 	};
 
+	const [loading, setLoading] = useState(true);
 	const auth = JSON.parse(localStorage.getItem("auth"));
+
 	useEffect(() => {
-		if (auth.isAuthorized) {
+		if (auth) {
 			window.location.href = "/";
+		} else {
+			setLoading(false);
 		}
-	}, [auth]);
+	}, []);
+
+	if (loading) {
+		return <div></div>;
+	}
 
 	return (
 		<form onSubmit={handleSubmit(onsubmit)}>
