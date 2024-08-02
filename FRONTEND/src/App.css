@@ -311,10 +311,11 @@ aside header .close-icon {
 	cursor: pointer;
 }
 
-/* .chat-container {
+.chat-container {
 	display: flex;
-	flex-direction: ;
-} */
+	flex-direction: column;
+	height: 29rem;
+}
 
 .input-container {
 	position: absolute;
