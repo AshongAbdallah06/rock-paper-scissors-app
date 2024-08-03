@@ -5,9 +5,9 @@ import useCheckContext from "../hooks/useCheckContext";
 const PlayerSelection = () => {
 	const { setIsOnePlayer, setPlayerIsChosen, setRoomIsSelected, authorize } = useCheckContext();
 
-	useEffect(() => {
-		authorize();
-	}, [authorize]);
+	// useEffect(() => {
+	// 	authorize();
+	// }, [authorize]);
 
 	return (
 		<div className="selection">

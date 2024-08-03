@@ -9,9 +9,9 @@ const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
 	const { roomID, isOnePlayer, authorize } = useCheckContext();
 
-	useEffect(() => {
-		authorize();
-	}, []);
+	// useEffect(() => {
+	// 	authorize();
+	// }, []);
 
 	return (
 		<>

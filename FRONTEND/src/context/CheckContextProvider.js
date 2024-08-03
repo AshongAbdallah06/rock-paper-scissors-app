@@ -120,7 +120,7 @@ const CheckContextProvider = ({ children }) => {
 	};
 
 	const user = JSON.parse(localStorage.getItem("user"));
-	const authorize = async () => {
+	/**const authorize = async () => {
 		try {
 			await Axios.get("http://localhost:4001/api/user", {
 				headers: { Authorization: `Bearer ${user.token}` },
@@ -136,7 +136,7 @@ const CheckContextProvider = ({ children }) => {
 				window.location.href = "/login";
 			}
 		}
-	};
+	};*/
 
 	return (
 		<CheckContext.Provider
@@ -169,7 +169,7 @@ const CheckContextProvider = ({ children }) => {
 				setP1Score,
 				p2Score,
 				setP2Score,
-				authorize,
+				// authorize,
 			}}
 		>
 			{children}

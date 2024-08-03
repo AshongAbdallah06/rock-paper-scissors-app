@@ -5,9 +5,9 @@ import useCheckContext from "../hooks/useCheckContext";
 const PlayerSelection = () => {
 	const { roomID, setRoomID, joinRoom, setRoomIsSelected, authorize } = useCheckContext();
 
-	useEffect(() => {
-		authorize();
-	}, [authorize]);
+	// useEffect(() => {
+	// 	authorize();
+	// }, [authorize]);
 
 	return (
 		<form
