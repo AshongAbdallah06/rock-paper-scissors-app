@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -53,10 +53,10 @@ const Login = () => {
 			);
 
 			const user = await response.data;
-			localStorage.setItem("user", JSON.stringify(user));
 
 			if (user) {
 				setError({ email: "", username: "", password: "" });
+				localStorage.setItem("user", JSON.stringify(user));
 				window.location.href = "/";
 			}
 		} catch (err) {
@@ -69,21 +69,6 @@ const Login = () => {
 			}
 		}
 	};
-
-	const [loading, setLoading] = useState(true);
-	const auth = JSON.parse(localStorage.getItem("auth"));
-
-	useEffect(() => {
-		if (auth) {
-			window.location.href = "/";
-		} else {
-			setLoading(false);
-		}
-	}, []);
-
-	if (loading) {
-		return <div></div>;
-	}
 
 	return (
 		<form onSubmit={handleSubmit(onsubmit)}>

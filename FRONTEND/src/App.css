@@ -70,6 +70,34 @@ img[alt="scissors"] {
 	height: 100%;
 	font-size: 3.125rem;
 }
+.leaderboard-link {
+	position: absolute;
+	color: white;
+	top: 2rem;
+	right: 2rem;
+}
+.leaderboard-container {
+	border: 1px solid white;
+	width: 25rem;
+	height: 30rem;
+	padding: 1rem;
+	color: white;
+}
+.leaderboard-container ul {
+	margin-top: 1rem;
+	list-style: none;
+	overflow-y: scroll;
+	height: 24rem;
+}
+.leaderboard-container ul::-webkit-scrollbar {
+	display: none;
+}
+.leaderboard-container ul .user {
+	display: flex;
+	padding: 0.5rem;
+	justify-content: space-between;
+	border-bottom: 1px solid gray;
+}
 .p2 {
 	display: flex;
 	width: 100%;

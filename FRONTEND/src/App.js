@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { createContext } from "react";
+import { createContext, useEffect } from "react";
 import useCheckContext from "./hooks/useCheckContext";
 import { BrowserRouter as Router, Routes, Route, Navigate, Link } from "react-router-dom";
 import Login from "./pages/Login";
@@ -8,56 +8,91 @@ import Signup from "./pages/Signup";
 import PlayerSelection from "./pages/PlayerSelection";
 import Room from "./pages/Room";
 import Home from "./pages/Home";
+import Leaderboard from "./components/Leaderboard";
 
 export const GameContext = createContext();
 function App() {
-	const { playerIsChosen, roomIsSelected } = useCheckContext();
+	const { playerIsChosen, roomIsSelected, userExists, setUserExists } = useCheckContext();
+
+	useEffect(() => {
+		const user = JSON.parse(localStorage.getItem("user"));
+
+		if (user) {
+			setUserExists(true);
+		} else {
+			setUserExists(false);
+		}
+	}, []);
 
 	return (
 		<div>
 			<Router>
 				<Routes>
+					{/* {userExists } */}
 					<Route
 						path="/"
 						element={
-							playerIsChosen && roomIsSelected ? (
-								<Home />
-							) : !playerIsChosen ? (
-								<PlayerSelection />
+							userExists ? (
+								playerIsChosen && roomIsSelected ? (
+									<Home />
+								) : !playerIsChosen ? (
+									<PlayerSelection />
+								) : (
+									!roomIsSelected && <Room />
+								)
 							) : (
-								!roomIsSelected && <Room />
+								<Navigate to="/login" />
 							)
 						}
 					/>
 
 					<Route
 						path="/select-player"
-						element={!playerIsChosen ? <PlayerSelection /> : <Navigate to="/" />}
-					/>
-
-					<Route
-						path="/select-room"
 						element={
-							!roomIsSelected ? (
+							userExists ? (
 								!playerIsChosen ? (
-									<Room />
+									<PlayerSelection />
 								) : (
-									<Navigate to="/select-player" />
+									<Navigate to="/" />
 								)
 							) : (
-								<Navigate to="/" />
+								<Navigate to="/login" />
 							)
 						}
 					/>
 
 					<Route
+						path="/select-room"
+						element={
+							userExists ? (
+								!roomIsSelected ? (
+									!playerIsChosen ? (
+										<Room />
+									) : (
+										<Navigate to="/select-player" />
+									)
+								) : (
+									<Navigate to="/" />
+								)
+							) : (
+								<Navigate to="/login" />
+							)
+						}
+					/>
+
+					<Route
+						path="/leaderboard"
+						element={userExists ? <Leaderboard /> : <Navigate to="/login" />}
+					/>
+
+					<Route
 						path="/login"
-						element={<Login />}
+						element={!userExists ? <Login /> : <Navigate to="/" />}
 					/>
 
 					<Route
 						path={"/signup"}
-						element={<Signup />}
+						element={!userExists ? <Signup /> : <Navigate to="/" />}
 					/>
 
 					<Route

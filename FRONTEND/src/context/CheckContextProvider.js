@@ -37,9 +37,6 @@ const CheckContextProvider = ({ children }) => {
 	//
 	const [roomIsSelected, setRoomIsSelected] = useState(false);
 
-	// User Status
-	const [isAuthorized, setIsAuthorized] = useState(false);
-
 	// Save score to localStorage
 	useEffect(() => {
 		localStorage.setItem("score", JSON.stringify(score));
@@ -120,23 +117,27 @@ const CheckContextProvider = ({ children }) => {
 	};
 
 	const user = JSON.parse(localStorage.getItem("user"));
-	/**const authorize = async () => {
+	const [userExists, setUserExists] = useState(null);
+	const authorize = async () => {
 		try {
-			await Axios.get("http://localhost:4001/api/user", {
-				headers: { Authorization: `Bearer ${user.token}` },
-			});
+			const res = await Axios.get(
+				"https://rock-paper-scissors-app-iybf.onrender.com/api/user",
+				{
+					headers: { Authorization: `Bearer ${user.token}` },
+				}
+			);
+			const json = res.data; //  parse JSON responses
+			console.log("JSON: ", json);
 
-			setIsAuthorized(true);
-			localStorage.setItem("auth", JSON.stringify(true));
+			if (window.location.pathname === "/signup" || window.location.pathname === "/login") {
+				window.location.href = "/";
+			}
 		} catch (error) {
-			setIsAuthorized(false);
-			localStorage.setItem("auth", JSON.stringify(false));
-
 			if (window.location.pathname !== "/signup") {
 				window.location.href = "/login";
 			}
 		}
-	};*/
+	};
 
 	return (
 		<CheckContext.Provider
@@ -150,8 +151,6 @@ const CheckContextProvider = ({ children }) => {
 				score,
 				playerMoveImage,
 				computerMoveImage,
-				isAuthorized,
-				setIsAuthorized,
 				socket,
 				makeMove,
 				gameState,
@@ -169,7 +168,9 @@ const CheckContextProvider = ({ children }) => {
 				setP1Score,
 				p2Score,
 				setP2Score,
-				// authorize,
+				authorize,
+				userExists,
+				setUserExists,
 			}}
 		>
 			{children}

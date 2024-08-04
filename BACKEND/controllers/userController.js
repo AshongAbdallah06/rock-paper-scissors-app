@@ -28,10 +28,10 @@ const createToken = (id) => {
 };
 
 const getHome = async (req, res) => {
-	const token = req.headers.authorization;
+	const user_id = req.user;
 
 	try {
-		res.json({ token: token.split(" ")[1] });
+		res.json({ user: user_id });
 	} catch (error) {
 		res.status(401).json({ msg: "Invalid Token. Access Unauthorized" });
 	}
@@ -53,7 +53,7 @@ const signup = async (req, res) => {
 
 		const token = createToken(id);
 
-		res.status(201).json({ email, id, username, token });
+		res.status(201).json({ email, username, token });
 	} catch (err) {
 		const error = handleErrors(err);
 
@@ -67,7 +67,7 @@ const login = async (req, res) => {
 
 	try {
 		const userEmail = await pool.query(
-			`SELECT EMAIL, PASSWORD, USERNAME FROM USERS WHERE EMAIL = $1`,
+			`SELECT ID, EMAIL, PASSWORD, USERNAME FROM USERS WHERE EMAIL = $1`,
 			[email]
 		);
 
