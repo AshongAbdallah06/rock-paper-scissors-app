@@ -3,6 +3,7 @@ const express = require("express");
 const http = require("http");
 const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
+const gameRoutes = require("./routes/gameRoutes");
 const socketIo = require("socket.io");
 
 const app = express();
@@ -25,6 +26,21 @@ app.use(
 				callback(new Error("Not allowed by CORS"));
 			}
 		},
+	})
+);
+app.options(
+	"*",
+	cors({
+		origin: function (origin, callback) {
+			if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+				callback(null, true);
+			} else {
+				callback(new Error("Not allowed by CORS"));
+			}
+		},
+		methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+		allowedHeaders: ["Content-Type", "Authorization"],
+		optionsSuccessStatus: 200,
 	})
 );
 app.use(express.json());
@@ -125,6 +141,7 @@ io.on("connect", (socket) => {
 });
 
 app.use("/api/user", userRoutes);
+app.use("/api/user", gameRoutes);
 
 const PORT = process.env.PORT || 4001;
 server.listen(PORT, () => {

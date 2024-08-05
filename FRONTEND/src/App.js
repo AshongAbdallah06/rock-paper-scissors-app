@@ -8,7 +8,8 @@ import Signup from "./pages/Signup";
 import PlayerSelection from "./pages/PlayerSelection";
 import Room from "./pages/Room";
 import Home from "./pages/Home";
-import Leaderboard from "./components/Leaderboard";
+import Leaderboard from "./pages/Leaderboard";
+import Axios from "axios";
 
 export const GameContext = createContext();
 function App() {

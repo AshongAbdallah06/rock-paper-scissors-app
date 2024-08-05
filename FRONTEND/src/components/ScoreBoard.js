@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "../images/logo.svg";
 import plane from "../images/paper-plane-outline.svg";
 import useCheckContext from "../hooks/useCheckContext";
+import Axios from "axios";
 
 const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
-	const { score, p1Score, p2Score, gameState, isOnePlayer } = useCheckContext();
+	const { score, p1Score, p2Score, isOnePlayer } = useCheckContext();
+	const user = JSON.parse(localStorage.getItem("user"));
+
+	const updateScore = async () => {
+		try {
+			await Axios.patch(`http://localhost:4001/api/user/scores/${user.username}`, { score });
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	useEffect(() => {
+		updateScore();
+	}, [score]);
 
 	return (
 		<div>

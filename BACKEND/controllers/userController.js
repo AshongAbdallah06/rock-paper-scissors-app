@@ -27,16 +27,6 @@ const createToken = (id) => {
 	return jwt.sign({ id }, process.env.JWT_SECRET_KEY, { expiresIn: "3d" });
 };
 
-const getHome = async (req, res) => {
-	const user_id = req.user;
-
-	try {
-		res.json({ user: user_id });
-	} catch (error) {
-		res.status(401).json({ msg: "Invalid Token. Access Unauthorized" });
-	}
-};
-
 const signup = async (req, res) => {
 	const id = uuid();
 	const { email, username, password } = req.body;
@@ -50,6 +40,8 @@ const signup = async (req, res) => {
 			email,
 			hashedPassword,
 		]);
+
+		await pool.query(`INSERT INTO SCORES VALUES ($1, $2)`, [username, 0]);
 
 		const token = createToken(id);
 
@@ -89,4 +81,4 @@ const login = async (req, res) => {
 	}
 };
 
-module.exports = { signup, getHome, login };
+module.exports = { signup, login };

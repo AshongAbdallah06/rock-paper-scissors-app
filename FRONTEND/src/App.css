@@ -70,11 +70,30 @@ img[alt="scissors"] {
 	height: 100%;
 	font-size: 3.125rem;
 }
+/* Leaderboard */
+.leaderboard a {
+	position: absolute;
+	left: 1rem;
+	cursor: pointer;
+	top: 2rem;
+}
+.leaderboard a img {
+	height: 4rem;
+}
 .leaderboard-link {
 	position: absolute;
 	color: white;
 	top: 2rem;
 	right: 2rem;
+}
+.header-labels {
+	margin-top: 1rem;
+	display: flex;
+	justify-content: space-between;
+}
+.header-labels p {
+	font-size: 18px;
+	color: hsl(349, 70%, 56%);
 }
 .leaderboard-container {
 	border: 1px solid white;
@@ -84,10 +103,17 @@ img[alt="scissors"] {
 	color: white;
 }
 .leaderboard-container ul {
-	margin-top: 1rem;
 	list-style: none;
 	overflow-y: scroll;
 	height: 24rem;
+}
+
+.leaderboard-container ul .user {
+	cursor: pointer;
+}
+.leaderboard-container ul .user span {
+	color: hsl(39, 89%, 49%);
+	font-weight: bold;
 }
 .leaderboard-container ul::-webkit-scrollbar {
 	display: none;
@@ -97,6 +123,13 @@ img[alt="scissors"] {
 	padding: 0.5rem;
 	justify-content: space-between;
 	border-bottom: 1px solid gray;
+}
+.error-loading {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 3rem;
+	font-size: 1.5rem;
 }
 .p2 {
 	display: flex;
