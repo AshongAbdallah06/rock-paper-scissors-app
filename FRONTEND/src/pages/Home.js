@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Dialog from "../components/Dialog";
 import Chat from "../components/Chat";
 import ScoreBoard from "../components/ScoreBoard";
@@ -10,6 +10,10 @@ const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
 	const { roomID, isOnePlayer } = useCheckContext();
 
+	useEffect(() => {
+		localStorage.setItem("userGameState", JSON.stringify(isOnePlayer));
+	}, [isOnePlayer]);
+
 	return (
 		<>
 			<ScoreBoard
@@ -20,12 +24,14 @@ const Home = () => {
 			<GameBoard />
 			<Dialog />
 
-			<Link
-				to="/leaderboard"
-				className="leaderboard-link"
-			>
-				Leaderboard
-			</Link>
+			{isOnePlayer && (
+				<Link
+					to="/leaderboard"
+					className="leaderboard-link"
+				>
+					Leaderboard
+				</Link>
+			)}
 
 			{chatIsShowing ? <Chat setChatIsShowing={setChatIsShowing} /> : ""}
 

@@ -1,9 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import useCheckContext from "../hooks/useCheckContext";
 
 const PlayerSelection = () => {
-	const { roomID, setRoomID, joinRoom, setRoomIsSelected } = useCheckContext();
+	const { roomID, setRoomID, joinRoom, setRoomIsSelected, isOnePlayer, setIsOnePlayer } =
+		useCheckContext();
+
+	useEffect(() => {
+		localStorage.setItem("userGameState", JSON.stringify(isOnePlayer));
+	}, [isOnePlayer]);
 
 	return (
 		<form
@@ -30,6 +35,8 @@ const PlayerSelection = () => {
 					onClick={() => {
 						roomID && joinRoom();
 						roomID && setRoomIsSelected(true);
+
+						setIsOnePlayer(false);
 					}}
 					to={roomID && "/"}
 				>
