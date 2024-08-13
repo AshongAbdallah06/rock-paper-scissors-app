@@ -21,7 +21,7 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 	}, [score]);
 
 	return (
-		<div>
+		<>
 			<section className="scoreBoard">
 				<div className="imgCont">
 					<img
@@ -62,7 +62,7 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 			) : (
 				""
 			)}
-		</div>
+		</>
 	);
 };
 

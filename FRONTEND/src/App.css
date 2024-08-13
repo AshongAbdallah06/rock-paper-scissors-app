@@ -7,7 +7,6 @@
 	font-family: "Barlow Semi Condensed", sans-serif;
 }
 body {
-	min-height: 100vh;
 	position: relative;
 	background: no-repeat radial-gradient(circle, hsl(214, 47%, 23%), hsl(237, 49%, 15%));
 	overflow: hidden;
@@ -513,4 +512,113 @@ footer {
 	color: white;
 	text-transform: uppercase;
 	left: 45%;
+}
+
+/* Mobile */
+@media (max-width: 500px) {
+	@media (min-height: 500px) {
+		.scoreBoard {
+			width: 20.875rem;
+			align-items: center;
+			justify-content: space-between;
+		}
+
+		.scoreBoard .imgCont {
+			display: flex;
+			align-items: center;
+		}
+
+		.scoreBoard .imgCont img {
+			height: 3rem;
+		}
+
+		.score {
+			width: 5rem;
+			border-radius: 0.2rem;
+		}
+
+		.score p:nth-child(2) {
+			font-size: 2.5rem;
+		}
+
+		/* Gameboard */
+		.Gboard {
+			position: relative;
+			top: -2rem;
+			height: 30rem;
+		}
+		.gameBoard {
+			height: 10.5rem;
+			width: 10.5rem;
+		}
+		.gameOpt {
+			width: 8rem;
+			height: 8rem;
+		}
+		.p2 {
+			right: -140px;
+		}
+
+		.making-move {
+			text-align: center;
+			font-size: 1.5rem;
+		}
+
+		/* todo: Create responsiveness for tablets and iPads */
+		.rules {
+			bottom: 0;
+		}
+
+		/* After move */
+		.Desktop-step2 {
+			height: 11.5625rem;
+			margin-top: -4rem;
+		}
+
+		.results {
+			position: absolute;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			z-index: 100;
+			bottom: 20px;
+			left: 80px;
+		}
+
+		.results > h1 {
+			font-size: 2.5rem;
+		}
+
+		.results button {
+			margin-top: 0.5rem;
+		}
+
+		.picked,
+		.hPicked {
+			width: 8rem;
+			height: 8rem;
+		}
+
+		.you-picked,
+		.house-picked {
+			height: 90%;
+		}
+
+		.you-picked h1,
+		.house-picked h1 {
+			font-size: 1rem;
+			margin-bottom: 1rem;
+		}
+
+		.picked::before,
+		.hPicked::before {
+			width: 6rem;
+			height: 6rem;
+		}
+
+		.mode-links a:first-child {
+			margin-bottom: 1rem;
+		}
+	}
 }
