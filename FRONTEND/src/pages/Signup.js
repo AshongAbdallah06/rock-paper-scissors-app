@@ -57,8 +57,9 @@ const Login = () => {
 			if (user) {
 				setError({ email: "", username: "", password: "" });
 				localStorage.setItem("user", JSON.stringify(user));
-				window.location.href = "/";
 			}
+				window.location.href = "/";
+			
 		} catch (err) {
 			const error = err.response?.data?.error;
 
