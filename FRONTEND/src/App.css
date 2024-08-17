@@ -6,15 +6,20 @@
 	box-sizing: border-box;
 	font-family: "Barlow Semi Condensed", sans-serif;
 }
-body {
+body,
+#root {
 	position: relative;
-	background: no-repeat radial-gradient(circle, hsl(214, 47%, 23%), hsl(237, 49%, 15%));
+	z-index: -100;
 	overflow: hidden;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
 	min-height: 100vh;
+}
+#root {
+	background: no-repeat radial-gradient(circle, hsl(214, 47%, 23%), hsl(237, 49%, 15%));
+	width: 100%;
 }
 .header2 {
 	display: flex;
@@ -198,17 +203,6 @@ img[alt="scissors"] {
 	bottom: -30%;
 	right: 1.8125rem;
 }
-.rules {
-	position: fixed;
-	right: 0.625rem;
-	bottom: 0.625rem;
-	border-radius: 0.3125rem;
-	padding: 0.625rem 1.875rem;
-	background-color: transparent;
-	border: 0.125rem solid hsla(0, 4%, 80%, 0.1);
-	color: #f9f9f9;
-	cursor: pointer;
-}
 
 /* DESKTOP STEP2 */
 .Desktop-step2 {
@@ -353,10 +347,10 @@ aside {
 	z-index: 1000;
 }
 
-.content {
+/* .content {
 	position: relative;
 	height: 100%;
-}
+} */
 
 aside header {
 	display: flex;
@@ -507,16 +501,41 @@ textarea {
 }
 
 footer {
-	position: absolute;
+	position: relative;
 	bottom: 0;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 	color: white;
 	text-transform: uppercase;
-	left: 45%;
+	width: 100%;
+	height: 5rem;
+	/* left: 45%; */
+}
+footer p {
+	margin-bottom: 30px;
+}
+.rules {
+	position: absolute;
+	/* right: 0;
+	/* bottom: -1rem; */
+	/* top: -10px; */
+	border-radius: 0.3125rem;
+	padding: 0.625rem 1.875rem;
+	background-color: transparent;
+	border: 0.125rem solid hsla(0, 4%, 80%, 0.1);
+	color: #f9f9f9;
+	cursor: pointer;
 }
 
 /* Mobile */
 @media (max-width: 500px) {
 	@media (min-height: 500px) {
+		body {
+			width: 100%;
+			overflow: hidden;
+		}
 		.scoreBoard {
 			width: 20.875rem;
 			align-items: center;
