@@ -1,21 +1,18 @@
-import React, { useState } from "react";
+import React from "react";
 import modalImage from "../images/image-rules.svg";
 import closeIcon from "../images/icon-close.svg";
+import useCheckContext from "../hooks/useCheckContext";
 
 const Dialog = () => {
-	const [isModalShow, setIsModalShow] = useState(false);
-
-	const showModal = () => {
-		setIsModalShow(true);
-	};
+	const { isRulesModalShow, setIsRulesModalShow } = useCheckContext();
 
 	const closeModal = () => {
-		setIsModalShow(false);
+		setIsRulesModalShow(false);
 	};
 
 	return (
 		<>
-			{isModalShow && (
+			{isRulesModalShow && (
 				<div className="rules-modal">
 					<div>
 						<h1>RULES</h1>
@@ -32,13 +29,6 @@ const Dialog = () => {
 					/>
 				</div>
 			)}
-
-			<button
-				className="rules"
-				onClick={showModal}
-			>
-				RULES
-			</button>
 		</>
 	);
 };
