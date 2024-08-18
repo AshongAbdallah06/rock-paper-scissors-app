@@ -30,8 +30,9 @@ const PlayerSelection = () => {
 				/>
 			</div>
 
-			<div className="mode-links">
+			<div>
 				<Link
+					className="join-room"
 					onClick={() => {
 						roomID && joinRoom();
 						roomID && setRoomIsSelected(true);
@@ -43,7 +44,10 @@ const PlayerSelection = () => {
 					JOIN ROOM
 				</Link>
 
-				<Link
+				<span className="or">OR</span>
+
+				<p
+					className="change-mode"
 					style={{ marginTop: "1rem" }}
 					onClick={() => {
 						localStorage.removeItem("player-mode");
@@ -51,7 +55,7 @@ const PlayerSelection = () => {
 					}}
 				>
 					Change Mode
-				</Link>
+				</p>
 			</div>
 		</form>
 	);

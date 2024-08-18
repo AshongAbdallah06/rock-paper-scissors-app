@@ -25,7 +25,7 @@ const Home = () => {
 				chatIsShowing={chatIsShowing}
 			/>
 
-			<button
+			<p
 				className="change-mode"
 				onClick={() => {
 					localStorage.removeItem("player-mode");
@@ -33,7 +33,7 @@ const Home = () => {
 				}}
 			>
 				Change Mode
-			</button>
+			</p>
 
 			<GameBoard />
 			<Dialog />
