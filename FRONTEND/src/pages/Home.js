@@ -5,6 +5,7 @@ import ScoreBoard from "../components/ScoreBoard";
 import GameBoard from "../GameBoard";
 import useCheckContext from "../hooks/useCheckContext";
 import { Link } from "react-router-dom";
+import CopiedAlert from "../components/CopiedAlert";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
@@ -18,8 +19,20 @@ const Home = () => {
 		setIsRulesModalShow(true);
 	};
 
+	const [showCopiedAlert, setShowCopiedAlert] = useState(false);
+
+	useEffect(() => {
+		setShowCopiedAlert(true);
+
+		setTimeout(() => {
+			setShowCopiedAlert(false);
+		}, 2000);
+	}, []);
+
 	return (
 		<>
+			{!isOnePlayer && showCopiedAlert && <CopiedAlert />}
+
 			<ScoreBoard
 				setChatIsShowing={setChatIsShowing}
 				chatIsShowing={chatIsShowing}

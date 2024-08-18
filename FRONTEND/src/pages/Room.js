@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import useCheckContext from "../hooks/useCheckContext";
 
@@ -10,6 +10,14 @@ const PlayerSelection = () => {
 		localStorage.setItem("player-mode", JSON.stringify(isOnePlayer ? "single" : "dual"));
 	}, [isOnePlayer]);
 
+	const copyRoomID = async () => {
+		try {
+			await navigator.clipboard.writeText(roomID);
+			await navigator.clipboard.readText();
+		} catch (error) {
+			console.log("🚀 ~ copyRoomID ~ error:", error);
+		}
+	};
 	return (
 		<form
 			className="selection"
@@ -19,7 +27,7 @@ const PlayerSelection = () => {
 				roomID && setRoomIsSelected(true);
 			}}
 		>
-			<h1>{roomID ? `ROOM NAME: ${roomID}` : "Enter a room name"}</h1>
+			<h1>{roomID ? `ROOM ID: ${roomID}` : "Enter room ID"}</h1>
 
 			<div className="room">
 				<input
@@ -34,10 +42,12 @@ const PlayerSelection = () => {
 				<Link
 					className="join-room"
 					onClick={() => {
-						roomID && joinRoom();
-						roomID && setRoomIsSelected(true);
-
-						setIsOnePlayer(false);
+						if (roomID) {
+							joinRoom();
+							setRoomIsSelected(true);
+							copyRoomID();
+							setIsOnePlayer(false);
+						}
 					}}
 					to={roomID && "/"}
 				>
