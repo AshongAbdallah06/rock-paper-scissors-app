@@ -29,13 +29,12 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 		}
 
 		socket.on("updateUsernames", ({ p1Username, p2Username }) => {
-			if (p1Username && p2Username) {
-				setP1Username(p1Username);
-				setP2Username(p2Username);
-			}
+			setP1Username(p1Username);
+			setP2Username(p2Username);
 			localStorage.setItem("usernames", JSON.stringify({ p1Username, p2Username }));
 		});
 
+		// Cleanup on unmount
 		return () => {
 			socket.off("updateUsernames");
 		};

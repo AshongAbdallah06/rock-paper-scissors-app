@@ -92,7 +92,7 @@ const Chat = ({ setChatIsShowing }) => {
 										className="name"
 										style={{ textTransform: "lowercase", fontWeight: "normal" }}
 									>
-										{message.username}
+										{message?.username}
 									</span>
 								</p>
 								<p className="message">{message.textMessage}</p>
