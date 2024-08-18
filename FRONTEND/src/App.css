@@ -346,6 +346,9 @@ aside {
 	border-bottom-left-radius: 10px;
 	z-index: 1000;
 }
+aside .content {
+	height: 100%;
+}
 
 /* .content {
 	position: relative;
@@ -376,13 +379,13 @@ aside header .close-icon {
 	bottom: 0;
 	width: 100%;
 	display: flex;
-	justify-content: center;
+	justify-content: flex-start;
 	align-items: center;
 }
 
 .input-container textarea {
-	width: 80%;
-	max-width: 80%;
+	width: 70%;
+	max-width: 70%;
 	padding: 0.5rem;
 	font-size: 1rem;
 	max-height: 40px;
@@ -637,6 +640,23 @@ footer p {
 		}
 
 		.mode-links a:first-child {
+			margin-bottom: 1rem;
+		}
+
+		aside {
+			height: 400px;
+			padding-bottom: 1rem;
+		}
+
+		aside .content {
+			height: 100%;
+		}
+
+		.chat-container {
+			height: 260px;
+		}
+
+		.input-container {
 			margin-bottom: 1rem;
 		}
 	}
