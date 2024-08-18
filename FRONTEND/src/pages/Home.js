@@ -4,13 +4,14 @@ import Chat from "../components/Chat";
 import ScoreBoard from "../components/ScoreBoard";
 import GameBoard from "../GameBoard";
 import useCheckContext from "../hooks/useCheckContext";
+import { Link } from "react-router-dom";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
 	const { roomID, isOnePlayer, setIsRulesModalShow } = useCheckContext();
 
 	useEffect(() => {
-		localStorage.setItem("userGameState", JSON.stringify(isOnePlayer));
+		localStorage.setItem("player-mode", JSON.stringify(isOnePlayer ? "single" : "dual"));
 	}, [isOnePlayer]);
 
 	const showModal = () => {
@@ -23,6 +24,17 @@ const Home = () => {
 				setChatIsShowing={setChatIsShowing}
 				chatIsShowing={chatIsShowing}
 			/>
+
+			<Link
+				style={{ color: "white" }}
+				onClick={() => {
+					localStorage.removeItem("player-mode");
+					console.log("Removed");
+					window.location.href = "/";
+				}}
+			>
+				Change Mode
+			</Link>
 
 			<GameBoard />
 			<Dialog />

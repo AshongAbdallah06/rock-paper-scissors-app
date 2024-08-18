@@ -34,11 +34,16 @@ const CheckContextProvider = ({ children }) => {
 	);
 
 	//Check if it's a one player game
-	const [isOnePlayer, setIsOnePlayer] = useState(false);
-	const [playerIsChosen, setPlayerIsChosen] = useState(false);
+	const playerMode = JSON.parse(localStorage.getItem("player-mode"));
+	const [isOnePlayer, setIsOnePlayer] = useState(
+		playerMode && playerMode === "dual" ? false : true
+	);
+	const [playerIsChosen, setPlayerIsChosen] = useState(playerMode && true);
 
 	//
-	const [roomIsSelected, setRoomIsSelected] = useState(false);
+	const [roomIsSelected, setRoomIsSelected] = useState(
+		playerMode && playerMode === "single" && true
+	);
 
 	// Save score to localStorage
 	useEffect(() => {

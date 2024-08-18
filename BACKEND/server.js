@@ -60,7 +60,7 @@ io.on("connect", (socket) => {
 	socket.on("username", (username) => {
 		console.log("Received Username: ", username);
 
-		if (!usernames[roomId].p1Username) {
+		if (!usernames[roomId]?.p1Username) {
 			usernames[roomId].p1Username = username;
 			console.log(`Assigned to p1Username: ${usernames[roomId].p1Username}`);
 		} else if (!usernames[roomId].p2Username && username !== usernames[roomId].p1Username) {

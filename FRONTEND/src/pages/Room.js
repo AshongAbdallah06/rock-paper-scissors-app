@@ -7,7 +7,7 @@ const PlayerSelection = () => {
 		useCheckContext();
 
 	useEffect(() => {
-		localStorage.setItem("userGameState", JSON.stringify(isOnePlayer));
+		localStorage.setItem("player-mode", JSON.stringify(isOnePlayer ? "single" : "dual"));
 	}, [isOnePlayer]);
 
 	return (
