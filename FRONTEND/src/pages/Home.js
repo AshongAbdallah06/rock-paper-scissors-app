@@ -25,16 +25,15 @@ const Home = () => {
 				chatIsShowing={chatIsShowing}
 			/>
 
-			<Link
-				style={{ color: "white" }}
+			<button
+				className="change-mode"
 				onClick={() => {
 					localStorage.removeItem("player-mode");
-					console.log("Removed");
 					window.location.href = "/";
 				}}
 			>
 				Change Mode
-			</Link>
+			</button>
 
 			<GameBoard />
 			<Dialog />

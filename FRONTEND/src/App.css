@@ -157,7 +157,6 @@ img[alt="scissors"] {
 	background: no-repeat center url("./images/bg-triangle.svg");
 	background-size: contain;
 	position: relative;
-	/* display: none; */
 }
 .gameOpt,
 .picked,
@@ -266,6 +265,13 @@ img[alt="scissors"] {
 		radial-gradient(circle, rgba(0, 0, 0, 0.1) 10%, hsl(0, 2%, 37%) 20%, transparent);
 	box-shadow: 0 0 0.3125rem rgba(0, 0, 0, 0.3);
 }
+.rules-overlay {
+	background-color: rgba(0, 0, 0, 0.7);
+	z-index: 1000;
+	min-height: 100vh;
+	width: 100%;
+	position: absolute;
+}
 .rules-modal {
 	position: absolute;
 	top: 50%;
@@ -350,11 +356,6 @@ aside .content {
 	height: 100%;
 }
 
-/* .content {
-	position: relative;
-	height: 100%;
-} */
-
 aside header {
 	display: flex;
 	justify-content: center;
@@ -420,7 +421,6 @@ textarea {
 .person {
 	word-wrap: break-word;
 	margin-bottom: 5px;
-	/* word-break: break-word; */
 }
 
 .messages {
@@ -496,7 +496,6 @@ textarea {
 }
 
 .mode-links a:hover {
-	/* background-color: rgb(205, 205, 205); */
 	background-color: hsl(39, 89%, 49%);
 	color: white;
 	width: 13.5rem;
@@ -514,22 +513,29 @@ footer {
 	text-transform: uppercase;
 	width: 100%;
 	height: 5rem;
-	/* left: 45%; */
 }
 footer p {
 	margin-bottom: 30px;
 }
 .rules {
 	position: absolute;
-	/* right: 0;
-	/* bottom: -1rem; */
-	/* top: -10px; */
 	border-radius: 0.3125rem;
 	padding: 0.625rem 1.875rem;
 	background-color: transparent;
 	border: 0.125rem solid hsla(0, 4%, 80%, 0.1);
 	color: #f9f9f9;
 	cursor: pointer;
+}
+
+.change-mode {
+	color: black;
+	font-weight: bold;
+	background: white;
+	padding: 0.5rem;
+	border: none;
+	font-size: 1rem;
+	cursor: pointer;
+	z-index: 100;
 }
 
 /* Mobile */
@@ -595,6 +601,7 @@ footer p {
 		.Desktop-step2 {
 			height: 11.5625rem;
 			margin-top: -4rem;
+			position: relative;
 		}
 
 		.results {
@@ -602,10 +609,9 @@ footer p {
 			display: flex;
 			justify-content: center;
 			align-items: center;
-
 			z-index: 100;
-			bottom: 20px;
-			left: 80px;
+			bottom: -12rem;
+			width: 100%;
 		}
 
 		.results > h1 {

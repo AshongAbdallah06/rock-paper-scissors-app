@@ -13,20 +13,22 @@ const Dialog = () => {
 	return (
 		<>
 			{isRulesModalShow && (
-				<div className="rules-modal">
-					<div>
-						<h1>RULES</h1>
-						<button onClick={closeModal}>
-							<img
-								src={closeIcon}
-								alt=""
-							/>
-						</button>
+				<div className="rules-overlay">
+					<div className="rules-modal">
+						<div>
+							<h1>RULES</h1>
+							<button onClick={closeModal}>
+								<img
+									src={closeIcon}
+									alt=""
+								/>
+							</button>
+						</div>
+						<img
+							src={modalImage}
+							alt=""
+						/>
 					</div>
-					<img
-						src={modalImage}
-						alt=""
-					/>
 				</div>
 			)}
 		</>

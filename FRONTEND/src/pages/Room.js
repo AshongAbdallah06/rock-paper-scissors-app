@@ -42,6 +42,16 @@ const PlayerSelection = () => {
 				>
 					JOIN ROOM
 				</Link>
+
+				<Link
+					style={{ marginTop: "1rem" }}
+					onClick={() => {
+						localStorage.removeItem("player-mode");
+						window.location.href = "/";
+					}}
+				>
+					Change Mode
+				</Link>
 			</div>
 		</form>
 	);
