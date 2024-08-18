@@ -92,7 +92,7 @@ const Chat = ({ setChatIsShowing }) => {
 										className="name"
 										style={{ textTransform: "lowercase", fontWeight: "normal" }}
 									>
-										{message.username}
+										{message?.username}
 									</span>
 								</p>
 								<p className="message">{message.textMessage}</p>
@@ -100,24 +100,23 @@ const Chat = ({ setChatIsShowing }) => {
 							</div>
 						))}
 					</div>
-
-					<div className="input-container">
-						<textarea
-							type="text"
-							value={textMessage}
-							placeholder="Enter text message"
-							onChange={(e) => {
-								setTextMessage(e.target.value);
-							}}
-						></textarea>
-						<button
-							onClick={() => {
-								textMessage !== "" && sendMessage();
-							}}
-						>
-							Send
-						</button>
-					</div>
+				</div>
+				<div className="input-container">
+					<textarea
+						type="text"
+						value={textMessage}
+						placeholder="Enter text message"
+						onChange={(e) => {
+							setTextMessage(e.target.value);
+						}}
+					></textarea>
+					<button
+						onClick={() => {
+							textMessage !== "" && sendMessage();
+						}}
+					>
+						Send
+					</button>
 				</div>
 			</div>
 		</aside>

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import useCheckContext from "../hooks/useCheckContext";
 
 const AfterChoice = () => {
@@ -15,10 +16,19 @@ const AfterChoice = () => {
 		clearMoves,
 	} = useCheckContext();
 
+	const { p1Username, p2Username } = JSON.parse(localStorage.getItem("usernames"));
+
+	useEffect(() => {
+		console.log(p1Username, p2Username);
+	}, []);
+
 	return (
 		<div className="Desktop-step2">
 			<div className="you-picked">
-				<h1>{isOnePlayer ? "YOU PICKED" : "PLAYER 1 PICKED"}</h1>
+				{/* <h1>{isOnePlayer ? "YOU PICKED" : "PLAYER 1 PICKED"}</h1> */}
+				<h1 style={{ textTransform: "uppercase" }}>
+					{isOnePlayer ? "YOU PICKED" : `${p1Username} PICKED`}
+				</h1>
 				<div
 					className={`picked ${
 						isOnePlayer
@@ -45,11 +55,11 @@ const AfterChoice = () => {
 				<h1>
 					{isOnePlayer
 						? result === "Computer wins" && "YOU LOSE"
-						: gameState.result === "Player2 wins" && "Player2 wins"}
+						: gameState.result === "Player2 wins" && `${p2Username} wins`}
 
 					{isOnePlayer
 						? result === "Player wins" && "YOU WIN"
-						: gameState.result === "Player1 wins" && "Player1 wins"}
+						: gameState.result === "Player1 wins" && `${p1Username} wins`}
 
 					{isOnePlayer ? result === "Tie" && "TIE" : gameState.result === "Tie" && "Tie"}
 				</h1>
@@ -67,7 +77,10 @@ const AfterChoice = () => {
 			</div>
 
 			<div className="house-picked">
-				<h1>{isOnePlayer ? "THE HOUSE PICKED" : "PLAYER 2 PICKED"}</h1>
+				{/* <h1>{isOnePlayer ? "THE HOUSE PICKED" : "PLAYER 2 PICKED"}</h1> */}
+				<h1 style={{ textTransform: "uppercase" }}>
+					{isOnePlayer ? "THE HOUSE PICKED" : `${p2Username} PICKED`}
+				</h1>
 				<div
 					className={`hPicked ${
 						isOnePlayer

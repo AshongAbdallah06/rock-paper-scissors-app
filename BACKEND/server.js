@@ -48,6 +48,7 @@ app.use(express.urlencoded({ extended: true }));
 const gameRooms = {};
 const game = {};
 let numClients = {};
+let usernames = {};
 
 app.get("/", (req, res) => {
 	res.json({ msg: "Hello" });
@@ -55,6 +56,24 @@ app.get("/", (req, res) => {
 
 io.on("connect", (socket) => {
 	let roomId;
+
+	socket.on("username", (username) => {
+		console.log("Received Username: ", username);
+
+		if (!usernames[roomId].p1Username) {
+			usernames[roomId].p1Username = username;
+			console.log(`Assigned to p1Username: ${usernames[roomId].p1Username}`);
+		} else if (!usernames[roomId].p2Username && username !== usernames[roomId].p1Username) {
+			usernames[roomId].p2Username = username;
+			console.log(`Assigned to p2Username: ${usernames[roomId].p2Username}`);
+		} else {
+			console.log("Both usernames are already assigned or username is a duplicate.");
+		}
+
+		console.log("Current usernames object: ", usernames);
+
+		io.to(roomId).emit("updateUsernames", usernames[roomId]);
+	});
 
 	socket.on("join_room", (id) => {
 		roomId = id;
@@ -68,6 +87,10 @@ io.on("connect", (socket) => {
 
 		if (!gameRooms[roomId]) {
 			gameRooms[roomId] = { p1_ID: null, p2_ID: null };
+		}
+
+		if (!usernames[roomId]) {
+			usernames[roomId] = { p1Username: null, p2Username: null };
 		}
 
 		if (!gameRooms[roomId].p1_ID) {

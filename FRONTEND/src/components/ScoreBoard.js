@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import logo from "../images/logo.svg";
 import plane from "../images/paper-plane-outline.svg";
 import useCheckContext from "../hooks/useCheckContext";
 import Axios from "axios";
 
 const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
-	const { score, p1Score, p2Score, isOnePlayer } = useCheckContext();
+	const { score, p1Score, p2Score, isOnePlayer, socket } = useCheckContext();
 	const user = JSON.parse(localStorage.getItem("user"));
 
 	const updateScore = async () => {
@@ -19,6 +19,26 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 	useEffect(() => {
 		updateScore();
 	}, [score]);
+
+	const [p1Username, setP1Username] = useState("");
+	const [p2Username, setP2Username] = useState("");
+
+	useEffect(() => {
+		if (user?.username) {
+			socket.emit("username", user.username);
+		}
+
+		socket.on("updateUsernames", ({ p1Username, p2Username }) => {
+			setP1Username(p1Username);
+			setP2Username(p2Username);
+			localStorage.setItem("usernames", JSON.stringify({ p1Username, p2Username }));
+		});
+
+		// Cleanup on unmount
+		return () => {
+			socket.off("updateUsernames");
+		};
+	}, []);
 
 	return (
 		<>
@@ -37,11 +57,13 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 				) : (
 					<div className="p2">
 						<div className="score">
-							<p>Player1</p>
+							{/* <p>Player1</p> */}
+							<p>{p1Username}</p>
 							<p>{p1Score}</p>
 						</div>
 						<div className="score">
-							<p>Player2</p>
+							{/* <p>Player2</p> */}
+							<p>{p2Username}</p>
 							<p>{p2Score}</p>
 						</div>
 					</div>

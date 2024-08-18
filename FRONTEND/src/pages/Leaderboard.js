@@ -80,21 +80,21 @@ const Leaderboard = () => {
 							title={index + 1}
 							style={{
 								backgroundColor:
-									user.username === score.username && "hsl(349, 70%, 56%)",
-								color: user.username === score.username && "black",
+									user?.username === score?.username && "hsl(349, 70%, 56%)",
+								color: user?.username === score?.username && "black",
 							}}
 							className="user"
-							key={score.username}
+							key={score?.username}
 						>
 							<p
 								style={{
 									fontWeight:
-										user.username === score.username ? "bold" : "normal",
+										user?.username === score?.username ? "bold" : "normal",
 								}}
 							>
-								{score.username}
+								{score?.username}
 							</p>
-							{user.username === score.username && (
+							{user?.username === score?.username && (
 								<p
 									style={{
 										fontWeight: "bold", // Consistent bold text for current user

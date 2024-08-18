@@ -16,6 +16,9 @@ const CheckContextProvider = ({ children }) => {
 		setComputerMoveImage,
 	} = useFunctions();
 
+	// Show rules modal
+	const [isRulesModalShow, setIsRulesModalShow] = useState(false);
+
 	// Player moves and result states
 	// PlayerMove and ComputerMove are used as Player1 and Player2 in dual-mode respectively
 	const [playerMove, setPlayerMove] = useState(null);
@@ -171,6 +174,8 @@ const CheckContextProvider = ({ children }) => {
 				authorize,
 				userExists,
 				setUserExists,
+				isRulesModalShow,
+				setIsRulesModalShow,
 			}}
 		>
 			{children}

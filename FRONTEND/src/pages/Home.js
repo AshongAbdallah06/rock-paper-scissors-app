@@ -4,15 +4,18 @@ import Chat from "../components/Chat";
 import ScoreBoard from "../components/ScoreBoard";
 import GameBoard from "../GameBoard";
 import useCheckContext from "../hooks/useCheckContext";
-import { Link } from "react-router-dom";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
-	const { roomID, isOnePlayer } = useCheckContext();
+	const { roomID, isOnePlayer, setIsRulesModalShow } = useCheckContext();
 
 	useEffect(() => {
 		localStorage.setItem("userGameState", JSON.stringify(isOnePlayer));
 	}, [isOnePlayer]);
+
+	const showModal = () => {
+		setIsRulesModalShow(true);
+	};
 
 	return (
 		<>
@@ -24,18 +27,29 @@ const Home = () => {
 			<GameBoard />
 			<Dialog />
 
-			{isOnePlayer && (
+			{/* {isOnePlayer && (
 				<Link
 					to="/leaderboard"
 					className="leaderboard-link"
 				>
 					Leaderboard
 				</Link>
-			)}
+			)} */}
 
 			{chatIsShowing ? <Chat setChatIsShowing={setChatIsShowing} /> : ""}
 
-			{!isOnePlayer && <footer>Room Name: {roomID}</footer>}
+			{!isOnePlayer && (
+				<footer>
+					<p>Room Name: {roomID}</p>
+
+					<button
+						className="rules"
+						onClick={showModal}
+					>
+						RULES
+					</button>
+				</footer>
+			)}
 		</>
 	);
 };
