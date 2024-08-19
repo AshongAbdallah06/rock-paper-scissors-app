@@ -87,13 +87,7 @@ const CheckContextProvider = ({ children }) => {
 		!isOnePlayer && checkPlayersMoves(gameState, setPlayerMoveImage, setComputerMoveImage);
 	}, [isOnePlayer, gameState.p1 && gameState.p2]);
 
-	useEffect(() => {
-		if (gameState.p1) {
-			alert("Player1 has made a move");
-		} else if (gameState.p2) {
-			alert("Player2 has made a move");
-		}
-	}, gameState);
+
 	// Join room
 	const joinRoom = () => {
 		socket.emit("join_room", roomID);
