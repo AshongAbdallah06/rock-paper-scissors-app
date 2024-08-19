@@ -64,13 +64,13 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 					<div className="p2">
 						<div className="score">
 							{/* <p>Player1</p> */}
-							<p>{p1Username}</p>
-							<p>{p1Score}</p>
+							<p>{!p1Username ? "Player1" : p1Username}</p>
+							<p>{p1Username && p2Username ? p1Score : 0}</p>
 						</div>
 						<div className="score">
 							{/* <p>Player2</p> */}
-							<p>{p2Username}</p>
-							<p>{p2Score}</p>
+							<p>{!p2Username ? "Player2" : p2Username}</p>
+							<p>{p1Username && p2Username ? p2Score : 0}</p>
 						</div>
 					</div>
 				)}

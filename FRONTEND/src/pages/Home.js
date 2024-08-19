@@ -39,7 +39,7 @@ const Home = () => {
 			/>
 
 			<p
-				className="change-mode"
+				className="change-mode-abs"
 				onClick={() => {
 					localStorage.removeItem("player-mode");
 					window.location.href = "/";
