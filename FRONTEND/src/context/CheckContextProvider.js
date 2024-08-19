@@ -41,7 +41,6 @@ const CheckContextProvider = ({ children }) => {
 	);
 	const [playerIsChosen, setPlayerIsChosen] = useState(playerMode && true);
 
-	//
 	const [roomIsSelected, setRoomIsSelected] = useState(
 		playerMode && playerMode === "single" && true
 	);
@@ -105,6 +104,20 @@ const CheckContextProvider = ({ children }) => {
 			socket.off("move");
 		};
 	}, []);
+
+	const moveOnclick = (move) => {
+		if (!isOnePlayer) {
+			if (!playerMove) {
+				setPlayerMove(move);
+			} else if (!computerMove) {
+				setComputerMove(move);
+			}
+		}
+		setPlayerMove(move);
+		makeMove(move);
+		isOnePlayer && setPlayerMove(move);
+		isOnePlayer && generateComputerMove(setComputerMove);
+	};
 
 	useEffect(() => {
 		socket.on("clearMoves", (newGameState) => {
@@ -182,6 +195,7 @@ const CheckContextProvider = ({ children }) => {
 				setUserExists,
 				isRulesModalShow,
 				setIsRulesModalShow,
+				moveOnclick,
 			}}
 		>
 			{children}
