@@ -87,6 +87,13 @@ const CheckContextProvider = ({ children }) => {
 		!isOnePlayer && checkPlayersMoves(gameState, setPlayerMoveImage, setComputerMoveImage);
 	}, [isOnePlayer, gameState.p1 && gameState.p2]);
 
+	useEffect(() => {
+		if (gameState.p1) {
+			alert("Player1 has made a move");
+		} else if (gameState.p2) {
+			alert("Player2 has made a move");
+		}
+	}, gameState);
 	// Join room
 	const joinRoom = () => {
 		socket.emit("join_room", roomID);
@@ -105,6 +112,20 @@ const CheckContextProvider = ({ children }) => {
 			socket.off("move");
 		};
 	}, []);
+
+	const moveOnclick = (move) => {
+		if (!isOnePlayer) {
+			if (!playerMove) {
+				setPlayerMove(move);
+			} else if (!computerMove) {
+				setComputerMove(move);
+			}
+		}
+		setPlayerMove(move);
+		makeMove(move);
+		isOnePlayer && setPlayerMove(move);
+		isOnePlayer && generateComputerMove(setComputerMove);
+	};
 
 	useEffect(() => {
 		socket.on("clearMoves", (newGameState) => {
