@@ -2,7 +2,7 @@ import React from "react";
 
 const LoadingDots = () => {
 	return (
-		<span class="dots">
+		<span className="dots">
 			<span>.</span>
 			<span>.</span>
 			<span>.</span>

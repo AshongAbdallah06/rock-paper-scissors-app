@@ -5,7 +5,8 @@ import useCheckContext from "../hooks/useCheckContext";
 import Axios from "axios";
 
 const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
-	const { score, p1Score, p2Score, isOnePlayer, socket } = useCheckContext();
+	const { roomID, score, p1Score, p2Score, setP1Score, setP2Score, isOnePlayer, socket } =
+		useCheckContext();
 	const user = JSON.parse(localStorage.getItem("user"));
 
 	const updateScore = async () => {
@@ -22,6 +23,11 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 
 	const [p1Username, setP1Username] = useState("");
 	const [p2Username, setP2Username] = useState("");
+
+	useEffect(() => {
+		setP1Score(JSON.parse(localStorage.getItem(`${roomID}-p1score`)) || 0);
+		setP2Score(JSON.parse(localStorage.getItem(`${roomID}-p2score`)) || 0);
+	}, []);
 
 	useEffect(() => {
 		if (user?.username) {

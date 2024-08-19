@@ -22,6 +22,23 @@ const CheckContextProvider = ({ children }) => {
 
 	// Player moves and result states
 	// PlayerMove and ComputerMove are used as Player1 and Player2 in dual-mode respectively
+	const [moveAck, setMoveAck] = useState(false);
+	const listenToMove = () => {
+		socket.on("move-made", (message) => {
+			console.log("Msg: ", message);
+
+			setMoveAck(message);
+
+			setTimeout(() => {
+				setMoveAck("");
+			}, 3000);
+		});
+
+		return () => {
+			socket.off("message");
+		};
+	};
+
 	const [playerMove, setPlayerMove] = useState(null);
 	const [computerMove, setComputerMove] = useState(null);
 	const [result, setResult] = useState("");
@@ -29,10 +46,20 @@ const CheckContextProvider = ({ children }) => {
 	const [roomID, setRoomID] = useState(null);
 
 	const [score, setScore] = useState(JSON.parse(localStorage.getItem("score")) || 0);
-	const [p1Score, setP1Score] = useState(0);
-	const [p2Score, setP2Score] = useState(
-		JSON.parse(localStorage.getItem(`${roomID}_p2score`)) || 0
+	const [p1Score, setP1Score] = useState(
+		JSON.parse(localStorage.getItem(`${roomID}-p1score`)) || 0
 	);
+	const [p2Score, setP2Score] = useState(
+		JSON.parse(localStorage.getItem(`${roomID}-p2score`)) || 0
+	);
+
+	useEffect(() => {
+		localStorage.setItem(`${roomID}-p1score`, JSON.stringify(p1Score));
+	}, [p1Score]);
+
+	useEffect(() => {
+		localStorage.setItem(`${roomID}-p2score`, JSON.stringify(p2Score));
+	}, [p2Score]);
 
 	//Check if it's a one player game
 	const playerMode = JSON.parse(localStorage.getItem("player-mode"));
@@ -196,6 +223,9 @@ const CheckContextProvider = ({ children }) => {
 				isRulesModalShow,
 				setIsRulesModalShow,
 				moveOnclick,
+				moveAck,
+				setMoveAck,
+				listenToMove,
 			}}
 		>
 			{children}

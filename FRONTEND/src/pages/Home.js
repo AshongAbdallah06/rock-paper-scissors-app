@@ -8,7 +8,7 @@ import CopiedAlert from "../components/CopiedAlert";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
-	const { roomID, isOnePlayer, setIsRulesModalShow } = useCheckContext();
+	const { roomID, isOnePlayer, setIsRulesModalShow, moveAck } = useCheckContext();
 
 	useEffect(() => {
 		localStorage.setItem("player-mode", JSON.stringify(isOnePlayer ? "single" : "dual"));
@@ -31,6 +31,7 @@ const Home = () => {
 	return (
 		<>
 			{!isOnePlayer && showCopiedAlert && <CopiedAlert />}
+			{!isOnePlayer && moveAck && <p className="copied-alert">{moveAck.msg}</p>}
 
 			<ScoreBoard
 				setChatIsShowing={setChatIsShowing}

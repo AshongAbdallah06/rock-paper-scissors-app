@@ -16,19 +16,14 @@ const AfterChoice = () => {
 		clearMoves,
 	} = useCheckContext();
 
+	// Get usernames
 	const { p1Username, p2Username } = JSON.parse(localStorage.getItem("usernames"));
-
-	useEffect(() => {
-		console.log(p1Username, p2Username);
-	}, []);
 
 	return (
 		<div className="Desktop-step2">
 			<div className="you-picked">
 				{/* <h1>{isOnePlayer ? "YOU PICKED" : "PLAYER 1 PICKED"}</h1> */}
-				<h1 style={{ textTransform: "uppercase" }}>
-					{isOnePlayer ? "YOU PICKED" : `${p1Username} PICKED`}
-				</h1>
+				<h1>{isOnePlayer ? "YOU PICKED" : `${p1Username} PICKED`}</h1>
 				<div
 					className={`picked ${
 						isOnePlayer
@@ -78,9 +73,7 @@ const AfterChoice = () => {
 
 			<div className="house-picked">
 				{/* <h1>{isOnePlayer ? "THE HOUSE PICKED" : "PLAYER 2 PICKED"}</h1> */}
-				<h1 style={{ textTransform: "uppercase" }}>
-					{isOnePlayer ? "THE HOUSE PICKED" : `${p2Username} PICKED`}
-				</h1>
+				<h1>{isOnePlayer ? "THE HOUSE PICKED" : `${p2Username} PICKED`}</h1>
 				<div
 					className={`hPicked ${
 						isOnePlayer

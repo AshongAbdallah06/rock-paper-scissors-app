@@ -27,7 +27,7 @@ const GameBoard = () => {
 		<section className="Gboard">
 			{!playerMove && !computerMove && (
 				<div className="gameBoard">
-					<Paper onclick={(e) => console(e.target)} />
+					<Paper />
 
 					<Scissors />
 
