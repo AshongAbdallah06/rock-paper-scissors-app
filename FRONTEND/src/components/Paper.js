@@ -4,17 +4,13 @@ import useFunctions from "../hooks/useFunctions";
 import useCheckContext from "../hooks/useCheckContext";
 
 const Paper = () => {
-	const { setPlayerMove, setComputerMove, makeMove, isOnePlayer } = useCheckContext();
-
-	const { generateComputerMove } = useFunctions();
+	const { moveOnclick } = useCheckContext();
 
 	return (
 		<div
 			className="gameOpt"
 			onClick={() => {
-				!isOnePlayer && makeMove("p");
-				isOnePlayer && setPlayerMove("p");
-				isOnePlayer && generateComputerMove(setComputerMove);
+				moveOnclick("p");
 			}}
 		>
 			<img

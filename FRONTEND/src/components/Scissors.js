@@ -4,17 +4,13 @@ import useFunctions from "../hooks/useFunctions";
 import useCheckContext from "../hooks/useCheckContext";
 
 const Scissors = () => {
-	const { setPlayerMove, setComputerMove, makeMove, isOnePlayer } = useCheckContext();
-
-	const { generateComputerMove } = useFunctions();
+	const { moveOnclick } = useCheckContext();
 
 	return (
 		<div
 			className="gameOpt"
 			onClick={() => {
-				!isOnePlayer && makeMove("s");
-				isOnePlayer && setPlayerMove("s");
-				isOnePlayer && generateComputerMove(setComputerMove);
+				moveOnclick("s");
 			}}
 		>
 			<img
