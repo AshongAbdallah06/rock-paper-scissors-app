@@ -60,15 +60,17 @@ body,
 #root {
 	position: relative;
 	z-index: -100;
-	overflow: hidden;
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
+	overflow: hidden;
+}
+body {
 	min-height: 100vh;
+	background: no-repeat radial-gradient(circle, hsl(214, 47%, 23%), hsl(237, 49%, 15%));
 }
 #root {
-	background: no-repeat radial-gradient(circle, hsl(214, 47%, 23%), hsl(237, 49%, 15%));
 	width: 100%;
 }
 .header2 {
@@ -195,7 +197,7 @@ img[alt="scissors"] {
 	margin-right: 10px;
 }
 .Gboard {
-	height: calc(100vh - 9.6875rem);
+	height: 24rem;
 	width: 100%;
 	display: flex;
 	align-items: center;
@@ -327,7 +329,11 @@ img[alt="scissors"] {
 	z-index: 1000;
 	min-height: 100vh;
 	width: 100%;
-	position: absolute;
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
 }
 .rules-modal {
 	position: absolute;
@@ -339,6 +345,15 @@ img[alt="scissors"] {
 	padding: 1.25rem;
 	border-radius: 0.625rem;
 	z-index: 100;
+}
+.rules {
+	position: absolute;
+	border-radius: 0.3125rem;
+	padding: 0.625rem 1.875rem;
+	background-color: transparent;
+	border: 0.125rem solid hsla(0, 4%, 80%, 0.1);
+	color: #f9f9f9;
+	cursor: pointer;
 }
 .rules-modal > div {
 	display: flex;
@@ -409,6 +424,10 @@ aside {
 	border-bottom-left-radius: 10px;
 	z-index: 1000;
 }
+aside {
+	height: 400px;
+	padding-bottom: 1rem;
+}
 aside .content {
 	height: 100%;
 }
@@ -430,6 +449,7 @@ aside header .close-icon {
 	display: flex;
 	flex-direction: column;
 	height: 29rem;
+	height: 260px;
 }
 
 .input-container {
@@ -439,6 +459,7 @@ aside header .close-icon {
 	display: flex;
 	justify-content: flex-start;
 	align-items: center;
+	margin-bottom: 1rem;
 }
 
 .input-container textarea {
@@ -605,16 +626,16 @@ footer {
 	height: 5rem;
 }
 footer p {
-	margin-bottom: 30px;
+	margin-bottom: 5rem;
 }
-.rules {
-	position: absolute;
-	border-radius: 0.3125rem;
-	padding: 0.625rem 1.875rem;
-	background-color: transparent;
-	border: 0.125rem solid hsla(0, 4%, 80%, 0.1);
-	color: #f9f9f9;
-	cursor: pointer;
+
+@media (min-width: 500px) {
+	.rules {
+		right: -7rem;
+	}
+	footer p {
+		margin-bottom: 0;
+	}
 }
 
 .change-mode {
@@ -625,7 +646,7 @@ footer p {
 	border: none;
 	font-size: 1rem;
 	cursor: pointer;
-	z-index: 100;
+	display: inline-block;
 }
 .change-mode:hover {
 	color: hsl(40, 84%, 53%);
@@ -686,6 +707,9 @@ footer p {
 		}
 
 		/* todo: Create responsiveness for tablets and iPads */
+		.rules-modal {
+			top: 42%;
+		}
 		.rules {
 			bottom: 0;
 		}
