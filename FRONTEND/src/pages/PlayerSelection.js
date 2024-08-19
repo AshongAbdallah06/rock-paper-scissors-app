@@ -7,7 +7,7 @@ const PlayerSelection = () => {
 
 	return (
 		<div className="selection">
-			<h1>Welcome!</h1>
+			<h1 style={{ fontSize: "3rem" }}>Welcome!</h1>
 
 			<p>Please select game mode</p>
 

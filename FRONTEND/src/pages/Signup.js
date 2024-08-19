@@ -64,7 +64,7 @@ const Login = () => {
 			const error = err.response?.data?.error;
 
 			if (error) {
-				setError({ email: error.email, username: error.username });
+				setError({ email: error?.email, username: error?.username });
 			} else {
 				setError({ email: null, username: null });
 			}
@@ -100,8 +100,8 @@ const Login = () => {
 					{...register("username")}
 				/>
 				<p>
-					{errors.username?.message}
-					{error.username}
+					{errors?.username?.message}
+					{error?.username}
 				</p>
 			</div>
 

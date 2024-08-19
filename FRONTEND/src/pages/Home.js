@@ -4,25 +4,49 @@ import Chat from "../components/Chat";
 import ScoreBoard from "../components/ScoreBoard";
 import GameBoard from "../GameBoard";
 import useCheckContext from "../hooks/useCheckContext";
+import { Link } from "react-router-dom";
+import CopiedAlert from "../components/CopiedAlert";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
 	const { roomID, isOnePlayer, setIsRulesModalShow } = useCheckContext();
 
 	useEffect(() => {
-		localStorage.setItem("userGameState", JSON.stringify(isOnePlayer));
+		localStorage.setItem("player-mode", JSON.stringify(isOnePlayer ? "single" : "dual"));
 	}, [isOnePlayer]);
 
 	const showModal = () => {
 		setIsRulesModalShow(true);
 	};
 
+	const [showCopiedAlert, setShowCopiedAlert] = useState(false);
+
+	useEffect(() => {
+		setShowCopiedAlert(true);
+
+		setTimeout(() => {
+			setShowCopiedAlert(false);
+		}, 2000);
+	}, []);
+
 	return (
 		<>
+			{!isOnePlayer && showCopiedAlert && <CopiedAlert />}
+
 			<ScoreBoard
 				setChatIsShowing={setChatIsShowing}
 				chatIsShowing={chatIsShowing}
 			/>
+
+			<p
+				className="change-mode"
+				onClick={() => {
+					localStorage.removeItem("player-mode");
+					window.location.href = "/";
+				}}
+			>
+				Change Mode
+			</p>
 
 			<GameBoard />
 			<Dialog />
