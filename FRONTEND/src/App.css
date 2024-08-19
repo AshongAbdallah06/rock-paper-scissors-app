@@ -72,6 +72,8 @@ body {
 }
 #root {
 	width: 100%;
+	background: no-repeat radial-gradient(circle, hsl(214, 47%, 23%), hsl(237, 49%, 15%));
+	min-height: 100vh;
 }
 .header2 {
 	display: flex;
@@ -202,6 +204,7 @@ img[alt="scissors"] {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	margin-top: 7rem;
 }
 .Gboard .stale {
 	text-align: center;
@@ -639,141 +642,276 @@ footer p {
 	cursor: pointer;
 	display: inline-block;
 }
+.change-mode-abs {
+	position: absolute;
+	color: white;
+	text-decoration: underline;
+	left: 40%;
+}
 .change-mode:hover {
 	color: hsl(40, 84%, 53%);
 }
 
 /* Mobile */
 @media (max-width: 500px) {
-	@media (min-height: 500px) {
-		body {
-			width: 100%;
-			margin-top: 4rem;
-			overflow-x: hidden;
-		}
-		.scoreBoard {
-			width: 20.875rem;
-			align-items: center;
-			justify-content: space-between;
-		}
+	body {
+		width: 100%;
+		margin-top: 4rem;
+		overflow-x: hidden;
+	}
+	.scoreBoard {
+		width: 20.875rem;
+		align-items: center;
+		justify-content: space-between;
+	}
 
-		.scoreBoard .imgCont {
-			display: flex;
-			align-items: center;
-		}
+	.scoreBoard .imgCont {
+		display: flex;
+		align-items: center;
+	}
 
-		.scoreBoard .imgCont img {
-			height: 3rem;
-		}
+	.scoreBoard .imgCont img {
+		height: 3rem;
+	}
 
-		.score {
-			width: 5rem;
-			border-radius: 0.2rem;
-		}
+	.score {
+		width: 5rem;
+		border-radius: 0.2rem;
+	}
 
-		.score p:nth-child(2) {
-			font-size: 2.5rem;
-		}
+	.score p:nth-child(2) {
+		font-size: 2.5rem;
+	}
 
-		/* Gameboard */
-		.Gboard {
-			position: relative;
-			top: -2rem;
-			height: 30rem;
-		}
-		.gameBoard {
-			height: 10.5rem;
-			width: 10.5rem;
-		}
-		.gameOpt {
-			width: 8rem;
-			height: 8rem;
-		}
-		.p2 {
-			right: -140px;
-		}
+	/* Gameboard */
+	.Gboard {
+		position: relative;
+		top: -2rem;
+		height: 30rem;
+	}
+	.gameBoard {
+		height: 10.5rem;
+		width: 10.5rem;
+	}
+	.gameOpt {
+		width: 8rem;
+		height: 8rem;
+	}
+	.p2 {
+		right: -140px;
+	}
 
-		.making-move {
-			text-align: center;
-			font-size: 1.5rem;
-		}
+	.making-move {
+		text-align: center;
+		font-size: 1.5rem;
+	}
 
-		/* todo: Create responsiveness for tablets and iPads */
-		.rules-modal {
-			top: 42%;
-		}
-		.rules {
-			bottom: 0;
-		}
+	/* todo: Create responsiveness for tablets and iPads */
+	.rules-modal {
+		top: 42%;
+	}
+	.rules {
+		bottom: 0;
+	}
 
-		/* After move */
-		.Desktop-step2 {
-			height: 11.5625rem;
-			margin-top: -4rem;
-			position: relative;
-		}
+	/* After move */
+	.Desktop-step2 {
+		height: 11.5625rem;
+		margin-top: -4rem;
+		position: relative;
+	}
 
-		.results {
-			position: absolute;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			z-index: 100;
-			bottom: -12rem;
-			width: 100%;
-		}
+	.results {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 100;
+		bottom: -12rem;
+		width: 100%;
+	}
 
-		.results > h1 {
-			font-size: 2.5rem;
-		}
+	.results > h1 {
+		font-size: 2.5rem;
+	}
 
-		.results button {
-			margin-top: 0.5rem;
-		}
+	.results button {
+		margin-top: 0.5rem;
+	}
 
-		.picked,
-		.hPicked {
-			width: 8rem;
-			height: 8rem;
-		}
+	.picked,
+	.hPicked {
+		width: 8rem;
+		height: 8rem;
+	}
 
-		.you-picked,
-		.house-picked {
-			height: 90%;
-		}
+	.you-picked,
+	.house-picked {
+		height: 90%;
+	}
 
-		.you-picked h1,
-		.house-picked h1 {
-			font-size: 1rem;
-			margin-bottom: 1rem;
-		}
+	.you-picked h1,
+	.house-picked h1 {
+		font-size: 1rem;
+		margin-bottom: 1rem;
+	}
 
-		.picked::before,
-		.hPicked::before {
-			width: 6rem;
-			height: 6rem;
-		}
+	.picked::before,
+	.hPicked::before {
+		width: 6rem;
+		height: 6rem;
+	}
 
-		.mode-links a:first-child {
-			margin-bottom: 1rem;
-		}
+	.mode-links a:first-child {
+		margin-bottom: 1rem;
+	}
 
-		aside {
-			height: 400px;
-			padding-bottom: 1rem;
-		}
+	aside {
+		height: 400px;
+		padding-bottom: 1rem;
+	}
 
-		aside .content {
-			height: 100%;
-		}
+	aside .content {
+		height: 100%;
+	}
 
-		.chat-container {
-			height: 260px;
-		}
+	.chat-container {
+		height: 260px;
+	}
 
-		.input-container {
-			margin-bottom: 1rem;
-		}
+	.input-container {
+		margin-bottom: 1rem;
+	}
+}
+
+@media (max-height: 500px) {
+	body {
+		width: 100%;
+		margin-top: 4rem;
+		overflow-x: hidden;
+	}
+	.scoreBoard {
+		width: 20.875rem;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.scoreBoard .imgCont {
+		display: flex;
+		align-items: center;
+	}
+
+	.scoreBoard .imgCont img {
+		height: 3rem;
+	}
+
+	.score {
+		width: 5rem;
+		border-radius: 0.2rem;
+	}
+
+	.score p:nth-child(2) {
+		font-size: 2.5rem;
+	}
+
+	/* Gameboard */
+	.Gboard {
+		position: relative;
+		top: -2rem;
+		height: 30rem;
+	}
+	.gameBoard {
+		height: 10.5rem;
+		width: 10.5rem;
+	}
+	.gameOpt {
+		width: 8rem;
+		height: 8rem;
+	}
+	.p2 {
+		right: -140px;
+	}
+
+	.making-move {
+		text-align: center;
+		font-size: 1.5rem;
+	}
+
+	/* todo: Create responsiveness for tablets and iPads */
+	.rules-modal {
+		top: 42%;
+	}
+	.rules {
+		bottom: 0;
+	}
+
+	/* After move */
+	.Desktop-step2 {
+		height: 11.5625rem;
+		margin-top: -4rem;
+		position: relative;
+	}
+
+	.results {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 100;
+		bottom: -12rem;
+		width: 100%;
+	}
+
+	.results > h1 {
+		font-size: 2.5rem;
+	}
+
+	.results button {
+		margin-top: 0.5rem;
+	}
+
+	.picked,
+	.hPicked {
+		width: 8rem;
+		height: 8rem;
+	}
+
+	.you-picked,
+	.house-picked {
+		height: 90%;
+	}
+
+	.you-picked h1,
+	.house-picked h1 {
+		font-size: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.picked::before,
+	.hPicked::before {
+		width: 6rem;
+		height: 6rem;
+	}
+
+	.mode-links a:first-child {
+		margin-bottom: 1rem;
+	}
+
+	aside {
+		height: 400px;
+		padding-bottom: 1rem;
+	}
+
+	aside .content {
+		height: 100%;
+	}
+
+	.chat-container {
+		height: 260px;
+	}
+
+	.input-container {
+		margin-bottom: 1rem;
 	}
 }
 
