@@ -64,7 +64,7 @@ body,
 	justify-content: center;
 	align-items: center;
 	flex-direction: column;
-	overflow: hidden;
+	overflow-x: hidden;
 }
 body {
 	min-height: 100vh;
@@ -629,15 +629,6 @@ footer p {
 	margin-bottom: 3rem;
 }
 
-@media (min-width: 500px) {
-	.rules {
-		right: -7rem;
-	}
-	footer p {
-		margin-bottom: 0;
-	}
-}
-
 .change-mode {
 	color: white;
 	text-decoration: underline;
@@ -657,7 +648,8 @@ footer p {
 	@media (min-height: 500px) {
 		body {
 			width: 100%;
-			overflow: hidden;
+			margin-top: 4rem;
+			overflow-x: hidden;
 		}
 		.scoreBoard {
 			width: 20.875rem;
@@ -782,5 +774,14 @@ footer p {
 		.input-container {
 			margin-bottom: 1rem;
 		}
+	}
+}
+
+@media (min-width: 500px) {
+	.rules {
+		right: -7rem;
+	}
+	footer p {
+		margin-bottom: 0;
 	}
 }
