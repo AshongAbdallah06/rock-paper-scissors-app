@@ -75,6 +75,10 @@ io.on("connect", (socket) => {
 		io.to(roomId).emit("updateUsernames", usernames[roomId]);
 	});
 
+	socket.on("move-made", (username) => {
+		socket.broadcast.to(roomId).emit("move-made", { msg: username + " has made a move" });
+	});
+
 	socket.on("join_room", (id) => {
 		roomId = id;
 		socket.join(roomId);

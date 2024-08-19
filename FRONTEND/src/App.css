@@ -626,7 +626,7 @@ footer {
 	height: 5rem;
 }
 footer p {
-	margin-bottom: 5rem;
+	margin-bottom: 3rem;
 }
 
 @media (min-width: 500px) {

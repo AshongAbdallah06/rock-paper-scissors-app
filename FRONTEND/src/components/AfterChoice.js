@@ -16,11 +16,8 @@ const AfterChoice = () => {
 		clearMoves,
 	} = useCheckContext();
 
+	// Get usernames
 	const { p1Username, p2Username } = JSON.parse(localStorage.getItem("usernames"));
-
-	useEffect(() => {
-		console.log(p1Username, p2Username);
-	}, []);
 
 	return (
 		<div className="Desktop-step2">

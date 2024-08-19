@@ -22,6 +22,23 @@ const CheckContextProvider = ({ children }) => {
 
 	// Player moves and result states
 	// PlayerMove and ComputerMove are used as Player1 and Player2 in dual-mode respectively
+	const [moveAck, setMoveAck] = useState(false);
+	const listenToMove = () => {
+		socket.on("move-made", (message) => {
+			console.log("Msg: ", message);
+
+			setMoveAck(message);
+
+			setTimeout(() => {
+				setMoveAck("");
+			}, 3000);
+		});
+
+		return () => {
+			socket.off("message");
+		};
+	};
+
 	const [playerMove, setPlayerMove] = useState(null);
 	const [computerMove, setComputerMove] = useState(null);
 	const [result, setResult] = useState("");
@@ -206,6 +223,9 @@ const CheckContextProvider = ({ children }) => {
 				isRulesModalShow,
 				setIsRulesModalShow,
 				moveOnclick,
+				moveAck,
+				setMoveAck,
+				listenToMove,
 			}}
 		>
 			{children}
