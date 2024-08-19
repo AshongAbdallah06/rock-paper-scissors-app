@@ -5,9 +5,13 @@ import Rock from "./components/Rock";
 import AfterChoice from "./components/AfterChoice";
 import MakingMove from "./components/MakingMove";
 import useCheckContext from "./hooks/useCheckContext";
+import rockIcon from "./images/icon-rock.svg";
+import paperIcon from "./images/icon-paper.svg";
+import scissorsIcon from "./images/icon-scissors.svg";
+import LoadingDots from "./components/LoadingDots";
 
 const GameBoard = () => {
-	const { playerMove, computerMove } = useCheckContext();
+	const { playerMove, computerMove, isOnePlayer } = useCheckContext();
 	const [showAfterChoice, setShowAfterChoice] = useState(null);
 
 	useEffect(() => {
@@ -29,6 +33,24 @@ const GameBoard = () => {
 
 					<Rock />
 				</div>
+			)}
+			{!isOnePlayer && playerMove && !computerMove && (
+				<span className="stale">
+					<h3>
+						Waiting for opponent's move
+						<LoadingDots />
+					</h3>
+					<div className="picked">
+						<img
+							src={
+								(playerMove === "r" && rockIcon) ||
+								(playerMove === "p" && paperIcon) ||
+								(playerMove === "s" && scissorsIcon)
+							}
+							alt="rock"
+						/>
+					</div>
+				</span>
 			)}
 
 			{playerMove && computerMove ? !showAfterChoice ? <MakingMove /> : <AfterChoice /> : ""}

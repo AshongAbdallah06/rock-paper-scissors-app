@@ -14,6 +14,7 @@ const CheckContextProvider = ({ children }) => {
 		setPlayerMoveImage,
 		computerMoveImage,
 		setComputerMoveImage,
+		generateComputerMove,
 	} = useFunctions();
 
 	// Show rules modal

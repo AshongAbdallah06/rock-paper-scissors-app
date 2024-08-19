@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import logo from "../images/logo.svg";
+import LoadingDots from "../components/LoadingDots";
 
 const Leaderboard = () => {
 	const [scores, setScores] = useState(null);
@@ -73,7 +74,13 @@ const Leaderboard = () => {
 				</div>
 
 				<ul>
-					{loading && !error && <p className="error-loading">Loading...😁</p>}
+					{loading && !error && (
+						<p className="error-loading">
+							Loading
+							<LoadingDots />
+							😁
+						</p>
+					)}
 					{error && <p className="error-loading">{error.msg}</p>}
 					{scores?.map((score, index) => (
 						<li

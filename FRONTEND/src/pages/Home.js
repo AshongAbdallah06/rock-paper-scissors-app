@@ -4,7 +4,6 @@ import Chat from "../components/Chat";
 import ScoreBoard from "../components/ScoreBoard";
 import GameBoard from "../GameBoard";
 import useCheckContext from "../hooks/useCheckContext";
-import { Link } from "react-router-dom";
 import CopiedAlert from "../components/CopiedAlert";
 
 const Home = () => {
