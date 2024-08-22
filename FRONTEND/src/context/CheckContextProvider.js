@@ -25,8 +25,6 @@ const CheckContextProvider = ({ children }) => {
 	const [moveAck, setMoveAck] = useState(false);
 	const listenToMove = () => {
 		socket.on("move-made", (message) => {
-			console.log("Msg: ", message);
-
 			setMoveAck(message);
 
 			setTimeout(() => {

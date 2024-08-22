@@ -652,6 +652,10 @@ footer p {
 	color: hsl(40, 84%, 53%);
 }
 
+.audio {
+	display: none;
+}
+
 /* Mobile */
 @media (max-width: 500px) {
 	body {
