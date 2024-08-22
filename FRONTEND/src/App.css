@@ -383,12 +383,12 @@ form {
 	padding: 2rem;
 	border: 1px solid white;
 }
-form div {
+form .room {
 	display: flex;
 	flex-direction: column;
 	margin: 1rem 0;
 }
-form input {
+form .room input {
 	padding: 0.4rem;
 	width: 100%;
 	outline: none;
@@ -558,6 +558,14 @@ textarea {
 	padding: 0.3rem;
 	text-align: center;
 }
+.remember {
+	margin-top: 1rem;
+	display: flex;
+}
+.remember span {
+	margin-left: 0.5rem;
+	font-size: 0.8rem;
+}
 .mode-links {
 	margin-top: 2rem;
 }
@@ -647,6 +655,7 @@ footer p {
 	color: white;
 	text-decoration: underline;
 	left: 40%;
+	cursor: pointer;
 }
 .change-mode:hover {
 	color: hsl(40, 84%, 53%);
@@ -926,4 +935,103 @@ footer p {
 	footer p {
 		margin-bottom: 0;
 	}
+}
+
+/* New */
+/* Bonus */
+.gameBoard-bonus {
+	height: 20rem;
+	width: 20rem;
+	background: no-repeat center url("./images/bg-pentagon.svg");
+	background-size: contain;
+	position: relative;
+}
+.gameOpt-bonus {
+	width: 7.375rem;
+	height: 7.375rem;
+	border-radius: 50%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	position: absolute;
+	box-shadow: inset 0 -0.5rem 0 rgba(0, 0, 0, 0.3);
+	cursor: pointer;
+}
+.gameOpt-bonus::before {
+	content: "";
+	width: calc(100% - 1.875rem);
+	height: calc(100% - 1.875rem);
+	background-color: #f9f9f9;
+	position: absolute;
+	border-radius: 50%;
+	box-shadow: inset 0rem 0.5rem 0 rgba(0, 0, 0, 0.1);
+}
+.gameOpt-bonus img {
+	z-index: 3;
+	height: 2rem;
+}
+.gameOpt-bonus:nth-child(1) img,
+.gameOpt-bonus:nth-child(2) img,
+.gameOpt-bonus:nth-child(3) img,
+.gameOpt-bonus:nth-child(4) img {
+	height: 2.4rem;
+}
+.gameOpt-bonus:nth-child(5) img {
+	height: 2.6rem;
+}
+.gameOpt-bonus:nth-child(1) {
+	background: linear-gradient(hsl(230, 89%, 62%), hsl(230, 89%, 65%));
+	top: 25%;
+	right: -15%;
+}
+.gameOpt-bonus:nth-child(2) {
+	background: linear-gradient(hsl(39, 89%, 49%), hsl(40, 84%, 53%));
+	top: -10%;
+	left: 30%;
+}
+.gameOpt-bonus:nth-child(3) {
+	background: linear-gradient(hsl(349, 71%, 52%), hsl(349, 70%, 56%));
+	bottom: -15%;
+	right: 1rem;
+}
+.gameOpt-bonus:nth-child(4) {
+	background: linear-gradient(hsl(261, 73%, 60%), hsl(261, 72%, 63%));
+	bottom: -15%;
+	left: 1rem;
+}
+.gameOpt-bonus:nth-child(5) {
+	background: linear-gradient(hsl(189, 59%, 53%), hsl(189, 58%, 57%));
+	top: 25%;
+	left: -15%;
+}
+
+/* remember */
+.remember {
+	margin-top: 1rem;
+	display: flex;
+}
+.remember span {
+	margin-left: 0.5rem;
+	font-size: 0.8rem;
+}
+
+form .room {
+	display: flex;
+	flex-direction: column;
+	margin: 1rem 0;
+}
+form .room input {
+	padding: 0.4rem;
+	width: 100%;
+	outline: none;
+}
+.gameOpt:nth-child(4) {
+	background: linear-gradient(hsl(261, 73%, 60%), hsl(261, 72%, 63%));
+	bottom: -30%;
+	right: 1.8125rem;
+}
+.gameOpt:nth-child(5) {
+	background: linear-gradient(hsl(189, 59%, 53%), hsl(189, 58%, 57%));
+	/* bottom: -30%; */
+	left: -2rem;
 }

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Dialog from "../components/Dialog";
+import Dialog from "../components/bonus/Dialog";
 import Chat from "../components/Chat";
 import ScoreBoard from "../components/ScoreBoard";
-import GameBoard from "../GameBoard";
+import GameBoard from "../components/bonus/GameBoard";
 import useCheckContext from "../hooks/useCheckContext";
 import CopiedAlert from "../components/CopiedAlert";
-import BonusDialog from "../components/bonus/Dialog";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
@@ -29,8 +28,6 @@ const Home = () => {
 		}, 2000);
 	}, []);
 
-	const bonus = JSON.parse(localStorage.getItem("bonus"));
-
 	return (
 		<>
 			{!isOnePlayer && showCopiedAlert && <CopiedAlert />}
@@ -52,17 +49,7 @@ const Home = () => {
 			</p>
 
 			<GameBoard />
-
-			{!bonus ? <Dialog /> : <BonusDialog />}
-
-			{/* {isOnePlayer && (
-				<Link
-					to="/leaderboard"
-					className="leaderboard-link"
-				>
-					Leaderboard
-				</Link>
-			)} */}
+			<Dialog />
 
 			{chatIsShowing ? <Chat setChatIsShowing={setChatIsShowing} /> : ""}
 

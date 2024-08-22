@@ -5,7 +5,7 @@ import loseAudio from "../audio/mixkit-retro-arcade-lose-2027.wav";
 import alert from "../audio/mixkit-video-game-mystery-alert-234.wav";
 
 const Audios = () => {
-	const { isOnePlayer, playerMove, result } = useCheckContext();
+	const { isOnePlayer, playerMove, result, computerMove } = useCheckContext();
 
 	const [audioIsPlaying, setAudioIsPlaying] = useState(false);
 	useEffect(() => {
@@ -21,7 +21,7 @@ const Audios = () => {
 	return (
 		<div>
 			{/* Sound on move click */}
-			{isOnePlayer && playerMove && (
+			{(playerMove || computerMove) && (
 				<audio
 					src={alert}
 					autoPlay={true}

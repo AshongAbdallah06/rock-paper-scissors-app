@@ -41,7 +41,7 @@ const CheckContextProvider = ({ children }) => {
 	const [computerMove, setComputerMove] = useState(null);
 	const [result, setResult] = useState("");
 
-	const [roomID, setRoomID] = useState(null);
+	const [roomID, setRoomID] = useState(JSON.parse(localStorage.getItem("room-id")) || null);
 
 	const [score, setScore] = useState(JSON.parse(localStorage.getItem("score")) || 0);
 	const [p1Score, setP1Score] = useState(

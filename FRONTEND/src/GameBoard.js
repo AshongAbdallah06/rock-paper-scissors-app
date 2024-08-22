@@ -8,7 +8,11 @@ import useCheckContext from "./hooks/useCheckContext";
 import rockIcon from "./images/icon-rock.svg";
 import paperIcon from "./images/icon-paper.svg";
 import scissorsIcon from "./images/icon-scissors.svg";
+import lizardIcon from "./images/icon-lizard.svg";
+import spockIcon from "./images/icon-spock.svg";
 import LoadingDots from "./components/LoadingDots";
+import Lizard from "./components/bonus/Lizard";
+import Spock from "./components/bonus/Spock";
 
 const GameBoard = () => {
 	const { playerMove, computerMove, isOnePlayer } = useCheckContext();
@@ -23,15 +27,25 @@ const GameBoard = () => {
 		}
 	}, [playerMove, computerMove]);
 
+	const bonus = JSON.parse(localStorage.getItem("bonus"));
+
 	return (
 		<section className="Gboard">
 			{!playerMove && !computerMove && (
-				<div className="gameBoard">
+				<div className={bonus ? "gameBoard-bonus" : "gameBoard"}>
 					<Paper />
 
 					<Scissors />
 
 					<Rock />
+
+					{bonus && (
+						<>
+							<Lizard />
+
+							<Spock />
+						</>
+					)}
 				</div>
 			)}
 			{!isOnePlayer && playerMove && !computerMove && (
@@ -41,14 +55,37 @@ const GameBoard = () => {
 						<LoadingDots />
 					</h3>
 					<div className="picked">
-						<img
-							src={
-								(playerMove === "r" && rockIcon) ||
-								(playerMove === "p" && paperIcon) ||
-								(playerMove === "s" && scissorsIcon)
-							}
-							alt="rock"
-						/>
+						{!bonus ? (
+							<img
+								src={
+									(playerMove === "r" && rockIcon) ||
+									(playerMove === "p" && paperIcon) ||
+									(playerMove === "s" && scissorsIcon)
+								}
+								alt={
+									(playerMove === "r" && "rock") ||
+									(playerMove === "p" && "paper") ||
+									(playerMove === "s" && "scissors")
+								}
+							/>
+						) : (
+							<img
+								src={
+									(playerMove === "r" && rockIcon) ||
+									(playerMove === "p" && paperIcon) ||
+									(playerMove === "s" && scissorsIcon) ||
+									(playerMove === "l" && lizardIcon) ||
+									(playerMove === "sp" && spockIcon)
+								}
+								alt={
+									(playerMove === "r" && "rock") ||
+									(playerMove === "p" && "paper") ||
+									(playerMove === "s" && "scissors") ||
+									(playerMove === "l" && "lizard") ||
+									(playerMove === "sp" && "spock")
+								}
+							/>
+						)}
 					</div>
 				</span>
 			)}

@@ -18,6 +18,25 @@ const PlayerSelection = () => {
 			console.log("🚀 ~ copyRoomID ~ error:", error);
 		}
 	};
+
+	/**todo: create remember id functionality 
+	 * const [rememberID, setRememberID] = useState(false);
+
+	useEffect(() => {
+		if (rememberID) {
+			localStorage.setItem("room-id", JSON.stringify(roomID));
+		} else {
+			localStorage.removeItem("room-id");
+		}
+	}, [rememberID]);
+
+	useEffect(() => {
+		if (rememberID) {
+			localStorage.setItem("room-id", JSON.stringify(roomID));
+		}
+	}, [roomID]);*/
+
+	// const savedID = JSON.parse(localStorage.getItem("room-id"));
 	return (
 		<form
 			className="selection"
@@ -53,6 +72,19 @@ const PlayerSelection = () => {
 				>
 					JOIN ROOM
 				</Link>
+
+				{/* <div className="remember">
+					<input
+						type="checkbox"
+						checked={savedID && true}
+						onChange={() => setRememberID(!rememberID)}
+					/>
+					<span>Remember this ID?</span>
+				</div> */}
+
+				{/* <div className="popup">
+					<h3>Do you want to save </h3>
+				</div> */}
 
 				<span className="or">OR</span>
 

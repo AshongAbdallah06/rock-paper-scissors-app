@@ -108,6 +108,25 @@ io.on("connect", (socket) => {
 		}
 	});
 
+	console.log("Joined: ", socket.id);
+	socket.on("username", (username) => {
+		console.log("Received Username: ", username);
+
+		if (!usernames[roomId]?.p1Username) {
+			usernames[roomId].p1Username = username;
+			console.log(`Assigned to p1Username: ${usernames[roomId].p1Username}`);
+		} else if (!usernames[roomId].p2Username && username !== usernames[roomId].p1Username) {
+			usernames[roomId].p2Username = username;
+			console.log(`Assigned to p2Username: ${usernames[roomId].p2Username}`);
+		} else {
+			console.log("Both usernames are already assigned or username is a duplicate.");
+		}
+
+		console.log("Current usernames object: ", usernames);
+
+		io.to(roomId).emit("updateUsernames", usernames[roomId]);
+	});
+
 	socket.on("move", (move) => {
 		if (!roomId || !game[roomId]) return;
 
@@ -154,6 +173,10 @@ io.on("connect", (socket) => {
 			game[roomId] = { p1: null, p2: null, result: null };
 			io.to(roomId).emit("clearMoves", game[roomId]);
 		}
+	});
+
+	socket.on("move-made", (username) => {
+		socket.broadcast.to(roomId).emit("move-made", { msg: username + " has made a move" });
 	});
 
 	socket.on("message", async (message) => {
