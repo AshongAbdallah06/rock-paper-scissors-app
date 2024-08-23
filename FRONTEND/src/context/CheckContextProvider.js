@@ -60,15 +60,19 @@ const CheckContextProvider = ({ children }) => {
 	}, [p2Score]);
 
 	//Check if it's a one player game
+	// When a player joins a room
 	const playerMode = JSON.parse(localStorage.getItem("player-mode"));
 	const [isOnePlayer, setIsOnePlayer] = useState(
 		playerMode && playerMode === "dual" ? false : true
 	);
 	const [playerIsChosen, setPlayerIsChosen] = useState(playerMode && true);
 
+	// When a player join a room
 	const [roomIsSelected, setRoomIsSelected] = useState(
 		playerMode && playerMode === "single" && true
 	);
+	// When a player leaves a room
+	const [leftRoom, setLeftRoom] = useState(false);
 
 	// Save score to localStorage
 	useEffect(() => {
@@ -174,8 +178,7 @@ const CheckContextProvider = ({ children }) => {
 					headers: { Authorization: `Bearer ${user.token}` },
 				}
 			);
-			const json = res.data; //  parse JSON responses
-			console.log("JSON: ", json);
+			// const json = res.data; //  parse JSON responses
 
 			if (window.location.pathname === "/signup" || window.location.pathname === "/login") {
 				window.location.href = "/";
@@ -225,6 +228,8 @@ const CheckContextProvider = ({ children }) => {
 				moveAck,
 				setMoveAck,
 				listenToMove,
+				leftRoom,
+				setLeftRoom,
 			}}
 		>
 			{children}
