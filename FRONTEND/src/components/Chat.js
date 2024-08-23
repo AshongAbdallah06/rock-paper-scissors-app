@@ -5,7 +5,9 @@ import trashCan from "../images/trash-outline.svg";
 
 const Chat = ({ setChatIsShowing }) => {
 	const user = JSON.parse(localStorage.getItem("user"));
+
 	const { socket, roomID } = useCheckContext();
+
 	const [textMessage, setTextMessage] = useState("");
 	const [messages, setMessages] = useState(
 		JSON.parse(localStorage.getItem(`room-${roomID}-${user.username}-messages`)) || []

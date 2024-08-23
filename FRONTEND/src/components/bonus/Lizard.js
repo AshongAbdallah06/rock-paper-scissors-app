@@ -1,18 +1,15 @@
 import React, { useEffect } from "react";
 import lizardIcon from "../../images/icon-lizard.svg";
 import useCheckContext from "../../hooks/useCheckContext";
+import useFunctions from "../../hooks/useFunctions";
 
 const Lizard = () => {
 	const { moveOnclick, socket, listenToMove } = useCheckContext();
-	const user = JSON.parse(localStorage.getItem("user"));
+	const { sendMoveAck } = useFunctions();
 
 	useEffect(() => {
 		listenToMove();
 	}, [socket]);
-
-	const sendMoveAck = () => {
-		socket.emit("move-made", user.username);
-	};
 
 	const bonus = JSON.parse(localStorage.getItem("bonus"));
 
@@ -20,7 +17,7 @@ const Lizard = () => {
 		<div
 			className={!bonus ? "gameOpt" : "gameOpt-bonus"}
 			onClick={() => {
-				sendMoveAck();
+				sendMoveAck(socket);
 				moveOnclick("l");
 			}}
 		>

@@ -6,6 +6,7 @@ import spockIcon from "../images/icon-spock.svg";
 import { useState } from "react";
 
 const useFunctions = () => {
+	const user = JSON.parse(localStorage.getItem("user"));
 	const bonus = JSON.parse(localStorage.getItem("bonus"));
 
 	// Generate the computer's move
@@ -265,6 +266,26 @@ const useFunctions = () => {
 		}
 	};
 
+	const sendMoveAck = (socket) => {
+		socket.emit("move-made", user.username);
+	};
+
+	// Join room
+	const joinRoom = (socket, roomID, setLeftRoom) => {
+		socket.emit("join_room", `${roomID}-${bonus ? "bonus" : "normal"}`);
+
+		setLeftRoom(false);
+
+		socket.emit("clearMoves");
+	};
+
+	// Leave Room
+
+	const leaveRoom = (socket, setLeftRoom) => {
+		socket.emit("leaveRoom", user.username);
+
+		setLeftRoom(true);
+	};
 	return {
 		generateComputerMove,
 		checkPlayersMoves,
@@ -273,6 +294,9 @@ const useFunctions = () => {
 		setPlayerMoveImage,
 		computerMoveImage,
 		setComputerMoveImage,
+		sendMoveAck,
+		joinRoom,
+		leaveRoom,
 	};
 };
 

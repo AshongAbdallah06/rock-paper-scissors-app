@@ -1076,16 +1076,32 @@ form .room input {
 	border: 2px solid white;
 	cursor: pointer;
 	border-radius: 0.3rem;
+	text-align: center;
 }
 
 .nav-links a {
 	color: white;
 	text-decoration: none;
 	margin-top: 0.3rem;
+	padding: 0.5rem;
+	font-size: 0.9rem;
+	background-color: hsl(214, 47%, 23%);
 }
 
+.nav-links a:last-child {
+	margin-top: 0.5rem;
+	text-align: center;
+	padding: 0.5rem;
+	background-color: transparent;
+}
+
+.nav-links a:last-child:hover {
+	background-color: red;
+	color: white;
+}
 .nav-links a:hover {
-	color: hsl(39, 89%, 49%);
+	background-color: hsl(214, 50%, 39%);
+	/* color: hsl(39, 89%, 49%); */
 }
 
 .nav-links button {
@@ -1097,7 +1113,9 @@ form .room input {
 	border: none;
 	border-radius: none;
 	transition: all 0.15s;
-	margin-bottom: 1rem;
+	/* margin-bottom: 1rem; */
+	padding: 0.5rem;
+	background-color: transparent;
 }
 
 .nav-links button:hover {

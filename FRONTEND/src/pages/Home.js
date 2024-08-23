@@ -10,7 +10,7 @@ import Nav from "../components/Nav";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
-	const { roomID, isOnePlayer, setIsRulesModalShow, moveAck } = useCheckContext();
+	const { roomID, isOnePlayer, setIsRulesModalShow, moveAck, leftRoom } = useCheckContext();
 
 	useEffect(() => {
 		localStorage.setItem("player-mode", JSON.stringify(isOnePlayer ? "single" : "dual"));
@@ -21,6 +21,7 @@ const Home = () => {
 	};
 
 	const [showCopiedAlert, setShowCopiedAlert] = useState(false);
+	const [showWhoLeft, setShowWhoLeft] = useState(false);
 
 	useEffect(() => {
 		setShowCopiedAlert(true);
@@ -30,6 +31,14 @@ const Home = () => {
 		}, 2000);
 	}, []);
 
+	useEffect(() => {
+		setShowWhoLeft(true);
+
+		setTimeout(() => {
+			setShowWhoLeft(false);
+		}, 2000);
+	}, [leftRoom !== false]);
+
 	const bonus = JSON.parse(localStorage.getItem("bonus"));
 
 	return (
@@ -38,6 +47,7 @@ const Home = () => {
 
 			{!isOnePlayer && showCopiedAlert && <CopiedAlert />}
 			{!isOnePlayer && moveAck && <p className="copied-alert">{moveAck.msg}</p>}
+			{!isOnePlayer && leftRoom && showWhoLeft && <p className="copied-alert">{leftRoom}</p>}
 
 			<ScoreBoard
 				setChatIsShowing={setChatIsShowing}

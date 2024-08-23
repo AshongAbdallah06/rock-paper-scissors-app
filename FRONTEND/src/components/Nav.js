@@ -1,9 +1,20 @@
 import { Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import closeIcon from "../images/icon-close nav.svg";
+import useCheckContext from "../hooks/useCheckContext";
+import useFunctions from "../hooks/useFunctions";
 
 const Nav = () => {
+	const { roomID, setRoomID, setRoomIsSelected, socket, setLeftRoom } = useCheckContext();
+	const { leaveRoom } = useFunctions();
 	const [navIsShowing, setNavIsShowing] = useState(false);
+
+	useEffect(() => {
+		socket.on("leaveRoom", ({ msg }) => {
+			setLeftRoom(msg);
+		});
+	}, [roomID]);
+
 	return (
 		<nav className="nav">
 			<div
@@ -43,6 +54,18 @@ const Nav = () => {
 						}}
 					>
 						Select Game Type
+					</Link>
+
+					<Link
+						to="/select-room"
+						className="leave"
+						onClick={() => {
+							leaveRoom(socket, setLeftRoom);
+							setRoomID(null);
+							setRoomIsSelected(false);
+						}}
+					>
+						Leave Room
 					</Link>
 				</div>
 			)}
