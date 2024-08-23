@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
-import rockIcon from "../images/icon-rock.svg";
-import useCheckContext from "../hooks/useCheckContext";
+import lizardIcon from "../../images/icon-lizard.svg";
+import useCheckContext from "../../hooks/useCheckContext";
 
-const Rock = () => {
+const Lizard = () => {
 	const { moveOnclick, socket, listenToMove } = useCheckContext();
 	const user = JSON.parse(localStorage.getItem("user"));
 
@@ -21,15 +21,15 @@ const Rock = () => {
 			className={!bonus ? "gameOpt" : "gameOpt-bonus"}
 			onClick={() => {
 				sendMoveAck();
-				moveOnclick("r");
+				moveOnclick("l");
 			}}
 		>
 			<img
-				src={rockIcon}
-				alt="rock"
+				src={lizardIcon}
+				alt="lizard"
 			/>
 		</div>
 	);
 };
 
-export default Rock;
+export default Lizard;

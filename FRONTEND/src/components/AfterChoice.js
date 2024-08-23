@@ -19,6 +19,8 @@ const AfterChoice = () => {
 	// Get usernames
 	const { p1Username, p2Username } = JSON.parse(localStorage.getItem("usernames"));
 
+	const bonus = JSON.parse(localStorage.getItem("bonus"));
+
 	return (
 		<div className="Desktop-step2">
 			<div className="you-picked">
@@ -35,14 +37,27 @@ const AfterChoice = () => {
 							: ""
 					}`}
 				>
-					<img
-						src={playerMoveImage}
-						alt={
-							(playerMove === "r" && "rock") ||
-							(playerMove === "p" && "paper") ||
-							(playerMove === "s" && "scissors")
-						}
-					/>
+					{!bonus ? (
+						<img
+							src={playerMoveImage}
+							alt={
+								(playerMove === "r" && "rock") ||
+								(playerMove === "p" && "paper") ||
+								(playerMove === "s" && "scissors")
+							}
+						/>
+					) : (
+						<img
+							src={playerMoveImage}
+							alt={
+								(playerMove === "r" && "rock") ||
+								(playerMove === "p" && "paper") ||
+								(playerMove === "s" && "scissors") ||
+								(playerMove === "l" && "lizard") ||
+								(playerMove === "sp" && "spock")
+							}
+						/>
+					)}
 				</div>
 			</div>
 
@@ -85,14 +100,27 @@ const AfterChoice = () => {
 							: ""
 					}`}
 				>
-					<img
-						src={computerMoveImage}
-						alt={
-							(computerMove === "r" && "rock") ||
-							(computerMove === "p" && "paper") ||
-							(computerMove === "s" && "scissors")
-						}
-					/>
+					{!bonus ? (
+						<img
+							src={computerMoveImage}
+							alt={
+								(playerMove === "r" && "rock") ||
+								(playerMove === "p" && "paper") ||
+								(playerMove === "s" && "scissors")
+							}
+						/>
+					) : (
+						<img
+							src={computerMoveImage}
+							alt={
+								(playerMove === "r" && "rock") ||
+								(playerMove === "p" && "paper") ||
+								(playerMove === "s" && "scissors") ||
+								(playerMove === "l" && "lizard") ||
+								(playerMove === "sp" && "spock")
+							}
+						/>
+					)}
 				</div>
 			</div>
 		</div>

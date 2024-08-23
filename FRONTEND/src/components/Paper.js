@@ -14,9 +14,11 @@ const Paper = () => {
 		socket.emit("move-made", user.username);
 	};
 
+	const bonus = JSON.parse(localStorage.getItem("bonus"));
+
 	return (
 		<div
-			className="gameOpt"
+			className={!bonus ? "gameOpt" : "gameOpt-bonus"}
 			onClick={() => {
 				sendMoveAck();
 				moveOnclick("p");

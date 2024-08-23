@@ -9,17 +9,17 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 		useCheckContext();
 	const user = JSON.parse(localStorage.getItem("user"));
 
-	const updateScore = async () => {
-		try {
-			await Axios.patch(`http://localhost:4001/api/user/scores/${user.username}`, { score });
-		} catch (error) {
-			console.log(error);
-		}
-	};
+	// const updateScore = async () => {
+	// 	try {
+	// 		await Axios.patch(`http://localhost:4001/api/user/scores/${user.username}`, { score });
+	// 	} catch (error) {
+	// 		console.log(error);
+	// 	}
+	// };
 
-	useEffect(() => {
-		updateScore();
-	}, [score]);
+	// useEffect(() => {
+	// 	updateScore();
+	// }, [score]);
 
 	const [p1Username, setP1Username] = useState("");
 	const [p2Username, setP2Username] = useState("");
@@ -30,8 +30,10 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 	}, []);
 
 	useEffect(() => {
-		if (user?.username) {
-			socket.emit("username", user.username);
+		if (!isOnePlayer) {
+			if (user?.username) {
+				socket.emit("username", user.username);
+			}
 		}
 
 		socket.on("updateUsernames", ({ p1Username, p2Username }) => {
@@ -76,7 +78,7 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 				)}
 			</section>
 
-			{!isOnePlayer && !chatIsShowing ? (
+			{!isOnePlayer && !chatIsShowing && (
 				<div
 					className="menu"
 					onClick={() => setChatIsShowing(!chatIsShowing)}
@@ -87,8 +89,6 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 						alt="messages"
 					/>
 				</div>
-			) : (
-				""
 			)}
 		</>
 	);

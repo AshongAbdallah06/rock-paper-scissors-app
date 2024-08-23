@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Dialog from "../components/Dialog";
+import Dialog from "../components/bonus/Dialog";
 import Chat from "../components/Chat";
 import ScoreBoard from "../components/ScoreBoard";
-import GameBoard from "../GameBoard";
+import GameBoard from "../components/bonus/GameBoard";
 import useCheckContext from "../hooks/useCheckContext";
 import CopiedAlert from "../components/CopiedAlert";
-import BonusDialog from "../components/bonus/Dialog";
-import Nav from "../components/Nav";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
@@ -30,12 +28,8 @@ const Home = () => {
 		}, 2000);
 	}, []);
 
-	const bonus = JSON.parse(localStorage.getItem("bonus"));
-
 	return (
 		<>
-			<Nav />
-
 			{!isOnePlayer && showCopiedAlert && <CopiedAlert />}
 			{!isOnePlayer && moveAck && <p className="copied-alert">{moveAck.msg}</p>}
 
@@ -44,17 +38,21 @@ const Home = () => {
 				chatIsShowing={chatIsShowing}
 			/>
 
+			<p
+				className="change-mode-abs"
+				onClick={() => {
+					localStorage.removeItem("player-mode");
+					window.location.href = "/";
+				}}
+			>
+				Change Mode
+			</p>
+
 			<GameBoard />
-			{!bonus ? <Dialog /> : <BonusDialog />}
-			{/* {isOnePlayer && (
-				<Link
-					to="/leaderboard"
-					className="leaderboard-link"
-				>
-					Leaderboard
-				</Link>
-			)} */}
+			<Dialog />
+
 			{chatIsShowing ? <Chat setChatIsShowing={setChatIsShowing} /> : ""}
+
 			<footer>
 				{!isOnePlayer && <p>Room Name: {roomID}</p>}
 				<button
