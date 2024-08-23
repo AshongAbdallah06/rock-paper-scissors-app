@@ -6,6 +6,7 @@ import GameBoard from "../GameBoard";
 import useCheckContext from "../hooks/useCheckContext";
 import CopiedAlert from "../components/CopiedAlert";
 import BonusDialog from "../components/bonus/Dialog";
+import Nav from "../components/Nav";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
@@ -33,6 +34,8 @@ const Home = () => {
 
 	return (
 		<>
+			<Nav />
+
 			{!isOnePlayer && showCopiedAlert && <CopiedAlert />}
 			{!isOnePlayer && moveAck && <p className="copied-alert">{moveAck.msg}</p>}
 
@@ -41,20 +44,8 @@ const Home = () => {
 				chatIsShowing={chatIsShowing}
 			/>
 
-			<p
-				className="change-mode-abs"
-				onClick={() => {
-					localStorage.removeItem("player-mode");
-					window.location.href = "/";
-				}}
-			>
-				Change Mode
-			</p>
-
 			<GameBoard />
-
 			{!bonus ? <Dialog /> : <BonusDialog />}
-
 			{/* {isOnePlayer && (
 				<Link
 					to="/leaderboard"
@@ -63,9 +54,7 @@ const Home = () => {
 					Leaderboard
 				</Link>
 			)} */}
-
 			{chatIsShowing ? <Chat setChatIsShowing={setChatIsShowing} /> : ""}
-
 			<footer>
 				{!isOnePlayer && <p>Room Name: {roomID}</p>}
 				<button

@@ -11,6 +11,7 @@ import Home from "./pages/Home";
 import Leaderboard from "./pages/Leaderboard";
 import Axios from "axios";
 import Audios from "./components/Audios";
+import GameType from "./pages/GameType";
 
 export const GameContext = createContext();
 function App() {
@@ -51,36 +52,17 @@ function App() {
 
 					<Route
 						path="/select-player"
-						element={
-							userExists ? (
-								!playerIsChosen ? (
-									<PlayerSelection />
-								) : (
-									<Navigate to="/" />
-								)
-							) : (
-								<Navigate to="/login" />
-							)
-						}
+						element={<PlayerSelection />}
 					/>
 
 					<Route
 						path="/select-room"
-						element={
-							userExists ? (
-								!roomIsSelected ? (
-									!playerIsChosen ? (
-										<Room />
-									) : (
-										<Navigate to="/select-player" />
-									)
-								) : (
-									<Navigate to="/" />
-								)
-							) : (
-								<Navigate to="/login" />
-							)
-						}
+						element={<Room />}
+					/>
+
+					<Route
+						path="/select-game-type"
+						element={<GameType />}
 					/>
 
 					<Route

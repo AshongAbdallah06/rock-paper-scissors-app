@@ -204,7 +204,7 @@ img[alt="scissors"] {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-top: 7rem;
+	margin-top: 4rem;
 }
 .Gboard .stale {
 	text-align: center;
@@ -357,6 +357,8 @@ img[alt="scissors"] {
 	border: 0.125rem solid hsla(0, 4%, 80%, 0.1);
 	color: #f9f9f9;
 	cursor: pointer;
+	right: -11rem;
+	bottom: -2.7rem;
 }
 .rules-modal > div {
 	display: flex;
@@ -795,6 +797,10 @@ footer p {
 	.input-container {
 		margin-bottom: 1rem;
 	}
+
+	.gameBoard-bonus {
+		width: 18rem;
+	}
 }
 
 @media (max-height: 500px) {
@@ -1034,4 +1040,70 @@ form .room input {
 	background: linear-gradient(hsl(189, 59%, 53%), hsl(189, 58%, 57%));
 	/* bottom: -30%; */
 	left: -2rem;
+}
+
+.nav {
+	display: block;
+	position: absolute;
+	left: 1rem;
+	top: 2rem;
+	cursor: pointer;
+}
+
+.menu-bar span {
+	background-color: white;
+	display: block;
+	height: 0.3rem;
+	width: 2rem;
+	margin-bottom: 0.2rem;
+	cursor: pointer;
+}
+
+.menu-bar:hover span {
+	background-color: hsl(40, 84%, 53%);
+}
+.nav-links {
+	background-color: hsl(237, 49%, 15%);
+	padding: 0.5rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	z-index: 100;
+	position: absolute;
+	top: 2rem;
+	left: 0.5rem;
+	width: 10rem;
+	border: 2px solid white;
+	cursor: pointer;
+	border-radius: 0.3rem;
+}
+
+.nav-links a {
+	color: white;
+	text-decoration: none;
+	margin-top: 0.3rem;
+}
+
+.nav-links a:hover {
+	color: hsl(39, 89%, 49%);
+}
+
+.nav-links button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	padding: 0.3rem;
+	cursor: pointer;
+	border: none;
+	border-radius: none;
+	transition: all 0.15s;
+	margin-bottom: 1rem;
+}
+
+.nav-links button:hover {
+	background-color: rgb(201, 201, 201);
+}
+
+.nav-links .close-icon {
+	height: 1rem;
 }
