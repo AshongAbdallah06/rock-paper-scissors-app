@@ -39,6 +39,7 @@ const useFunctions = () => {
 	const [playerMoveImage, setPlayerMoveImage] = useState("");
 	const [computerMoveImage, setComputerMoveImage] = useState("");
 
+	// For single player mode
 	const checkOptions = (
 		playerMove,
 		computerMove,
@@ -237,6 +238,7 @@ const useFunctions = () => {
 		}
 	};
 
+	// For dual player mode
 	const checkPlayersMoves = (gameState, setPlayerMoveImage, setComputerMoveImage) => {
 		if (gameState.p1 === "r") {
 			setPlayerMoveImage(rockIcon);
@@ -244,6 +246,10 @@ const useFunctions = () => {
 			setPlayerMoveImage(paperIcon);
 		} else if (gameState.p1 === "s") {
 			setPlayerMoveImage(scissorsIcon);
+		} else if (gameState.p1 === "l") {
+			setPlayerMoveImage(lizardIcon);
+		} else if (gameState.p1 === "sp") {
+			setPlayerMoveImage(spockIcon);
 		}
 
 		if (gameState.p2 === "r") {
@@ -252,6 +258,10 @@ const useFunctions = () => {
 			setComputerMoveImage(paperIcon);
 		} else if (gameState.p2 === "s") {
 			setComputerMoveImage(scissorsIcon);
+		} else if (gameState.p2 === "l") {
+			setComputerMoveImage(lizardIcon);
+		} else if (gameState.p2 === "sp") {
+			setComputerMoveImage(spockIcon);
 		}
 	};
 

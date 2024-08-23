@@ -144,7 +144,11 @@ io.on("connect", (socket) => {
 							? "Tie"
 							: game[roomId].p2 === "p"
 							? "Player2 wins"
-							: "Player1 wins";
+							: game[roomId].p2 === "s"
+							? "Player1 wins"
+							: game[roomId].p2 === "l"
+							? "Player1 wins"
+							: game[roomId].p2 === "sp" && "Player2 wins";
 					break;
 				case "p":
 					game[roomId].result =
@@ -152,7 +156,11 @@ io.on("connect", (socket) => {
 							? "Player1 wins"
 							: game[roomId].p2 === "p"
 							? "Tie"
-							: "Player2 wins";
+							: game[roomId].p2 === "s"
+							? "Player2 wins"
+							: game[roomId].p2 === "l"
+							? "Player2 wins"
+							: game[roomId].p2 === "sp" && "Player1 wins";
 					break;
 				case "s":
 					game[roomId].result =
@@ -160,7 +168,35 @@ io.on("connect", (socket) => {
 							? "Player2 wins"
 							: game[roomId].p2 === "p"
 							? "Player1 wins"
-							: "Tie";
+							: game[roomId].p2 === "s"
+							? "Tie"
+							: game[roomId].p2 === "l"
+							? "Player1 wins"
+							: game[roomId].p2 === "sp" && "Player2 wins";
+					break;
+				case "l":
+					game[roomId].result =
+						game[roomId].p2 === "r"
+							? "Player2 wins"
+							: game[roomId].p2 === "p"
+							? "Player1 wins"
+							: game[roomId].p2 === "s"
+							? "Player2 wins"
+							: game[roomId].p2 === "l"
+							? "Tie"
+							: game[roomId].p2 === "sp" && "Player1 wins";
+					break;
+				case "sp":
+					game[roomId].result =
+						game[roomId].p2 === "r"
+							? "Player1 wins"
+							: game[roomId].p2 === "p"
+							? "Player2 wins"
+							: game[roomId].p2 === "s"
+							? "Player1 wins"
+							: game[roomId].p2 === "l"
+							? "Player2 wins"
+							: game[roomId].p2 === "sp" && "Tie";
 					break;
 			}
 

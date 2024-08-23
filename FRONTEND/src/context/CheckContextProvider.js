@@ -111,9 +111,10 @@ const CheckContextProvider = ({ children }) => {
 		!isOnePlayer && checkPlayersMoves(gameState, setPlayerMoveImage, setComputerMoveImage);
 	}, [isOnePlayer, gameState.p1 && gameState.p2]);
 
+	const bonus = JSON.parse(localStorage.getItem("bonus"));
 	// Join room
 	const joinRoom = () => {
-		socket.emit("join_room", roomID);
+		socket.emit("join_room", `${roomID}-${bonus ? "bonus" : "normal"}`);
 
 		socket.emit("clearMoves");
 	};
