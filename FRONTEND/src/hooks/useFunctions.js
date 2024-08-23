@@ -10,7 +10,7 @@ const useFunctions = () => {
 
 	// Generate the computer's move
 	const generateComputerMove = (setComputerMove) => {
-		const randomNumber = Math.floor(Math.random() * !bonus ? 3 : 5);
+		const randomNumber = Math.floor(Math.random() * (bonus ? 5 : 3));
 
 		if (!bonus) {
 			if (randomNumber === 0) {
