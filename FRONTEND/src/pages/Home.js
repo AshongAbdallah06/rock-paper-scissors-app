@@ -31,13 +31,14 @@ const Home = () => {
 		}, 2000);
 	}, []);
 
+	const hasLeftRoom = leftRoom !== false;
 	useEffect(() => {
 		setShowWhoLeft(true);
 
 		setTimeout(() => {
 			setShowWhoLeft(false);
 		}, 2000);
-	}, [leftRoom !== false]);
+	}, [hasLeftRoom]);
 
 	const bonus = JSON.parse(localStorage.getItem("bonus"));
 
@@ -66,7 +67,7 @@ const Home = () => {
 			)} */}
 			{chatIsShowing ? <Chat setChatIsShowing={setChatIsShowing} /> : ""}
 			<footer>
-				{!isOnePlayer && <p>Room Name: {roomID}</p>}
+				{!isOnePlayer && <p>Room ID: {roomID}</p>}
 				<button
 					className="rules"
 					onClick={showModal}

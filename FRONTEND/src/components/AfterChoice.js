@@ -1,10 +1,9 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useCheckContext from "../hooks/useCheckContext";
 
 const AfterChoice = () => {
 	const {
 		playerMove,
-		computerMove,
 		setPlayerMove,
 		playerMoveImage,
 		computerMoveImage,
@@ -17,15 +16,35 @@ const AfterChoice = () => {
 	} = useCheckContext();
 
 	// Get usernames
-	const { p1Username, p2Username } = JSON.parse(localStorage.getItem("usernames"));
+	const usernames = JSON.parse(localStorage.getItem("usernames"));
+	const [p1Username, setP1Username] = useState("");
+	const [p2Username, setP2Username] = useState("");
+
+	useEffect(() => {
+		if (usernames) {
+			if (!usernames) {
+				alert("There are no usernames assigned for both users");
+
+				return;
+			}
+
+			setP1Username(usernames.p1Username);
+			setP2Username(usernames.p2Username);
+		}
+	}, []);
 
 	const bonus = JSON.parse(localStorage.getItem("bonus"));
+	const user = JSON.parse(localStorage.getItem("user"));
 
 	return (
 		<div className="Desktop-step2">
 			<div className="you-picked">
 				{/* <h1>{isOnePlayer ? "YOU PICKED" : "PLAYER 1 PICKED"}</h1> */}
-				<h1>{isOnePlayer ? "YOU PICKED" : `${p1Username} PICKED`}</h1>
+				<h1>
+					{isOnePlayer
+						? "YOU PICKED"
+						: `${p1Username === user.username ? "You" : p1Username} PICKED`}
+				</h1>
 				<div
 					className={`picked ${
 						isOnePlayer
@@ -88,7 +107,11 @@ const AfterChoice = () => {
 
 			<div className="house-picked">
 				{/* <h1>{isOnePlayer ? "THE HOUSE PICKED" : "PLAYER 2 PICKED"}</h1> */}
-				<h1>{isOnePlayer ? "THE HOUSE PICKED" : `${p2Username} PICKED`}</h1>
+				<h1>
+					{isOnePlayer
+						? "THE HOUSE PICKED"
+						: `${p2Username === user.username ? "You" : p2Username} PICKED`}
+				</h1>
 				<div
 					className={`hPicked ${
 						isOnePlayer
