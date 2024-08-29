@@ -108,6 +108,12 @@ io.on("connect", (socket) => {
 		}
 	});
 
+	socket.on("leaveRoom", (username) => {
+		console.log("Message: ", { msg: username + " has left the room" });
+
+		socket.broadcast.to(roomId).emit("leaveRoom", { msg: username + " has left the room" });
+	});
+
 	console.log("Joined: ", socket.id);
 	socket.on("username", (username) => {
 		console.log("Received Username: ", username);

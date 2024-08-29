@@ -21,12 +21,25 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 	// 	updateScore();
 	// }, [score]);
 
+	const usernames = JSON.parse(localStorage.getItem("usernames"));
 	const [p1Username, setP1Username] = useState("");
 	const [p2Username, setP2Username] = useState("");
 
 	useEffect(() => {
-		setP1Score(JSON.parse(localStorage.getItem(`${roomID}-p1score`)) || 0);
-		setP2Score(JSON.parse(localStorage.getItem(`${roomID}-p2score`)) || 0);
+		setP1Score(
+			JSON.parse(
+				localStorage.getItem(
+					`${roomID + usernames?.p1Username + usernames?.p2Username}-p1score`
+				)
+			) || 0
+		);
+		setP2Score(
+			JSON.parse(
+				localStorage.getItem(
+					`${roomID + usernames?.p1Username + usernames?.p2Username}-p2score`
+				)
+			) || 0
+		);
 	}, []);
 
 	useEffect(() => {

@@ -1,11 +1,19 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import useCheckContext from "../hooks/useCheckContext";
+import useFunctions from "../hooks/useFunctions";
 
 const PlayerSelection = () => {
-	const { roomID, setRoomID, joinRoom, setRoomIsSelected, isOnePlayer, setIsOnePlayer } =
-		useCheckContext();
-
+	const {
+		roomID,
+		setRoomID,
+		setRoomIsSelected,
+		isOnePlayer,
+		setIsOnePlayer,
+		setLeftRoom,
+		socket,
+	} = useCheckContext();
+	const { joinRoom } = useFunctions();
 	useEffect(() => {
 		localStorage.setItem("player-mode", JSON.stringify(isOnePlayer ? "single" : "dual"));
 	}, [isOnePlayer]);
@@ -42,7 +50,7 @@ const PlayerSelection = () => {
 			className="selection"
 			onSubmit={(e) => {
 				e.preventDefault();
-				roomID && joinRoom();
+				roomID && joinRoom(socket, roomID, setLeftRoom);
 				roomID && setRoomIsSelected(true);
 			}}
 		>
@@ -62,7 +70,7 @@ const PlayerSelection = () => {
 					className="join-room"
 					onClick={() => {
 						if (roomID) {
-							joinRoom();
+							joinRoom(socket, roomID, setLeftRoom);
 							setRoomIsSelected(true);
 							copyRoomID();
 							setIsOnePlayer(false);

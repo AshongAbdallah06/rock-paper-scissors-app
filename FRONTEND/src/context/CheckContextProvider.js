@@ -43,20 +43,35 @@ const CheckContextProvider = ({ children }) => {
 
 	const [roomID, setRoomID] = useState(JSON.parse(localStorage.getItem("room-id")) || null);
 
+	const usernames = JSON.parse(localStorage.getItem("usernames"));
 	const [score, setScore] = useState(JSON.parse(localStorage.getItem("score")) || 0);
 	const [p1Score, setP1Score] = useState(
-		JSON.parse(localStorage.getItem(`${roomID}-p1score`)) || 0
+		JSON.parse(
+			localStorage.getItem(
+				`${roomID + usernames?.p1Username + usernames?.p2Username}-p1score`
+			)
+		) || 0
 	);
 	const [p2Score, setP2Score] = useState(
-		JSON.parse(localStorage.getItem(`${roomID}-p2score`)) || 0
+		JSON.parse(
+			localStorage.getItem(
+				`${roomID + usernames?.p1Username + usernames?.p2Username}-p2score`
+			)
+		) || 0
 	);
 
 	useEffect(() => {
-		localStorage.setItem(`${roomID}-p1score`, JSON.stringify(p1Score));
+		localStorage.setItem(
+			`${roomID + usernames?.p1Username + usernames?.p2Username}-p1score`,
+			JSON.stringify(p1Score)
+		);
 	}, [p1Score]);
 
 	useEffect(() => {
-		localStorage.setItem(`${roomID}-p2score`, JSON.stringify(p2Score));
+		localStorage.setItem(
+			`${roomID + usernames?.p1Username + usernames?.p2Username}-p2score`,
+			JSON.stringify(p2Score)
+		);
 	}, [p2Score]);
 
 	//Check if it's a one player game
@@ -114,14 +129,6 @@ const CheckContextProvider = ({ children }) => {
 
 		!isOnePlayer && checkPlayersMoves(gameState, setPlayerMoveImage, setComputerMoveImage);
 	}, [isOnePlayer, gameState.p1 && gameState.p2]);
-
-	const bonus = JSON.parse(localStorage.getItem("bonus"));
-	// Join room
-	const joinRoom = () => {
-		socket.emit("join_room", `${roomID}-${bonus ? "bonus" : "normal"}`);
-
-		socket.emit("clearMoves");
-	};
 
 	// Send move in dual player mode
 	useEffect(() => {
@@ -211,7 +218,6 @@ const CheckContextProvider = ({ children }) => {
 				setPlayerIsChosen,
 				roomID,
 				setRoomID,
-				joinRoom,
 				roomIsSelected,
 				setRoomIsSelected,
 				clearMoves,
