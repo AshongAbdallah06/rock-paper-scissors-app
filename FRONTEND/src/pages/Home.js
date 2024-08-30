@@ -7,6 +7,7 @@ import useCheckContext from "../hooks/useCheckContext";
 import CopiedAlert from "../components/CopiedAlert";
 import BonusDialog from "../components/bonus/Dialog";
 import Nav from "../components/Nav";
+import copyIcon from "../images/copy-regular.svg";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
@@ -23,14 +24,6 @@ const Home = () => {
 	const [showCopiedAlert, setShowCopiedAlert] = useState(false);
 	const [showWhoLeft, setShowWhoLeft] = useState(false);
 
-	useEffect(() => {
-		setShowCopiedAlert(true);
-
-		setTimeout(() => {
-			setShowCopiedAlert(false);
-		}, 2000);
-	}, []);
-
 	const hasLeftRoom = leftRoom !== false;
 	useEffect(() => {
 		setShowWhoLeft(true);
@@ -41,6 +34,21 @@ const Home = () => {
 	}, [hasLeftRoom]);
 
 	const bonus = JSON.parse(localStorage.getItem("bonus"));
+
+	const copyRoomID = async () => {
+		try {
+			await navigator.clipboard.writeText(roomID);
+			await navigator.clipboard.readText();
+
+			setShowCopiedAlert(true);
+
+			setTimeout(() => {
+				setShowCopiedAlert(false);
+			}, 2000);
+		} catch (error) {
+			console.log("🚀 ~ copyRoomID ~ error:", error);
+		}
+	};
 
 	return (
 		<>
@@ -67,7 +75,20 @@ const Home = () => {
 			)} */}
 			{chatIsShowing ? <Chat setChatIsShowing={setChatIsShowing} /> : ""}
 			<footer>
-				{!isOnePlayer && <p>Room ID: {roomID}</p>}
+				{!isOnePlayer && (
+					<div
+						className="room-name"
+						onClick={copyRoomID}
+					>
+						<p>Room ID: {roomID}</p>
+						<img
+							src={copyIcon}
+							alt="copyIcon"
+							className="copy-icon"
+							title="copy"
+						/>
+					</div>
+				)}
 				<button
 					className="rules"
 					onClick={showModal}

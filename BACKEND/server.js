@@ -17,32 +17,20 @@ const io = socketIo(server, {
 
 const allowedOrigins = ["http://localhost:3000", "https://rock-paper-scissors-app-nine.vercel.app"];
 
-app.use(
-	cors({
-		origin: function (origin, callback) {
-			if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-				callback(null, true);
-			} else {
-				callback(new Error("Not allowed by CORS"));
-			}
-		},
-	})
-);
-app.options(
-	"*",
-	cors({
-		origin: function (origin, callback) {
-			if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-				callback(null, true);
-			} else {
-				callback(new Error("Not allowed by CORS"));
-			}
-		},
-		methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
-		allowedHeaders: ["Content-Type", "Authorization"],
-		optionsSuccessStatus: 200,
-	})
-);
+const corsOptions = {
+	origin: function (origin, callback) {
+		if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+			callback(null, true);
+		} else {
+			callback(new Error("Not allowed by CORS"));
+		}
+	},
+	methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+	allowedHeaders: ["Content-Type", "Authorization"],
+	optionsSuccessStatus: 200, // For legacy browser support
+	credentials: true, // Enable if you need to send cookies or HTTP authentication
+};
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const gameRooms = {};

@@ -29,7 +29,14 @@ const updateScores = async (req, res) => {
 	const { score } = req.body;
 
 	try {
-		await pool.query(`UPDATE SCORES SET SCORE = $1 WHERE USERNAME = $2`, [score, username]);
+		const user = await pool.query(`SELECT * FROM SCORES WHERE USERNAME = $1`, [username]);
+
+		if (!user.rows[0]?.username) {
+			await pool.query(`INSERT INTO SCORES(USERNAME) VALUES($1)`, [username]);
+			await pool.query(`UPDATE SCORES SET SCORE = $1 WHERE USERNAME = $2`, [score, username]);
+		} else {
+			await pool.query(`UPDATE SCORES SET SCORE = $1 WHERE USERNAME = $2`, [score, username]);
+		}
 	} catch (error) {
 		console.log("🚀 ~ getScores ~ error:", error);
 	}

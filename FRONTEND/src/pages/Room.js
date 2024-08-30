@@ -18,15 +18,6 @@ const PlayerSelection = () => {
 		localStorage.setItem("player-mode", JSON.stringify(isOnePlayer ? "single" : "dual"));
 	}, [isOnePlayer]);
 
-	const copyRoomID = async () => {
-		try {
-			await navigator.clipboard.writeText(roomID);
-			await navigator.clipboard.readText();
-		} catch (error) {
-			console.log("🚀 ~ copyRoomID ~ error:", error);
-		}
-	};
-
 	/**todo: create remember id functionality 
 	 * const [rememberID, setRememberID] = useState(false);
 
@@ -72,7 +63,6 @@ const PlayerSelection = () => {
 						if (roomID) {
 							joinRoom(socket, roomID, setLeftRoom);
 							setRoomIsSelected(true);
-							copyRoomID();
 							setIsOnePlayer(false);
 						}
 					}}

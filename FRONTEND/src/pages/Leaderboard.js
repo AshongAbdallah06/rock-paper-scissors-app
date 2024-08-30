@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Axios from "axios";
 import logo from "../images/logo.svg";
+import back from "../images/arrow-back-outline.svg";
 import LoadingDots from "../components/LoadingDots";
 
 const Leaderboard = () => {
@@ -65,6 +66,27 @@ const Leaderboard = () => {
 					alt="logo"
 				/>
 			</Link>
+
+			<header>
+				<Link
+					to="/"
+					className="go-back"
+				>
+					<img
+						src={back}
+						alt="back"
+						className="back"
+					/>
+					Go back
+				</Link>
+
+				<Link
+					to="/profile"
+					className="my-profile"
+				>
+					View Profile
+				</Link>
+			</header>
 			<div className="leaderboard-container">
 				<h1>Leaderboard</h1>
 
@@ -82,9 +104,9 @@ const Leaderboard = () => {
 						</p>
 					)}
 					{error && <p className="error-loading">{error.msg}</p>}
-					{scores?.map((score, index) => (
+					{scores?.map((score) => (
 						<li
-							title={index + 1}
+							title={score.username}
 							style={{
 								backgroundColor:
 									user?.username === score?.username && "hsl(349, 70%, 56%)",
@@ -104,15 +126,15 @@ const Leaderboard = () => {
 							{user?.username === score?.username && (
 								<p
 									style={{
-										fontWeight: "bold", // Consistent bold text for current user
+										fontWeight: "bold",
 									}}
 								>
 									You
 								</p>
 							)}
 							<span
-								className="user-score"
-								style={{ color: "orange" }} // Orange for the score
+								title={score.score}
+								style={{ color: "orange" }}
 							>
 								{score.score}
 							</span>
