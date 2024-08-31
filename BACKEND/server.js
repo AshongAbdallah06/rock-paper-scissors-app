@@ -30,6 +30,7 @@ const corsOptions = {
 	optionsSuccessStatus: 200, // For legacy browser support
 	credentials: true, // Enable if you need to send cookies or HTTP authentication
 };
+app.use(cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

@@ -11,16 +11,45 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 		useCheckContext();
 	const user = JSON.parse(localStorage.getItem("user"));
 
+	const [userScore, setUserScore] = useState("");
+
 	const updateScore = async () => {
+		console.log("DONE");
 		try {
-			await Axios.patch(`http://localhost:4001/api/user/scores/${user.username}`, { score });
+			// await Axios.patch(`http://192.168.8.195:4001/api/user/scores/${user.username}`, {
+			await Axios.patch(`http://localhost:4001/api/user/scores/${user.username}`, {
+				userScore,
+			});
 		} catch (error) {
 			console.log(error);
 		}
 	};
 
+	const getUserScore = async () => {
+		try {
+			console.log("🚀 ~ getScores ~ Attempting to fetch scores");
+			const res = await Axios.get(`http://localhost:4001/api/user/score/${user.username}`);
+			const data = res.data[0];
+
+			setUserScore(data.score);
+			console.log("🚀 ~ getScores ~ Success:", data);
+		} catch (error) {
+			console.error("🚀 ~ getScores ~ error:", error);
+		}
+	};
+
 	useEffect(() => {
-		updateScore();
+		getUserScore();
+	}, []);
+
+	// useEffect(() => {
+	// 	updateScore();
+	// }, [userScore]);
+
+	useEffect(() => {
+		setTimeout(() => {
+			updateScore();
+		}, 2000);
 	}, [score]);
 
 	const usernames = JSON.parse(localStorage.getItem("usernames"));
@@ -75,7 +104,7 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 				{isOnePlayer ? (
 					<div className="score">
 						<p>score</p>
-						<p>{score}</p>
+						<p>{userScore}</p>
 					</div>
 				) : (
 					<div className="p2">

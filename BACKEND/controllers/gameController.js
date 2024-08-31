@@ -17,7 +17,21 @@ const getScores = async (req, res) => {
 		const scores = response.rows;
 		console.log("🚀 ~ getScores ~ Success:", scores);
 
-		res.json(scores);
+		res.status(201).json(scores);
+	} catch (error) {
+		console.error("🚀 ~ getScores ~ error:", error);
+		res.status(500).json({ msg: "Error retrieving scores" });
+	}
+};
+
+const getUserScore = async (req, res) => {
+	try {
+		console.log("🚀 ~ getScores ~ Fetching scores from database");
+		const response = await pool.query("SELECT score FROM SCORES");
+		const scores = response.rows;
+		console.log("🚀 ~ getScores ~ Success:", scores);
+
+		res.status(201).json(scores);
 	} catch (error) {
 		console.error("🚀 ~ getScores ~ error:", error);
 		res.status(500).json({ msg: "Error retrieving scores" });
@@ -32,8 +46,10 @@ const updateScores = async (req, res) => {
 		const user = await pool.query(`SELECT * FROM SCORES WHERE USERNAME = $1`, [username]);
 
 		if (!user.rows[0]?.username) {
-			await pool.query(`INSERT INTO SCORES(USERNAME) VALUES($1)`, [username]);
-			await pool.query(`UPDATE SCORES SET SCORE = $1 WHERE USERNAME = $2`, [score, username]);
+			await pool.query(
+				`INSERT INTO SCORES(username,score,wins,loses,ties,games_played) VALUES($1,$2,$3,$4,$5,$6)`,
+				[username, 0, 0, 0, 0, 0]
+			);
 		} else {
 			await pool.query(`UPDATE SCORES SET SCORE = $1 WHERE USERNAME = $2`, [score, username]);
 		}
@@ -42,4 +58,20 @@ const updateScores = async (req, res) => {
 	}
 };
 
-module.exports = { getHome, getScores, updateScores };
+const getUserStats = async (req, res) => {
+	const { username } = req.params;
+
+	try {
+		console.log(username);
+		console.log("🚀 ~ getScores ~ Fetching scores from database");
+		const response = await pool.query("SELECT * FROM SCORES WHERE USERNAME = $1", [username]);
+		const scores = response.rows;
+		console.log("🚀 ~ getScores ~ Success:", scores);
+
+		res.status(201).json(scores);
+	} catch (error) {
+		console.log("🚀 ~ getUserStats ~ error:", error);
+	}
+};
+
+module.exports = { getHome, getScores, updateScores, getUserStats, getUserScore };

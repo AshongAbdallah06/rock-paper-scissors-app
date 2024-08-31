@@ -17,6 +17,8 @@ const CheckContextProvider = ({ children }) => {
 		generateComputerMove,
 	} = useFunctions();
 
+	const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+
 	// Show rules modal
 	const [isRulesModalShow, setIsRulesModalShow] = useState(false);
 
@@ -44,7 +46,9 @@ const CheckContextProvider = ({ children }) => {
 	const [roomID, setRoomID] = useState(JSON.parse(localStorage.getItem("room-id")) || null);
 
 	const usernames = JSON.parse(localStorage.getItem("usernames"));
-	const [score, setScore] = useState(JSON.parse(localStorage.getItem("score")) || 0);
+	const [score, setScore] = useState(
+		JSON.parse(localStorage.getItem(`${user.username}-score`)) || 0
+	);
 	const [p1Score, setP1Score] = useState(
 		JSON.parse(
 			localStorage.getItem(
@@ -91,7 +95,7 @@ const CheckContextProvider = ({ children }) => {
 
 	// Save score to localStorage
 	useEffect(() => {
-		localStorage.setItem("score", JSON.stringify(score));
+		localStorage.setItem(`${user.username}-score`, JSON.stringify(score));
 	}, [score]);
 
 	const [gameState, setGameState] = useState({ p1: null, p2: null, result: null });
@@ -175,7 +179,6 @@ const CheckContextProvider = ({ children }) => {
 		socket.emit("clearMoves");
 	};
 
-	const user = JSON.parse(localStorage.getItem("user"));
 	const [userExists, setUserExists] = useState(null);
 	const authorize = async () => {
 		try {
