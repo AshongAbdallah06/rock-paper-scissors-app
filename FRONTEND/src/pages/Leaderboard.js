@@ -1,59 +1,22 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import Axios from "axios";
 import logo from "../images/logo.svg";
 import back from "../images/arrow-back-outline.svg";
-import LoadingDots from "../components/LoadingDots";
+import useCheckContext from "../hooks/useCheckContext";
 
 const Leaderboard = () => {
 	const [scores, setScores] = useState(null);
-	const [error, setError] = useState(null);
-	const [loading, setLoading] = useState(true);
+	const { socket } = useCheckContext();
 
 	const user = JSON.parse(localStorage.getItem("user"));
 
-	const getScores = async () => {
-		try {
-			console.log("🚀 ~ getScores ~ Attempting to fetch scores");
-			const res = await Axios.get("http://localhost:4001/api/user/scores");
-			const data = res.data;
-			console.log("🚀 ~ getScores ~ Success:", data);
-
-			setScores(data);
-
-			setLoading(false);
-			setError(null);
-		} catch (error) {
-			setLoading(false);
-			setError({ msg: "Error loading scores" });
-			console.error("🚀 ~ getScores ~ error:", error);
-		}
-	};
-
 	useEffect(() => {
-		let loadingTimeout;
-		let interval;
+		socket.emit("getAllScores");
 
-		const startLoadingTimeout = () => {
-			loadingTimeout = setTimeout(() => {
-				if (loading) {
-					setError({ msg: "Error loading scores 😞" });
-				}
-			}, 5000);
-		};
-
-		getScores();
-		startLoadingTimeout();
-
-		interval = setInterval(() => {
-			getScores();
-		}, 60000);
-
-		return () => {
-			clearInterval(interval);
-			clearTimeout(loadingTimeout);
-		};
-	}, [loading]);
+		socket.on("getAllScores", (scores) => {
+			setScores(scores);
+		});
+	}, []);
 
 	return (
 		<div className="leaderboard">
@@ -96,14 +59,6 @@ const Leaderboard = () => {
 				</div>
 
 				<ul>
-					{loading && !error && (
-						<p className="error-loading">
-							Loading
-							<LoadingDots />
-							😁
-						</p>
-					)}
-					{error && <p className="error-loading">{error.msg}</p>}
 					{scores?.map((score) => (
 						<li
 							title={score.username}

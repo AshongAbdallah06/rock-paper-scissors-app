@@ -5,6 +5,7 @@ const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 const gameRoutes = require("./routes/gameRoutes");
 const socketIo = require("socket.io");
+const pool = require("./db");
 
 const app = express();
 const server = http.createServer(app);
@@ -206,10 +207,6 @@ io.on("connect", (socket) => {
 		}
 	});
 
-	socket.on("move-made", (username) => {
-		socket.broadcast.to(roomId).emit("move-made", { msg: username + " has made a move" });
-	});
-
 	socket.on("message", async (message) => {
 		// Broadcast message to all clients
 		const { username, textMessage } = message;
@@ -218,6 +215,51 @@ io.on("connect", (socket) => {
 
 	socket.on("deleteMessage", () => {
 		io.to(roomId).emit("deleteMessage");
+	});
+
+	socket.on("updateScore", async ({ score, username }) => {
+		try {
+			const user = await pool.query(`SELECT * FROM SCORES WHERE USERNAME = $1`, [username]);
+
+			console.log("User: ", user.rows);
+
+			if (!user.rows[0]?.username) {
+				await pool.query(
+					`INSERT INTO SCORES(username,score,wins,loses,ties,games_played) VALUES($1,$2,$3,$4,$5,$6)`,
+					[username, 0, 0, 0, 0, 0]
+				);
+
+				console.log("Score: ", score);
+			} else {
+				await pool.query(`UPDATE SCORES SET SCORE = $1 WHERE USERNAME = $2`, [
+					score,
+					username,
+				]);
+				const userScore = await pool.query(`SELECT score FROM SCORES WHERE USERNAME = $1`, [
+					username,
+				]);
+
+				console.log("Score: ", userScore.rows, score);
+				io.to(roomId).emit("updateScore", userScore.rows[0].score);
+			}
+		} catch (error) {
+			console.log("🚀 ~ getScores ~ error:", error.message);
+
+			if (error?.detail) io.to(roomId).emit("error-message", { error: error.message });
+		}
+	});
+
+	socket.on("getAllScores", async () => {
+		try {
+			// console.log("🚀 ~ getScores ~ Fetching scores from database");
+			const response = await pool.query("SELECT * FROM SCORES ORDER BY SCORE DESC");
+			const scores = response.rows;
+			console.log("🚀 ~ getScores ~ Success:", scores);
+
+			io.to(roomId).emit("getAllScores", scores);
+		} catch (error) {
+			console.error("🚀 ~ getScores ~ error:", error);
+		}
 	});
 });
 

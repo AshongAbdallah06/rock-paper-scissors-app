@@ -46,9 +46,7 @@ const CheckContextProvider = ({ children }) => {
 	const [roomID, setRoomID] = useState(JSON.parse(localStorage.getItem("room-id")) || null);
 
 	const usernames = JSON.parse(localStorage.getItem("usernames"));
-	const [score, setScore] = useState(
-		JSON.parse(localStorage.getItem(`${user.username}-score`)) || 0
-	);
+	const [score, setScore] = useState();
 	const [p1Score, setP1Score] = useState(
 		JSON.parse(
 			localStorage.getItem(
@@ -93,11 +91,6 @@ const CheckContextProvider = ({ children }) => {
 	// When a player leaves a room
 	const [leftRoom, setLeftRoom] = useState(false);
 
-	// Save score to localStorage
-	useEffect(() => {
-		localStorage.setItem(`${user.username}-score`, JSON.stringify(score));
-	}, [score]);
-
 	const [gameState, setGameState] = useState({ p1: null, p2: null, result: null });
 
 	useEffect(() => {
@@ -110,7 +103,8 @@ const CheckContextProvider = ({ children }) => {
 				result,
 				setResult,
 				score,
-				setScore
+				setScore,
+				socket
 			);
 
 		if (!isOnePlayer) {
@@ -210,6 +204,7 @@ const CheckContextProvider = ({ children }) => {
 				result,
 				setResult,
 				score,
+				setScore,
 				playerMoveImage,
 				computerMoveImage,
 				socket,

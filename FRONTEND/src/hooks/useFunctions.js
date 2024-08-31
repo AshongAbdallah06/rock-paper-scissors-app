@@ -49,7 +49,8 @@ const useFunctions = () => {
 		result,
 		setResult,
 		score,
-		setScore
+		setScore,
+		socket
 	) => {
 		if (!bonus) {
 			switch (playerMove) {
@@ -64,9 +65,14 @@ const useFunctions = () => {
 					} else if (computerMove === "s") {
 						setResult("Player wins");
 						setComputerMoveImage(scissorsIcon);
+						console.log("score + 1 = ", score);
 						setTimeout(() => {
 							setScore(score + 1);
 						}, 3000);
+						socket.emit("updateScore", {
+							score: score + 1,
+							username: user.username,
+						});
 					}
 					break;
 				case "p":
@@ -74,9 +80,14 @@ const useFunctions = () => {
 					if (computerMove === "r") {
 						setResult("Player wins");
 						setComputerMoveImage(rockIcon);
+						console.log("score + 1 = ", score);
 						setTimeout(() => {
 							setScore(score + 1);
 						}, 3000);
+						socket.emit("updateScore", {
+							score: score + 1,
+							username: user.username,
+						});
 					} else if (computerMove === "p") {
 						setResult("Tie");
 						setComputerMoveImage(paperIcon);
@@ -93,9 +104,14 @@ const useFunctions = () => {
 					} else if (computerMove === "p") {
 						setResult("Player wins");
 						setComputerMoveImage(paperIcon);
+						console.log("score + 1 = ", score);
 						setTimeout(() => {
 							setScore(score + 1);
 						}, 3000);
+						socket.emit("updateScore", {
+							score: score + 1,
+							username: user.username,
+						});
 					} else if (computerMove === "s") {
 						setResult("Tie");
 						setComputerMoveImage(scissorsIcon);
@@ -118,15 +134,25 @@ const useFunctions = () => {
 					} else if (computerMove === "s") {
 						setResult("Player wins");
 						setComputerMoveImage(scissorsIcon);
+						console.log("score + 1 = ", score);
 						setTimeout(() => {
 							setScore(score + 1);
 						}, 3000);
+						socket.emit("updateScore", {
+							score: score + 1,
+							username: user.username,
+						});
 					} else if (computerMove === "l") {
 						setResult("Player wins");
 						setComputerMoveImage(lizardIcon);
+						console.log("score + 1 = ", score);
 						setTimeout(() => {
 							setScore(score + 1);
 						}, 3000);
+						socket.emit("updateScore", {
+							score: score + 1,
+							username: user.username,
+						});
 					} else if (computerMove === "sp") {
 						setResult("Computer wins");
 						setComputerMoveImage(spockIcon);
@@ -137,9 +163,14 @@ const useFunctions = () => {
 					if (computerMove === "r") {
 						setResult("Player wins");
 						setComputerMoveImage(rockIcon);
+						console.log("score + 1 = ", score);
 						setTimeout(() => {
 							setScore(score + 1);
 						}, 3000);
+						socket.emit("updateScore", {
+							score: score + 1,
+							username: user.username,
+						});
 					} else if (computerMove === "p") {
 						setResult("Tie");
 						setComputerMoveImage(paperIcon);
@@ -152,9 +183,14 @@ const useFunctions = () => {
 					} else if (computerMove === "sp") {
 						setResult("Player wins");
 						setComputerMoveImage(spockIcon);
+						console.log("score + 1 = ", score);
 						setTimeout(() => {
 							setScore(score + 1);
 						}, 3000);
+						socket.emit("updateScore", {
+							score: score + 1,
+							username: user.username,
+						});
 					}
 					break;
 				case "s":
@@ -165,18 +201,28 @@ const useFunctions = () => {
 					} else if (computerMove === "p") {
 						setResult("Player wins");
 						setComputerMoveImage(paperIcon);
+						console.log("score + 1 = ", score);
 						setTimeout(() => {
 							setScore(score + 1);
 						}, 3000);
+						socket.emit("updateScore", {
+							score: score + 1,
+							username: user.username,
+						});
 					} else if (computerMove === "s") {
 						setResult("Tie");
 						setComputerMoveImage(scissorsIcon);
 					} else if (computerMove === "l") {
 						setResult("Player wins");
 						setComputerMoveImage(lizardIcon);
+						console.log("score + 1 = ", score);
 						setTimeout(() => {
 							setScore(score + 1);
 						}, 3000);
+						socket.emit("updateScore", {
+							score: score + 1,
+							username: user.username,
+						});
 					} else if (computerMove === "sp") {
 						setResult("Computer wins");
 						setComputerMoveImage(spockIcon);
@@ -190,9 +236,14 @@ const useFunctions = () => {
 					} else if (computerMove === "p") {
 						setResult("Player wins");
 						setComputerMoveImage(paperIcon);
+						console.log("score + 1 = ", score);
 						setTimeout(() => {
 							setScore(score + 1);
 						}, 3000);
+						socket.emit("updateScore", {
+							score: score + 1,
+							username: user.username,
+						});
 					} else if (computerMove === "s") {
 						setResult("Computer wins");
 						setComputerMoveImage(scissorsIcon);
@@ -201,9 +252,14 @@ const useFunctions = () => {
 						setComputerMoveImage(lizardIcon);
 					} else if (computerMove === "sp") {
 						setResult("Player wins");
+						console.log("score + 1 = ", score);
 						setTimeout(() => {
 							setScore(score + 1);
 						}, 3000);
+						socket.emit("updateScore", {
+							score: score + 1,
+							username: user.username,
+						});
 						setComputerMoveImage(spockIcon);
 					}
 					break;
@@ -212,18 +268,28 @@ const useFunctions = () => {
 					if (computerMove === "r") {
 						setResult("Player wins");
 						setComputerMoveImage(rockIcon);
+						console.log("score + 1 = ", score);
 						setTimeout(() => {
 							setScore(score + 1);
 						}, 3000);
+						socket.emit("updateScore", {
+							score: score + 1,
+							username: user.username,
+						});
 					} else if (computerMove === "p") {
 						setResult("Computer wins");
 						setComputerMoveImage(paperIcon);
 					} else if (computerMove === "s") {
 						setResult("Player wins");
 						setComputerMoveImage(scissorsIcon);
+						console.log("score + 1 = ", score);
 						setTimeout(() => {
 							setScore(score + 1);
 						}, 3000);
+						socket.emit("updateScore", {
+							score: score + 1,
+							username: user.username,
+						});
 					} else if (computerMove === "l") {
 						setResult("Computer wins");
 						setComputerMoveImage(lizardIcon);
