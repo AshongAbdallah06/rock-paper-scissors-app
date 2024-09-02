@@ -150,7 +150,7 @@ const CheckContextProvider = ({ children }) => {
 
 	const [stats, setStats] = useState({
 		score: 0,
-		username: user.username,
+		username: user?.username,
 		gamesPlayed: 0,
 		wins: 0,
 		loses: 0,
@@ -179,10 +179,10 @@ const CheckContextProvider = ({ children }) => {
 	};
 
 	useEffect(() => {
-		if (isOnePlayer && user.username) {
+		if (isOnePlayer && user?.username) {
 			getUserStats();
 		}
-	}, [isOnePlayer, user.username]);
+	}, [isOnePlayer, user?.username]);
 
 	useEffect(() => {
 		if (isOnePlayer) {
