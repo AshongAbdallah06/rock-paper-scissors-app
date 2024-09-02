@@ -46,7 +46,7 @@ const CheckContextProvider = ({ children }) => {
 	const [roomID, setRoomID] = useState(JSON.parse(localStorage.getItem("room-id")) || null);
 
 	const usernames = JSON.parse(localStorage.getItem("usernames"));
-	const [score, setScore] = useState();
+	const [score, setScore] = useState(0);
 	const [p1Score, setP1Score] = useState(
 		JSON.parse(
 			localStorage.getItem(
@@ -178,6 +178,8 @@ const CheckContextProvider = ({ children }) => {
 				wins: data.wins,
 				username: user.username,
 			}));
+
+			// setScore(stats.score)
 		} catch (error) {
 			console.error("🚀 ~ getUserStats ~ error:", error);
 		}
@@ -186,8 +188,16 @@ const CheckContextProvider = ({ children }) => {
 	useEffect(() => {
 		if (isOnePlayer) {
 			getUserStats();
+
+			console.log("Getting");
 		}
-	}, [isOnePlayer]);
+	}, []);
+
+	useEffect(() => {
+		if (isOnePlayer) {
+			getUserStats();
+		}
+	}, [stats]);
 
 	useEffect(() => {
 		if (isOnePlayer) {
@@ -212,6 +222,8 @@ const CheckContextProvider = ({ children }) => {
 
 	useEffect(() => {
 		socket.emit("updateStats", stats);
+
+		console.log(score);
 	}, [stats]);
 
 	useEffect(() => {
@@ -295,6 +307,7 @@ const CheckContextProvider = ({ children }) => {
 				leftRoom,
 				setLeftRoom,
 				stats,
+				score,
 			}}
 		>
 			{children}

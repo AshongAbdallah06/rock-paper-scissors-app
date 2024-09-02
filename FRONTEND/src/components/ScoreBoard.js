@@ -7,8 +7,18 @@ import Axios from "axios";
 import { Link } from "react-router-dom";
 
 const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
-	const { roomID, p1Score, p2Score, setP1Score, setP2Score, isOnePlayer, socket, stats } =
-		useCheckContext();
+	const {
+		roomID,
+		score,
+		p1Score,
+		p2Score,
+		setP1Score,
+		setP2Score,
+		isOnePlayer,
+		socket,
+		stats,
+		setStats,
+	} = useCheckContext();
 	const user = JSON.parse(localStorage.getItem("user"));
 
 	const usernames = JSON.parse(localStorage.getItem("usernames"));
@@ -49,6 +59,44 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 		};
 	}, []);
 
+	const getUserStats = async () => {
+		try {
+			const res = await Axios.get(`http://localhost:4001/api/user/stats/${user.username}`);
+			const data = res.data[0];
+
+			setStats((prevStats) => ({
+				...prevStats,
+				score: data.score,
+				gamesPlayed: data.games_played,
+				lastPlayed: data.last_played,
+				loses: data.loses,
+				ties: data.ties,
+				wins: data.wins,
+				username: user.username,
+			}));
+
+			// setScore(stats.score)
+		} catch (error) {
+			console.error("🚀 ~ getUserStats ~ error:", error);
+		}
+	};
+
+	useEffect(() => {
+		if (isOnePlayer) {
+			getUserStats();
+
+			console.log("Getting", stats);
+		}
+	}, []);
+
+	useEffect(() => {
+		if (isOnePlayer) {
+			getUserStats();
+
+			console.log("HI", stats);
+		}
+	}, [stats]);
+
 	return (
 		<>
 			<section className="scoreBoard">
@@ -61,7 +109,7 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 				{isOnePlayer ? (
 					<div className="score">
 						<p>score</p>
-						<p>{stats.score}</p>
+						<p>{score}</p>
 					</div>
 				) : (
 					<div className="p2">
