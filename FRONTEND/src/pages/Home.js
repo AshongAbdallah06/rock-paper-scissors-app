@@ -7,10 +7,23 @@ import useCheckContext from "../hooks/useCheckContext";
 import CopiedAlert from "../components/CopiedAlert";
 import BonusDialog from "../components/bonus/Dialog";
 import Nav from "../components/Nav";
+import copyIcon from "../images/copy-regular.svg";
+import Axios from "axios";
+import useFunctions from "../hooks/useFunctions";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
-	const { roomID, isOnePlayer, setIsRulesModalShow, moveAck, leftRoom } = useCheckContext();
+	const {
+		roomID,
+		isOnePlayer,
+		setIsRulesModalShow,
+		moveAck,
+		leftRoom,
+		setLeftRoom,
+		setScore,
+		socket,
+	} = useCheckContext();
+	const { joinRoom } = useFunctions();
 
 	useEffect(() => {
 		localStorage.setItem("player-mode", JSON.stringify(isOnePlayer ? "single" : "dual"));
@@ -23,14 +36,6 @@ const Home = () => {
 	const [showCopiedAlert, setShowCopiedAlert] = useState(false);
 	const [showWhoLeft, setShowWhoLeft] = useState(false);
 
-	useEffect(() => {
-		setShowCopiedAlert(true);
-
-		setTimeout(() => {
-			setShowCopiedAlert(false);
-		}, 2000);
-	}, []);
-
 	const hasLeftRoom = leftRoom !== false;
 	useEffect(() => {
 		setShowWhoLeft(true);
@@ -41,6 +46,44 @@ const Home = () => {
 	}, [hasLeftRoom]);
 
 	const bonus = JSON.parse(localStorage.getItem("bonus"));
+
+	const copyRoomID = async () => {
+		try {
+			await navigator.clipboard.writeText(roomID);
+			await navigator.clipboard.readText();
+
+			setShowCopiedAlert(true);
+
+			setTimeout(() => {
+				setShowCopiedAlert(false);
+			}, 2000);
+		} catch (error) {
+			console.log("🚀 ~ copyRoomID ~ error:", error);
+		}
+	};
+
+	const user = JSON.parse(localStorage.getItem("user"));
+
+	useEffect(() => {
+		if (isOnePlayer) {
+			socket.on("updateScore", (score) => {
+				setTimeout(() => {
+					setScore(score);
+				}, 3000);
+			});
+
+			socket.on("error-message", (msg) => {
+				console.log("Message: ", msg);
+
+				if (msg.error.includes("fk_username")) {
+					localStorage.removeItem("user");
+					window.location.href = "/login";
+				}
+			});
+
+			joinRoom(socket, user.username, setLeftRoom);
+		}
+	}, []);
 
 	return (
 		<>
@@ -57,17 +100,22 @@ const Home = () => {
 
 			<GameBoard />
 			{!bonus ? <Dialog /> : <BonusDialog />}
-			{/* {isOnePlayer && (
-				<Link
-					to="/leaderboard"
-					className="leaderboard-link"
-				>
-					Leaderboard
-				</Link>
-			)} */}
 			{chatIsShowing ? <Chat setChatIsShowing={setChatIsShowing} /> : ""}
 			<footer>
-				{!isOnePlayer && <p>Room ID: {roomID}</p>}
+				{!isOnePlayer && (
+					<div
+						className="room-name"
+						onClick={copyRoomID}
+					>
+						<p>Room ID: {roomID}</p>
+						<img
+							src={copyIcon}
+							alt="copyIcon"
+							className="copy-icon"
+							title="copy"
+						/>
+					</div>
+				)}
 				<button
 					className="rules"
 					onClick={showModal}

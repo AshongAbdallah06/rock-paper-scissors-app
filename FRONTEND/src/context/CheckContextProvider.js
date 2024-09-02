@@ -17,6 +17,8 @@ const CheckContextProvider = ({ children }) => {
 		generateComputerMove,
 	} = useFunctions();
 
+	const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+
 	// Show rules modal
 	const [isRulesModalShow, setIsRulesModalShow] = useState(false);
 
@@ -44,7 +46,7 @@ const CheckContextProvider = ({ children }) => {
 	const [roomID, setRoomID] = useState(JSON.parse(localStorage.getItem("room-id")) || null);
 
 	const usernames = JSON.parse(localStorage.getItem("usernames"));
-	const [score, setScore] = useState(JSON.parse(localStorage.getItem("score")) || 0);
+	const [score, setScore] = useState();
 	const [p1Score, setP1Score] = useState(
 		JSON.parse(
 			localStorage.getItem(
@@ -89,11 +91,6 @@ const CheckContextProvider = ({ children }) => {
 	// When a player leaves a room
 	const [leftRoom, setLeftRoom] = useState(false);
 
-	// Save score to localStorage
-	useEffect(() => {
-		localStorage.setItem("score", JSON.stringify(score));
-	}, [score]);
-
 	const [gameState, setGameState] = useState({ p1: null, p2: null, result: null });
 
 	useEffect(() => {
@@ -106,7 +103,8 @@ const CheckContextProvider = ({ children }) => {
 				result,
 				setResult,
 				score,
-				setScore
+				setScore,
+				socket
 			);
 
 		if (!isOnePlayer) {
@@ -156,6 +154,66 @@ const CheckContextProvider = ({ children }) => {
 		isOnePlayer && generateComputerMove(setComputerMove);
 	};
 
+	const [stats, setStats] = useState({
+		score: 0,
+		username: "",
+		gamesPlayed: 0,
+		wins: 0,
+		loses: 0,
+		ties: 0,
+	});
+
+	const getUserStats = async () => {
+		try {
+			const res = await Axios.get(`http://localhost:4001/api/user/stats/${user.username}`);
+			const data = res.data[0];
+
+			setStats((prevStats) => ({
+				...prevStats,
+				score: data.score,
+				gamesPlayed: data.games_played,
+				lastPlayed: data.last_played,
+				loses: data.loses,
+				ties: data.ties,
+				wins: data.wins,
+				username: user.username,
+			}));
+		} catch (error) {
+			console.error("🚀 ~ getUserStats ~ error:", error);
+		}
+	};
+
+	useEffect(() => {
+		if (isOnePlayer) {
+			getUserStats();
+		}
+	}, [isOnePlayer]);
+
+	useEffect(() => {
+		if (isOnePlayer) {
+			setStats((prevStats) => {
+				let updatedStats = { ...prevStats };
+
+				if (result === "Tie") {
+					updatedStats.ties += 1;
+				} else if (result === "Player wins") {
+					updatedStats.wins += 1;
+				} else if (result === "Computer wins") {
+					updatedStats.loses += 1;
+				}
+
+				updatedStats.gamesPlayed =
+					updatedStats.wins + updatedStats.loses + updatedStats.ties;
+
+				return updatedStats;
+			});
+		}
+	}, [result, isOnePlayer]);
+
+	useEffect(() => {
+		socket.emit("updateStats", stats);
+	}, [stats]);
+
 	useEffect(() => {
 		socket.on("clearMoves", (newGameState) => {
 			setGameState(newGameState);
@@ -175,7 +233,6 @@ const CheckContextProvider = ({ children }) => {
 		socket.emit("clearMoves");
 	};
 
-	const user = JSON.parse(localStorage.getItem("user"));
 	const [userExists, setUserExists] = useState(null);
 	const authorize = async () => {
 		try {
@@ -207,6 +264,7 @@ const CheckContextProvider = ({ children }) => {
 				result,
 				setResult,
 				score,
+				setScore,
 				playerMoveImage,
 				computerMoveImage,
 				socket,
@@ -236,6 +294,7 @@ const CheckContextProvider = ({ children }) => {
 				listenToMove,
 				leftRoom,
 				setLeftRoom,
+				stats,
 			}}
 		>
 			{children}

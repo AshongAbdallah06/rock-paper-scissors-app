@@ -12,6 +12,7 @@ import Leaderboard from "./pages/Leaderboard";
 import Axios from "axios";
 import Audios from "./components/Audios";
 import GameType from "./pages/GameType";
+import Profile from "./pages/Profile";
 
 export const GameContext = createContext();
 function App() {
@@ -28,7 +29,7 @@ function App() {
 	}, []);
 
 	return (
-		<div>
+		<>
 			<Audios />
 			<Router>
 				<Routes>
@@ -71,6 +72,11 @@ function App() {
 					/>
 
 					<Route
+						path="/profile"
+						element={userExists ? <Profile /> : <Navigate to="/login" />}
+					/>
+
+					<Route
 						path="/login"
 						element={!userExists ? <Login /> : <Navigate to="/" />}
 					/>
@@ -96,7 +102,7 @@ function App() {
 					/>
 				</Routes>
 			</Router>
-		</div>
+		</>
 	);
 }
 

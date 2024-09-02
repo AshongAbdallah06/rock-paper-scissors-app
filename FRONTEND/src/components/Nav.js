@@ -5,7 +5,8 @@ import useCheckContext from "../hooks/useCheckContext";
 import useFunctions from "../hooks/useFunctions";
 
 const Nav = () => {
-	const { roomID, setRoomID, setRoomIsSelected, socket, setLeftRoom } = useCheckContext();
+	const { roomID, setRoomID, setRoomIsSelected, socket, setLeftRoom, isOnePlayer } =
+		useCheckContext();
 	const { leaveRoom } = useFunctions();
 	const [navIsShowing, setNavIsShowing] = useState(false);
 
@@ -56,17 +57,19 @@ const Nav = () => {
 						Select Game Type
 					</Link>
 
-					<Link
-						to="/select-room"
-						className="leave"
-						onClick={() => {
-							leaveRoom(socket, setLeftRoom);
-							setRoomID(null);
-							setRoomIsSelected(false);
-						}}
-					>
-						Leave Room
-					</Link>
+					{!isOnePlayer && (
+						<Link
+							to="/select-room"
+							className="leave"
+							onClick={() => {
+								leaveRoom(socket, setLeftRoom);
+								setRoomID(null);
+								setRoomIsSelected(false);
+							}}
+						>
+							Leave Room
+						</Link>
+					)}
 				</div>
 			)}
 		</nav>

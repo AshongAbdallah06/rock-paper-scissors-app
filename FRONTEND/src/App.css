@@ -129,13 +129,13 @@ img[alt="scissors"] {
 	font-size: 3.125rem;
 }
 /* Leaderboard */
-.leaderboard a {
+.header {
 	position: absolute;
 	left: 1rem;
 	cursor: pointer;
 	top: 2rem;
 }
-.leaderboard a img {
+.header img {
 	height: 4rem;
 }
 .leaderboard-link {
@@ -160,6 +160,10 @@ img[alt="scissors"] {
 	padding: 1rem;
 	color: white;
 }
+.leaderboard-container a {
+	color: white;
+}
+
 .leaderboard-container ul {
 	list-style: none;
 	overflow-y: scroll;
@@ -181,6 +185,29 @@ img[alt="scissors"] {
 	padding: 0.5rem;
 	justify-content: space-between;
 	border-bottom: 1px solid gray;
+}
+.leaderboard header {
+	display: flex;
+	justify-content: space-between;
+}
+.go-back {
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	color: white;
+	margin-bottom: 1rem;
+}
+.back {
+	height: 1rem;
+	width: 1rem;
+}
+.my-profile {
+	color: white;
+	text-decoration: none;
+	padding-bottom: 1rem;
+}
+.my-profile:hover {
+	text-decoration: underline;
 }
 .error-loading {
 	display: flex;
@@ -762,7 +789,6 @@ form .room input {
 }
 .gameOpt:nth-child(5) {
 	background: linear-gradient(hsl(189, 59%, 53%), hsl(189, 58%, 57%));
-	/* bottom: -30%; */
 	left: -2rem;
 }
 
@@ -812,20 +838,19 @@ form .room input {
 	background-color: hsl(214, 47%, 23%);
 }
 
-.nav-links a:last-child {
+.nav-links .leave {
 	margin-top: 0.5rem;
 	text-align: center;
 	padding: 0.5rem;
 	background-color: transparent;
 }
 
-.nav-links a:last-child:hover {
+.nav-links .leave:hover {
 	background-color: red;
 	color: white;
 }
 .nav-links a:hover {
 	background-color: hsl(214, 50%, 39%);
-	/* color: hsl(39, 89%, 49%); */
 }
 
 .nav-links button {
@@ -837,7 +862,6 @@ form .room input {
 	border: none;
 	border-radius: none;
 	transition: all 0.15s;
-	/* margin-bottom: 1rem; */
 	padding: 0.5rem;
 	background-color: transparent;
 }
@@ -848,6 +872,69 @@ form .room input {
 
 .nav-links .close-icon {
 	height: 1rem;
+}
+
+.copy-icon {
+	height: 1rem;
+	width: 1rem;
+	transition: all 0.15s;
+}
+.room-name {
+	display: flex;
+	align-items: center;
+	cursor: pointer;
+}
+.room-name:hover .copy-icon {
+	height: 1.2rem;
+	width: 1.2rem;
+}
+
+.room-name p {
+	margin-right: 0.5rem;
+}
+
+/* Profile */
+.profile-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	border: 2px solid white;
+	background-color: hsl(237, 49%, 15%);
+	border-radius: 6px;
+	padding: 2rem;
+}
+.profile {
+	margin-bottom: 2rem;
+}
+.profile .name {
+	color: white;
+	font-size: 2rem;
+}
+.stats {
+	display: grid;
+	grid-template-columns: repeat(4, 1fr);
+	column-gap: 1rem;
+}
+
+.stats .card {
+	border: 2px solid;
+	text-align: center;
+	color: white;
+	padding: 1rem;
+	border-radius: 6px;
+}
+
+.stats .card .number {
+	color: hsl(39, 89%, 49%);
+	font-size: 3rem;
+	font-weight: bold;
+}
+
+.profile-icon {
+	height: 10rem;
+	width: 10rem;
 }
 
 /* Mobile */

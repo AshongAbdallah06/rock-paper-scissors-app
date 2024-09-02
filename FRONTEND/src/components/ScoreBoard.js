@@ -1,25 +1,15 @@
 import React, { useEffect, useState } from "react";
 import logo from "../images/logo.svg";
 import plane from "../images/paper-plane-outline.svg";
+import trophy from "../images/trophy-outline.svg";
 import useCheckContext from "../hooks/useCheckContext";
 import Axios from "axios";
+import { Link } from "react-router-dom";
 
 const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
-	const { roomID, score, p1Score, p2Score, setP1Score, setP2Score, isOnePlayer, socket } =
+	const { roomID, p1Score, p2Score, setP1Score, setP2Score, isOnePlayer, socket, stats } =
 		useCheckContext();
 	const user = JSON.parse(localStorage.getItem("user"));
-
-	// const updateScore = async () => {
-	// 	try {
-	// 		await Axios.patch(`http://localhost:4001/api/user/scores/${user.username}`, { score });
-	// 	} catch (error) {
-	// 		console.log(error);
-	// 	}
-	// };
-
-	// useEffect(() => {
-	// 	updateScore();
-	// }, [score]);
 
 	const usernames = JSON.parse(localStorage.getItem("usernames"));
 	const [p1Username, setP1Username] = useState("");
@@ -40,9 +30,7 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 				)
 			) || 0
 		);
-	}, []);
 
-	useEffect(() => {
 		if (!isOnePlayer) {
 			if (user?.username) {
 				socket.emit("username", user.username);
@@ -73,7 +61,7 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 				{isOnePlayer ? (
 					<div className="score">
 						<p>score</p>
-						<p>{score}</p>
+						<p>{stats.score}</p>
 					</div>
 				) : (
 					<div className="p2">
@@ -102,6 +90,21 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 						alt="messages"
 					/>
 				</div>
+			)}
+
+			{isOnePlayer && (
+				<Link
+					to="/leaderboard"
+					className="menu"
+					onClick={() => setChatIsShowing(!chatIsShowing)}
+					title="Messages"
+				>
+					<img
+						src={trophy}
+						alt="messages"
+						title="Leaderboard"
+					/>
+				</Link>
 			)}
 		</>
 	);

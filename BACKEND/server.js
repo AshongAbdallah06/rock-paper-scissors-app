@@ -5,6 +5,7 @@ const cors = require("cors");
 const userRoutes = require("./routes/userRoutes");
 const gameRoutes = require("./routes/gameRoutes");
 const socketIo = require("socket.io");
+const pool = require("./db");
 
 const app = express();
 const server = http.createServer(app);
@@ -17,32 +18,21 @@ const io = socketIo(server, {
 
 const allowedOrigins = ["http://localhost:3000", "https://rock-paper-scissors-app-nine.vercel.app"];
 
-app.use(
-	cors({
-		origin: function (origin, callback) {
-			if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-				callback(null, true);
-			} else {
-				callback(new Error("Not allowed by CORS"));
-			}
-		},
-	})
-);
-app.options(
-	"*",
-	cors({
-		origin: function (origin, callback) {
-			if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-				callback(null, true);
-			} else {
-				callback(new Error("Not allowed by CORS"));
-			}
-		},
-		methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
-		allowedHeaders: ["Content-Type", "Authorization"],
-		optionsSuccessStatus: 200,
-	})
-);
+const corsOptions = {
+	origin: function (origin, callback) {
+		if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+			callback(null, true);
+		} else {
+			callback(new Error("Not allowed by CORS"));
+		}
+	},
+	methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+	allowedHeaders: ["Content-Type", "Authorization"],
+	optionsSuccessStatus: 200, // For legacy browser support
+	credentials: true, // Enable if you need to send cookies or HTTP authentication
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const gameRooms = {};
@@ -217,10 +207,6 @@ io.on("connect", (socket) => {
 		}
 	});
 
-	socket.on("move-made", (username) => {
-		socket.broadcast.to(roomId).emit("move-made", { msg: username + " has made a move" });
-	});
-
 	socket.on("message", async (message) => {
 		// Broadcast message to all clients
 		const { username, textMessage } = message;
@@ -229,6 +215,62 @@ io.on("connect", (socket) => {
 
 	socket.on("deleteMessage", () => {
 		io.to(roomId).emit("deleteMessage");
+	});
+
+	socket.on("updateScore", async ({ score, username }) => {
+		try {
+			const user = await pool.query(`SELECT * FROM SCORES WHERE USERNAME = $1`, [username]);
+
+			console.log("User: ", user.rows);
+
+			if (!user.rows[0]?.username) {
+				await pool.query(
+					`INSERT INTO SCORES(username,score,wins,loses,ties,games_played) VALUES($1,$2,$3,$4,$5,$6)`,
+					[username, 0, 0, 0, 0, 0]
+				);
+
+				console.log("Score: ", score);
+			} else {
+				await pool.query(`UPDATE SCORES SET SCORE = $1 WHERE USERNAME = $2`, [
+					score,
+					username,
+				]);
+				const userScore = await pool.query(`SELECT score FROM SCORES WHERE USERNAME = $1`, [
+					username,
+				]);
+
+				console.log("Score: ", userScore.rows, score);
+				io.to(roomId).emit("updateScore", userScore.rows[0].score);
+			}
+		} catch (error) {
+			console.log("🚀 ~ getScores ~ error:", error.message);
+
+			if (error?.detail) io.to(roomId).emit("error-message", { error: error.message });
+		}
+	});
+
+	socket.on("getAllScores", async () => {
+		try {
+			// console.log("🚀 ~ getScores ~ Fetching scores from database");
+			const response = await pool.query("SELECT * FROM SCORES ORDER BY SCORE DESC");
+			const scores = response.rows;
+			console.log("🚀 ~ getScores ~ Success:", scores);
+
+			io.to(roomId).emit("getAllScores", scores);
+		} catch (error) {
+			console.error("🚀 ~ getScores ~ error:", error);
+		}
+	});
+
+	socket.on("updateStats", async ({ gamesPlayed, wins, loses, ties, username }) => {
+		try {
+			await pool.query(
+				`UPDATE SCORES SET GAMES_PLAYED = $1, WINS = $2, LOSES = $3, TIES = $4 WHERE USERNAME = $5`,
+				[gamesPlayed, wins, loses, ties, username]
+			);
+		} catch (error) {
+			console.log("🚀 ~ socket.on ~ error:", error);
+		}
 	});
 });
 

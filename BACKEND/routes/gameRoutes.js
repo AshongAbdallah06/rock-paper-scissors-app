@@ -1,11 +1,9 @@
 const { Router } = require("express");
 const { requireAuth } = require("../middleware/authMiddleware");
-const { getHome, getScores, updateScores } = require("../controllers/gameController");
+const { getHome, getUserStats } = require("../controllers/gameController");
 const router = Router();
 
-router.get("/scores", getScores);
-
-router.patch("/scores/:username", updateScores);
+router.get("/stats/:username", getUserStats);
 
 router.get("/", requireAuth, getHome);
 
