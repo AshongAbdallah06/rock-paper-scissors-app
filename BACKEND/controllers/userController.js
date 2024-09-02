@@ -34,14 +34,16 @@ const signup = async (req, res) => {
 	const hashedPassword = await hash(password, salt);
 
 	try {
+		const lowercasedEmail = email.trim().toLowerCase();
+
 		await pool.query(`INSERT INTO USERS VALUES ($1, $2, $3, $4)`, [
 			id,
 			username,
-			email,
+			lowercasedEmail,
 			hashedPassword,
 		]);
 
-		const userExist = await pool.query(`SELECT * FROM USERS WHERE USERNAME = $1`, [username]);
+		const userExist = await pool.query(`SELECT * FROM SCORES WHERE USERNAME = $1`, [username]);
 		if (userExist.rowCount < 1) {
 			await pool.query(
 				`INSERT INTO SCORES(username, wins, loses, ties, games_played) VALUES ($1, $2, $3, $4, $5)`,
@@ -51,7 +53,7 @@ const signup = async (req, res) => {
 
 		const token = createToken(id);
 
-		res.status(201).json({ email, username, token });
+		res.status(201).json({ lowercasedEmail, username, token });
 	} catch (err) {
 		const error = handleErrors(err);
 
@@ -64,27 +66,33 @@ const login = async (req, res) => {
 	const { email, password } = req.body;
 
 	try {
-		const userEmail = await pool.query(
-			`SELECT ID, EMAIL, PASSWORD, USERNAME FROM USERS WHERE EMAIL = $1`,
-			[email]
+		// Convert email to lowercase before querying
+		const lowercasedEmail = email.trim().toLowerCase();
+
+		const userResult = await pool.query(
+			`SELECT ID, EMAIL, PASSWORD, USERNAME FROM USERS WHERE LOWER(EMAIL) = $1`,
+			[lowercasedEmail]
 		);
 
-		if (userEmail.rowCount === 1) {
-			const authPassword = await compare(password, userEmail.rows[0].password);
-
-			if (!authPassword) {
-				throw Error("password error");
-			}
-			const token = createToken(userEmail.rows[0].id);
-
-			res.status(201).json({ email, username: userEmail.rows[0].username, token });
-		} else {
-			throw Error("email error");
+		if (userResult.rowCount === 0) {
+			throw new Error("email error");
 		}
+
+		const user = userResult.rows[0];
+
+		const isPasswordValid = await compare(password, user.password);
+
+		if (!isPasswordValid) {
+			throw new Error("password error");
+		}
+
+		const token = createToken(user.id);
+
+		return res.status(200).json({ email: user.email, username: user.username, token });
 	} catch (err) {
 		const error = handleErrors(err);
-		console.log(err);
-		res.status(401).json({ error });
+		console.error("Login error: ", err.message);
+		return res.status(401).json({ error });
 	}
 };
 
