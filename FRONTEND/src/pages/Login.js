@@ -51,10 +51,10 @@ const Login = () => {
 			}
 			window.location.href = "/";
 		} catch (err) {
-			const error = err.response?.data?.error;
+			const errors = err.response?.data?.error;
 
 			if (error) {
-				setError({ email: error.email, password: error.password });
+				setError({ email: errors.email, password: errors.password });
 			} else {
 				setError({ email: null, password: null });
 			}
@@ -77,10 +77,7 @@ const Login = () => {
 					type="text"
 					{...register("email")}
 				/>
-				<p>
-					{errors.email?.message}
-					{error.email}
-				</p>
+				<p>{errors?.email?.message || error?.email}</p>
 			</div>
 
 			<div>
@@ -89,10 +86,7 @@ const Login = () => {
 					type="password"
 					{...register("password")}
 				/>
-				<p>
-					{errors.password?.message}
-					{error.password}
-				</p>
+				<p>{errors?.password?.message || error?.password}</p>
 			</div>
 
 			<button>Login</button>

@@ -17,7 +17,7 @@ const CheckContextProvider = ({ children }) => {
 		generateComputerMove,
 	} = useFunctions();
 
-	const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+	const user = JSON.parse(localStorage.getItem("user"));
 
 	// Show rules modal
 	const [isRulesModalShow, setIsRulesModalShow] = useState(false);
@@ -210,7 +210,7 @@ const CheckContextProvider = ({ children }) => {
 			// Ensure `gamesPlayed` is not null
 			socket.emit("updateStats", stats);
 		}
-	}, [stats]);
+	}, [stats, isOnePlayer]);
 
 	useEffect(() => {
 		socket.on("clearMoves", (newGameState) => {

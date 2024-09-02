@@ -58,8 +58,7 @@ const Login = () => {
 				setError({ email: "", username: "", password: "" });
 				localStorage.setItem("user", JSON.stringify(user));
 			}
-				window.location.href = "/";
-			
+			window.location.href = "/";
 		} catch (err) {
 			const error = err.response?.data?.error;
 
@@ -87,10 +86,7 @@ const Login = () => {
 					type="text"
 					{...register("email")}
 				/>
-				<p>
-					{errors.email?.message}
-					{error.email}
-				</p>
+				<p>{errors?.email?.message || error?.email}</p>
 			</div>
 
 			<div>
@@ -99,10 +95,7 @@ const Login = () => {
 					type="text"
 					{...register("username")}
 				/>
-				<p>
-					{errors?.username?.message}
-					{error?.username}
-				</p>
+				<p>{errors?.username?.message || error?.username}</p>
 			</div>
 
 			<div>
@@ -111,10 +104,7 @@ const Login = () => {
 					type="password"
 					{...register("password")}
 				/>
-				<p>
-					{errors.password?.message}
-					{error.password}
-				</p>
+				<p>{errors?.password?.message}</p>
 			</div>
 
 			<div>
@@ -123,7 +113,7 @@ const Login = () => {
 					type="password"
 					{...register("confirmPassword")}
 				/>
-				<p>{errors.confirmPassword?.message}</p>
+				<p>{errors?.confirmPassword?.message}</p>
 			</div>
 
 			<button>Signup</button>
