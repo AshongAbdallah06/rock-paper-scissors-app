@@ -46,7 +46,6 @@ const CheckContextProvider = ({ children }) => {
 	const [roomID, setRoomID] = useState(JSON.parse(localStorage.getItem("room-id")) || null);
 
 	const usernames = JSON.parse(localStorage.getItem("usernames"));
-	const [score, setScore] = useState(0);
 	const [p1Score, setP1Score] = useState(
 		JSON.parse(
 			localStorage.getItem(
@@ -102,8 +101,6 @@ const CheckContextProvider = ({ children }) => {
 				setComputerMoveImage,
 				result,
 				setResult,
-				score,
-				setScore,
 				socket
 			);
 
@@ -156,48 +153,39 @@ const CheckContextProvider = ({ children }) => {
 
 	const [stats, setStats] = useState({
 		score: 0,
-		username: "",
+		username: user.username,
 		gamesPlayed: 0,
 		wins: 0,
 		loses: 0,
 		ties: 0,
 	});
-
 	const getUserStats = async () => {
 		try {
-			const res = await Axios.get(`http://localhost:4001/api/user/stats/${user.username}`);
+			const res = await Axios.get(
+				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${user.username}`
+			);
 			const data = res.data[0];
 
 			setStats((prevStats) => ({
 				...prevStats,
 				score: data.score,
-				gamesPlayed: data.games_played,
+				gamesPlayed: data.games_played || 0, // Default to 0 if null
 				lastPlayed: data.last_played,
 				loses: data.loses,
 				ties: data.ties,
 				wins: data.wins,
 				username: user.username,
 			}));
-
-			// setScore(stats.score)
 		} catch (error) {
 			console.error("🚀 ~ getUserStats ~ error:", error);
 		}
 	};
 
 	useEffect(() => {
-		if (isOnePlayer) {
-			getUserStats();
-
-			console.log("Getting");
-		}
-	}, []);
-
-	useEffect(() => {
-		if (isOnePlayer) {
+		if (isOnePlayer && user.username) {
 			getUserStats();
 		}
-	}, [stats]);
+	}, [isOnePlayer, user.username]);
 
 	useEffect(() => {
 		if (isOnePlayer) {
@@ -221,9 +209,10 @@ const CheckContextProvider = ({ children }) => {
 	}, [result, isOnePlayer]);
 
 	useEffect(() => {
-		socket.emit("updateStats", stats);
-
-		console.log(score);
+		if (isOnePlayer && stats.gamesPlayed > 0) {
+			// Ensure `gamesPlayed` is not null
+			socket.emit("updateStats", stats);
+		}
 	}, [stats]);
 
 	useEffect(() => {
@@ -266,6 +255,9 @@ const CheckContextProvider = ({ children }) => {
 		}
 	};
 
+	// Score on leaderboard
+	const [scores, setScores] = useState(null);
+
 	return (
 		<CheckContext.Provider
 			value={{
@@ -275,8 +267,6 @@ const CheckContextProvider = ({ children }) => {
 				setComputerMove,
 				result,
 				setResult,
-				score,
-				setScore,
 				playerMoveImage,
 				computerMoveImage,
 				socket,
@@ -307,7 +297,9 @@ const CheckContextProvider = ({ children }) => {
 				leftRoom,
 				setLeftRoom,
 				stats,
-				score,
+				setStats,
+				scores,
+				setScores,
 			}}
 		>
 			{children}

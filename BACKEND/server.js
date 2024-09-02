@@ -47,24 +47,6 @@ app.get("/", (req, res) => {
 io.on("connect", (socket) => {
 	let roomId;
 
-	socket.on("username", (username) => {
-		console.log("Received Username: ", username);
-
-		if (!usernames[roomId]?.p1Username) {
-			usernames[roomId].p1Username = username;
-			console.log(`Assigned to p1Username: ${usernames[roomId].p1Username}`);
-		} else if (!usernames[roomId].p2Username && username !== usernames[roomId].p1Username) {
-			usernames[roomId].p2Username = username;
-			console.log(`Assigned to p2Username: ${usernames[roomId].p2Username}`);
-		} else {
-			console.log("Both usernames are already assigned or username is a duplicate.");
-		}
-
-		console.log("Current usernames object: ", usernames);
-
-		io.to(roomId).emit("updateUsernames", usernames[roomId]);
-	});
-
 	socket.on("move-made", (username) => {
 		socket.broadcast.to(roomId).emit("move-made", { msg: username + " has made a move" });
 	});
@@ -96,29 +78,21 @@ io.on("connect", (socket) => {
 		if (!game[roomId]) {
 			game[roomId] = { p1: null, p2: null, result: null };
 		}
+		console.log("Joined: ", socket.id);
 	});
 
 	socket.on("leaveRoom", (username) => {
-		console.log("Message: ", { msg: username + " has left the room" });
-
 		socket.broadcast.to(roomId).emit("leaveRoom", { msg: username + " has left the room" });
 	});
 
-	console.log("Joined: ", socket.id);
 	socket.on("username", (username) => {
-		console.log("Received Username: ", username);
-
 		if (!usernames[roomId]?.p1Username) {
 			usernames[roomId].p1Username = username;
-			console.log(`Assigned to p1Username: ${usernames[roomId].p1Username}`);
 		} else if (!usernames[roomId].p2Username && username !== usernames[roomId].p1Username) {
 			usernames[roomId].p2Username = username;
-			console.log(`Assigned to p2Username: ${usernames[roomId].p2Username}`);
 		} else {
 			console.log("Both usernames are already assigned or username is a duplicate.");
 		}
-
-		console.log("Current usernames object: ", usernames);
 
 		io.to(roomId).emit("updateUsernames", usernames[roomId]);
 	});
@@ -217,44 +191,12 @@ io.on("connect", (socket) => {
 		io.to(roomId).emit("deleteMessage");
 	});
 
-	socket.on("updateScore", async ({ score, username }) => {
-		try {
-			const user = await pool.query(`SELECT * FROM SCORES WHERE USERNAME = $1`, [username]);
-
-			if (!user.rows[0]?.username) {
-				await pool.query(
-					`INSERT INTO SCORES(username,score,wins,loses,ties,games_played) VALUES($1,$2,$3,$4,$5,$6)`,
-					[username, 0, 0, 0, 0, 0]
-				);
-
-				console.log("Score: ", score);
-			} else {
-				await pool.query(`UPDATE SCORES SET SCORE = $1 WHERE USERNAME = $2`, [
-					score,
-					username,
-				]);
-				const userScore = await pool.query(`SELECT score FROM SCORES WHERE USERNAME = $1`, [
-					username,
-				]);
-
-				console.log("Score: ", userScore.rows, score);
-				io.to(roomId).emit("updateScore", userScore.rows[0].score);
-			}
-		} catch (error) {
-			console.log("🚀 ~ getScores ~ error:", error.message);
-
-			if (error?.detail) io.to(roomId).emit("error-message", { error: error.message });
-		}
-	});
-
 	socket.on("getAllScores", async () => {
 		try {
-			// console.log("🚀 ~ getScores ~ Fetching scores from database");
-			const response = await pool.query("SELECT * FROM SCORES ORDER BY SCORE DESC");
+			const response = await pool.query("SELECT * FROM SCORES ORDER BY WINS DESC");
 			const scores = response.rows;
-			console.log("🚀 ~ getScores ~ Success:", scores);
 
-			io.to(roomId).emit("getAllScores", scores);
+			io.emit("getAllScores", scores);
 		} catch (error) {
 			console.error("🚀 ~ getScores ~ error:", error);
 		}
@@ -266,6 +208,11 @@ io.on("connect", (socket) => {
 				`UPDATE SCORES SET GAMES_PLAYED = $1, WINS = $2, LOSES = $3, TIES = $4 WHERE USERNAME = $5`,
 				[gamesPlayed, wins, loses, ties, username]
 			);
+			const response = await pool.query("SELECT * FROM SCORES WHERE USERNAME = $1", [
+				username,
+			]);
+			const userStats = response.rows;
+			io.to(roomId).emit("updateStats", userStats);
 		} catch (error) {
 			console.log("🚀 ~ socket.on ~ error:", error);
 		}

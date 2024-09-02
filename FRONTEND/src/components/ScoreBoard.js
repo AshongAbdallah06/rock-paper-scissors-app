@@ -9,7 +9,6 @@ import { Link } from "react-router-dom";
 const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 	const {
 		roomID,
-		score,
 		p1Score,
 		p2Score,
 		setP1Score,
@@ -59,44 +58,6 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 		};
 	}, []);
 
-	const getUserStats = async () => {
-		try {
-			const res = await Axios.get(`http://localhost:4001/api/user/stats/${user.username}`);
-			const data = res.data[0];
-
-			setStats((prevStats) => ({
-				...prevStats,
-				score: data.score,
-				gamesPlayed: data.games_played,
-				lastPlayed: data.last_played,
-				loses: data.loses,
-				ties: data.ties,
-				wins: data.wins,
-				username: user.username,
-			}));
-
-			// setScore(stats.score)
-		} catch (error) {
-			console.error("🚀 ~ getUserStats ~ error:", error);
-		}
-	};
-
-	useEffect(() => {
-		if (isOnePlayer) {
-			getUserStats();
-
-			console.log("Getting", stats);
-		}
-	}, []);
-
-	useEffect(() => {
-		if (isOnePlayer) {
-			getUserStats();
-
-			console.log("HI", stats);
-		}
-	}, [stats]);
-
 	return (
 		<>
 			<section className="scoreBoard">
@@ -109,7 +70,7 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 				{isOnePlayer ? (
 					<div className="score">
 						<p>score</p>
-						<p>{score}</p>
+						<p>{stats.wins}</p>
 					</div>
 				) : (
 					<div className="p2">

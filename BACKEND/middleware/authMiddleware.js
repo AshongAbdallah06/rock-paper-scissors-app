@@ -14,7 +14,6 @@ const requireAuth = async (req, res, next) => {
 		const { id } = jwt.verify(token, process.env.JWT_SECRET_KEY);
 		const result = await pool.query("SELECT ID FROM users WHERE ID = $1", [id]);
 		const user = result.rows[0].id;
-		console.log(user);
 
 		req.user = user;
 
