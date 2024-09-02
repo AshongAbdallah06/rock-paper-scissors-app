@@ -154,6 +154,66 @@ const CheckContextProvider = ({ children }) => {
 		isOnePlayer && generateComputerMove(setComputerMove);
 	};
 
+	const [stats, setStats] = useState({
+		score: 0,
+		username: "",
+		gamesPlayed: 0,
+		wins: 0,
+		loses: 0,
+		ties: 0,
+	});
+
+	const getUserStats = async () => {
+		try {
+			const res = await Axios.get(`http://localhost:4001/api/user/stats/${user.username}`);
+			const data = res.data[0];
+
+			setStats((prevStats) => ({
+				...prevStats,
+				score: data.score,
+				gamesPlayed: data.games_played,
+				lastPlayed: data.last_played,
+				loses: data.loses,
+				ties: data.ties,
+				wins: data.wins,
+				username: user.username,
+			}));
+		} catch (error) {
+			console.error("🚀 ~ getUserStats ~ error:", error);
+		}
+	};
+
+	useEffect(() => {
+		if (isOnePlayer) {
+			getUserStats();
+		}
+	}, [isOnePlayer]);
+
+	useEffect(() => {
+		if (isOnePlayer) {
+			setStats((prevStats) => {
+				let updatedStats = { ...prevStats };
+
+				if (result === "Tie") {
+					updatedStats.ties += 1;
+				} else if (result === "Player wins") {
+					updatedStats.wins += 1;
+				} else if (result === "Computer wins") {
+					updatedStats.loses += 1;
+				}
+
+				updatedStats.gamesPlayed =
+					updatedStats.wins + updatedStats.loses + updatedStats.ties;
+
+				return updatedStats;
+			});
+		}
+	}, [result, isOnePlayer]);
+
+	useEffect(() => {
+		socket.emit("updateStats", stats);
+	}, [stats]);
+
 	useEffect(() => {
 		socket.on("clearMoves", (newGameState) => {
 			setGameState(newGameState);
@@ -234,6 +294,7 @@ const CheckContextProvider = ({ children }) => {
 				listenToMove,
 				leftRoom,
 				setLeftRoom,
+				stats,
 			}}
 		>
 			{children}

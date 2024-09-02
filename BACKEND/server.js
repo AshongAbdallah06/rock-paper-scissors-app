@@ -261,6 +261,17 @@ io.on("connect", (socket) => {
 			console.error("🚀 ~ getScores ~ error:", error);
 		}
 	});
+
+	socket.on("updateStats", async ({ gamesPlayed, wins, loses, ties, username }) => {
+		try {
+			await pool.query(
+				`UPDATE SCORES SET GAMES_PLAYED = $1, WINS = $2, LOSES = $3, TIES = $4 WHERE USERNAME = $5`,
+				[gamesPlayed, wins, loses, ties, username]
+			);
+		} catch (error) {
+			console.log("🚀 ~ socket.on ~ error:", error);
+		}
+	});
 });
 
 app.use("/api/user", userRoutes);
