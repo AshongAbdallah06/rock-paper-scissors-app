@@ -7,45 +7,7 @@ import Axios from "axios";
 
 const Profile = () => {
 	const user = JSON.parse(localStorage.getItem("user"));
-	const { stats, setStats, isOnePlayer } = useCheckContext();
-
-	const getUserStats = async () => {
-		try {
-			const res = await Axios.get(`http://localhost:4001/api/user/stats/${user.username}`);
-			const data = res.data[0];
-
-			setStats((prevStats) => ({
-				...prevStats,
-				score: data.score,
-				gamesPlayed: data.games_played,
-				lastPlayed: data.last_played,
-				loses: data.loses,
-				ties: data.ties,
-				wins: data.wins,
-				username: user.username,
-			}));
-
-			// setScore(stats.score)
-		} catch (error) {
-			console.error("🚀 ~ getUserStats ~ error:", error);
-		}
-	};
-
-	useEffect(() => {
-		if (isOnePlayer) {
-			getUserStats();
-
-			console.log("Getting", stats);
-		}
-	}, []);
-
-	useEffect(() => {
-		if (isOnePlayer) {
-			getUserStats();
-
-			console.log("HI", stats);
-		}
-	}, [stats]);
+	const { stats } = useCheckContext();
 
 	return (
 		<>
@@ -67,14 +29,14 @@ const Profile = () => {
 						alt="profile-icon"
 					/>
 					<p className="name">
-						{user.username} ({stats.score})
+						{user.username} ({stats?.wins})
 					</p>
 				</div>
 
 				<div className="stats">
 					<div className="card">
 						<p>Games Played</p>
-						<p className="number">{stats.gamesPlayed}</p>
+						<p className="number">{stats?.gamesPlayed}</p>
 					</div>
 					<div className="card">
 						<p>Wins</p>
@@ -82,11 +44,11 @@ const Profile = () => {
 					</div>
 					<div className="card">
 						<p>Ties</p>
-						<p className="number">{stats.ties}</p>
+						<p className="number">{stats?.ties}</p>
 					</div>
 					<div className="card">
 						<p>Loses</p>
-						<p className="number">{stats.loses}</p>
+						<p className="number">{stats?.loses}</p>
 					</div>
 				</div>
 			</div>

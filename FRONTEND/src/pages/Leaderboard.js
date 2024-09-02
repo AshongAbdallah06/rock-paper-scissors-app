@@ -3,20 +3,23 @@ import { Link } from "react-router-dom";
 import logo from "../images/logo.svg";
 import back from "../images/arrow-back-outline.svg";
 import useCheckContext from "../hooks/useCheckContext";
+import useFunctions from "../hooks/useFunctions";
 
 const Leaderboard = () => {
-	const [scores, setScores] = useState(null);
-	const { socket } = useCheckContext();
+	const { socket, stats, scores, setScores } = useCheckContext();
+	const { getAllScores } = useFunctions();
 
 	const user = JSON.parse(localStorage.getItem("user"));
 
 	useEffect(() => {
 		socket.emit("getAllScores");
 
-		socket.on("getAllScores", (scores) => {
-			setScores(scores);
-		});
+		getAllScores(socket, setScores);
 	}, []);
+
+	useEffect(() => {
+		getAllScores(socket, setScores);
+	}, [scores]);
 
 	return (
 		<div className="leaderboard">
@@ -61,7 +64,7 @@ const Leaderboard = () => {
 				<ul>
 					{scores?.map((score) => (
 						<li
-							title={score.username}
+							title={score?.username}
 							style={{
 								backgroundColor:
 									user?.username === score?.username && "hsl(349, 70%, 56%)",
@@ -88,10 +91,10 @@ const Leaderboard = () => {
 								</p>
 							)}
 							<span
-								title={score.score}
+								title={score?.wins}
 								style={{ color: "orange" }}
 							>
-								{score.score}
+								{score?.wins}
 							</span>
 						</li>
 					))}

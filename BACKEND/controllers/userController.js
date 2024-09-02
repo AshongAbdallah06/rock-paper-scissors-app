@@ -44,10 +44,9 @@ const signup = async (req, res) => {
 		const userExist = await pool.query(`SELECT * FROM USERS WHERE USERNAME = $1`, [username]);
 		if (userExist.rowCount < 1) {
 			await pool.query(
-				`INSERT INTO SCORES(username, score, wins, loses, ties, games_played) VALUES ($1, $2, $3, $4, $5, $6)`,
-				[username, 0, 0, 0, 0, 0]
+				`INSERT INTO SCORES(username,  wins, loses, ties, games_played) VALUES ($1, $2, $3, $4, $5, $6)`,
+				[username, 0, 0, 0, 0]
 			);
-			console.log("User Inserted");
 		}
 
 		const token = createToken(id);
@@ -81,10 +80,9 @@ const login = async (req, res) => {
 			const userExist = await pool.query(`SELECT * FROM USERS WHERE EMAIL = $1`, [email]);
 			if (userExist.rowCount >= 1) {
 				await pool.query(
-					`INSERT INTO SCORES(username, score, wins, loses, ties, games_played) VALUES ($1, $2, $3, $4, $5, $6)`,
-					[userExist.rows[0].username, 0, 0, 0, 0, 0]
+					`INSERT INTO SCORES(username,  wins, loses, ties, games_played) VALUES ($1, $2, $3, $4, $5, $6)`,
+					[userExist.rows[0].username, 0, 0, 0, 0]
 				);
-				console.log("JOIN User Inserted", userExist.rows);
 			}
 
 			res.status(201).json({ email, username: userEmail.rows[0].username, token });
