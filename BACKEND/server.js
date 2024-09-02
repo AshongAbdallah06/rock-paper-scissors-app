@@ -221,8 +221,6 @@ io.on("connect", (socket) => {
 		try {
 			const user = await pool.query(`SELECT * FROM SCORES WHERE USERNAME = $1`, [username]);
 
-			console.log("User: ", user.rows);
-
 			if (!user.rows[0]?.username) {
 				await pool.query(
 					`INSERT INTO SCORES(username,score,wins,loses,ties,games_played) VALUES($1,$2,$3,$4,$5,$6)`,
