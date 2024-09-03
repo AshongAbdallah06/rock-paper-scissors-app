@@ -247,9 +247,14 @@ const useFunctions = () => {
 	};
 
 	const getAllScores = (socket, setScores) => {
+		socket.emit("getAllScores");
 		socket.on("getAllScores", (scores) => {
 			setScores(scores);
 		});
+
+		return () => {
+			socket.off("getAllScores");
+		};
 	};
 	return {
 		generateComputerMove,

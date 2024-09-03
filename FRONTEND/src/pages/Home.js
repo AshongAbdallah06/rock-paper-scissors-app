@@ -13,19 +13,9 @@ import useFunctions from "../hooks/useFunctions";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
-	const {
-		roomID,
-		isOnePlayer,
-		setIsRulesModalShow,
-		moveAck,
-		leftRoom,
-		setLeftRoom,
-		socket,
-		stats,
-		scores,
-		setScores,
-	} = useCheckContext();
-	const { joinRoom, getAllScores } = useFunctions();
+	const { roomID, isOnePlayer, setIsRulesModalShow, moveAck, leftRoom, setLeftRoom, socket } =
+		useCheckContext();
+	const { joinRoom } = useFunctions();
 
 	useEffect(() => {
 		localStorage.setItem("player-mode", JSON.stringify(isOnePlayer ? "single" : "dual"));
@@ -78,10 +68,6 @@ const Home = () => {
 			joinRoom(socket, user.username, setLeftRoom);
 		}
 	}, []);
-
-	useEffect(() => {
-		getAllScores(socket, setScores);
-	}, [scores]);
 
 	return (
 		<>
