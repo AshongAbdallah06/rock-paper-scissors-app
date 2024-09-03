@@ -146,8 +146,10 @@ img[alt="scissors"] {
 }
 .header-labels {
 	margin-top: 1rem;
-	display: flex;
+	display: grid;
 	justify-content: space-between;
+	grid-template-columns: repeat(3, 1fr);
+	text-align: center;
 }
 .header-labels p {
 	font-size: 18px;
@@ -170,9 +172,6 @@ img[alt="scissors"] {
 	height: 24rem;
 }
 
-.leaderboard-container ul .user {
-	cursor: pointer;
-}
 .leaderboard-container ul .user span {
 	color: hsl(39, 89%, 49%);
 	font-weight: bold;
@@ -181,10 +180,13 @@ img[alt="scissors"] {
 	display: none;
 }
 .leaderboard-container ul .user {
-	display: flex;
+	cursor: pointer;
+	display: grid;
 	padding: 0.5rem;
 	justify-content: space-between;
 	border-bottom: 1px solid gray;
+	grid-template-columns: repeat(3, 1fr);
+	text-align: center;
 }
 .leaderboard header {
 	display: flex;

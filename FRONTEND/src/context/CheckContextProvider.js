@@ -15,6 +15,7 @@ const CheckContextProvider = ({ children }) => {
 		computerMoveImage,
 		setComputerMoveImage,
 		generateComputerMove,
+		getAllScores,
 	} = useFunctions();
 
 	const user = JSON.parse(localStorage.getItem("user"));
@@ -252,8 +253,12 @@ const CheckContextProvider = ({ children }) => {
 		}
 	};
 
-	// Score on leaderboard
+	// Score on leader board
 	const [scores, setScores] = useState(null);
+
+	useEffect(() => {
+		getAllScores(socket, setScores);
+	}, [socket, result, playerMove]);
 
 	return (
 		<CheckContext.Provider

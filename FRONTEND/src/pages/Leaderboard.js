@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "../images/logo.svg";
 import back from "../images/arrow-back-outline.svg";
@@ -6,20 +6,14 @@ import useCheckContext from "../hooks/useCheckContext";
 import useFunctions from "../hooks/useFunctions";
 
 const Leaderboard = () => {
-	const { socket, stats, scores, setScores } = useCheckContext();
+	const { scores, setScores, socket } = useCheckContext();
 	const { getAllScores } = useFunctions();
 
 	const user = JSON.parse(localStorage.getItem("user"));
 
 	useEffect(() => {
-		socket.emit("getAllScores");
-
 		getAllScores(socket, setScores);
 	}, []);
-
-	useEffect(() => {
-		getAllScores(socket, setScores);
-	}, [scores]);
 
 	return (
 		<div className="leaderboard">
@@ -59,6 +53,7 @@ const Leaderboard = () => {
 				<div className="header-labels">
 					<p>Username</p>
 					<p>Score</p>
+					<p>Win %</p>
 				</div>
 
 				<ul>
@@ -72,6 +67,9 @@ const Leaderboard = () => {
 							}}
 							className="user"
 							key={score?.username}
+							onClick={() => {
+								console.log(score.username);
+							}}
 						>
 							<p
 								style={{
@@ -81,20 +79,17 @@ const Leaderboard = () => {
 							>
 								{score?.username}
 							</p>
-							{user?.username === score?.username && (
-								<p
-									style={{
-										fontWeight: "bold",
-									}}
-								>
-									You
-								</p>
-							)}
 							<span
 								title={score?.wins}
 								style={{ color: "orange" }}
 							>
 								{score?.wins}
+							</span>
+							<span
+								title={score?.wins}
+								style={{ color: "orange" }}
+							>
+								{((score?.wins / score.games_played) * 100).toFixed(2)}%
 							</span>
 						</li>
 					))}
