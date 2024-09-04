@@ -6,8 +6,17 @@ import useCheckContext from "../hooks/useCheckContext";
 import { Link } from "react-router-dom";
 
 const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
-	const { roomID, p1Score, p2Score, setP1Score, setP2Score, isOnePlayer, socket, stats } =
-		useCheckContext();
+	const {
+		roomID,
+		p1Score,
+		p2Score,
+		setP1Score,
+		setP2Score,
+		isOnePlayer,
+		socket,
+		getUserStats,
+		currentUserStats,
+	} = useCheckContext();
 
 	const user = JSON.parse(localStorage.getItem("user"));
 
@@ -43,6 +52,8 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 			localStorage.setItem("usernames", JSON.stringify({ p1Username, p2Username }));
 		});
 
+		getUserStats(user?.username);
+
 		// Cleanup on unmount
 		return () => {
 			socket.off("updateUsernames");
@@ -61,7 +72,7 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 				{isOnePlayer ? (
 					<div className="score">
 						<p>score</p>
-						<p>{stats.wins}</p>
+						<p>{currentUserStats.wins}</p>
 					</div>
 				) : (
 					<div className="p2">
