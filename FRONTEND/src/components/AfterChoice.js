@@ -28,8 +28,8 @@ const AfterChoice = () => {
 				return;
 			}
 
-			setP1Username(usernames.p1Username);
-			setP2Username(usernames.p2Username);
+			setP1Username(usernames?.p1Username);
+			setP2Username(usernames?.p2Username);
 		}
 	}, []);
 

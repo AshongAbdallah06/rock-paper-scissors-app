@@ -1,6 +1,6 @@
 import "./App.css";
 
-import { createContext, useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import useCheckContext from "./hooks/useCheckContext";
 import { BrowserRouter as Router, Routes, Route, Navigate, Link } from "react-router-dom";
 import Login from "./pages/Login";
@@ -13,10 +13,11 @@ import Axios from "axios";
 import Audios from "./components/Audios";
 import GameType from "./pages/GameType";
 import Profile from "./pages/Profile";
+import PlayerProfile from "./pages/PlayerProfile";
 
 export const GameContext = createContext();
 function App() {
-	const { playerIsChosen, roomIsSelected, userExists, setUserExists } = useCheckContext();
+	const { playerIsChosen, roomIsSelected, userExists, setUserExists, scores } = useCheckContext();
 
 	useEffect(() => {
 		const user = JSON.parse(localStorage.getItem("user"));
@@ -26,6 +27,18 @@ function App() {
 		} else {
 			setUserExists(false);
 		}
+	}, []);
+
+	const user = JSON.parse(localStorage.getItem("user"));
+
+	const [renderUnknown, setRenderUnknown] = useState(false);
+
+	useEffect(() => {
+		setRenderUnknown(false);
+
+		setTimeout(() => {
+			setRenderUnknown(true);
+		}, 2000);
 	}, []);
 
 	return (
@@ -72,9 +85,21 @@ function App() {
 					/>
 
 					<Route
-						path="/profile"
+						path={`/profile`}
 						element={userExists ? <Profile /> : <Navigate to="/login" />}
 					/>
+
+					<Route
+						path={`/p/${user.username}`}
+						element={userExists ? <Profile /> : <Navigate to="/login" />}
+					/>
+
+					{scores?.map((score) => (
+						<Route
+							path={`/p/${score?.username}`}
+							element={userExists ? <PlayerProfile /> : <Navigate to="/login" />}
+						/>
+					))}
 
 					<Route
 						path="/login"
@@ -89,15 +114,17 @@ function App() {
 					<Route
 						path="*"
 						element={
-							<div style={{ color: "white", textAlign: "center" }}>
-								<h1>Page not found</h1>
-								<Link
-									to="/select-player"
-									style={{ color: "white" }}
-								>
-									Select Game Mode
-								</Link>
-							</div>
+							renderUnknown && (
+								<div style={{ color: "white", textAlign: "center" }}>
+									<h1>Page not found</h1>
+									<Link
+										to="/select-player"
+										style={{ color: "white" }}
+									>
+										Select Game Mode
+									</Link>
+								</div>
+							)
 						}
 					/>
 				</Routes>

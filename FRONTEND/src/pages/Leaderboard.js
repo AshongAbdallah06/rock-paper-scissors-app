@@ -6,7 +6,7 @@ import useCheckContext from "../hooks/useCheckContext";
 import useFunctions from "../hooks/useFunctions";
 
 const Leaderboard = () => {
-	const { scores, setScores, socket } = useCheckContext();
+	const { scores, setScores, socket, getUserStats } = useCheckContext();
 	const { getAllScores } = useFunctions();
 
 	const user = JSON.parse(localStorage.getItem("user"));
@@ -41,7 +41,7 @@ const Leaderboard = () => {
 				</Link>
 
 				<Link
-					to="/profile"
+					to={`/p/${user?.username}`}
 					className="my-profile"
 				>
 					View Profile
@@ -58,9 +58,11 @@ const Leaderboard = () => {
 
 				<ul>
 					{scores?.map((score) => (
-						<li
+						<Link
+							to={`/p/${score?.username}`}
 							title={score?.username}
 							style={{
+								textDecoration: "none",
 								backgroundColor:
 									user?.username === score?.username && "hsl(349, 70%, 56%)",
 								color: user?.username === score?.username && "black",
@@ -69,6 +71,8 @@ const Leaderboard = () => {
 							key={score?.username}
 							onClick={() => {
 								console.log(score.username);
+
+								getUserStats(score?.username);
 							}}
 						>
 							<p
@@ -91,7 +95,7 @@ const Leaderboard = () => {
 							>
 								{((score?.wins / score.games_played) * 100).toFixed(2)}%
 							</span>
-						</li>
+						</Link>
 					))}
 				</ul>
 			</div>

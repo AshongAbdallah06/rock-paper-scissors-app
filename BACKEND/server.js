@@ -82,7 +82,25 @@ io.on("connect", (socket) => {
 	});
 
 	socket.on("leaveRoom", (username) => {
-		socket.broadcast.to(roomId).emit("leaveRoom", { msg: username + " has left the room" });
+		// Broadcast a message that the user has left
+
+		// Remove the username from the room
+		if (usernames[roomId]?.p1Username === username) {
+			usernames[roomId].p1Username = null;
+		} else if (usernames[roomId]?.p2Username === username) {
+			usernames[roomId].p2Username = null;
+		}
+
+		// Clean up the room if it's empty
+		if (!usernames[roomId]?.p1Username && !usernames[roomId]?.p2Username) {
+			delete usernames[roomId];
+
+			io.to(roomId).emit("deleteUsernames");
+		}
+
+		// Emit the updated usernames list to the room
+		io.to(roomId).emit("updateUsernames", usernames[roomId]);
+		io.to(roomId).emit("leaveRoom", { msg: username + " has left the room" });
 	});
 
 	socket.on("username", (username) => {

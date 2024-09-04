@@ -240,8 +240,12 @@ const useFunctions = () => {
 
 	// Leave Room
 
-	const leaveRoom = (socket, setLeftRoom) => {
-		socket.emit("leaveRoom", user.username);
+	const leaveRoom = (socket, setLeftRoom, roomID) => {
+		try {
+			socket.emit("leaveRoom", user.username);
+		} catch (error) {
+			console.log("🚀 ~ leaveRoom ~ error:", error);
+		}
 
 		setLeftRoom(true);
 	};
@@ -256,6 +260,7 @@ const useFunctions = () => {
 			socket.off("getAllScores");
 		};
 	};
+
 	return {
 		generateComputerMove,
 		checkPlayersMoves,

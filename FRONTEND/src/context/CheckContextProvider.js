@@ -19,6 +19,22 @@ const CheckContextProvider = ({ children }) => {
 	} = useFunctions();
 
 	const user = JSON.parse(localStorage.getItem("user"));
+	//Check if it's a one player game
+	// When a player joins a room
+	const playerMode = JSON.parse(localStorage.getItem("player-mode"));
+	const [isOnePlayer, setIsOnePlayer] = useState(
+		playerMode && playerMode === "dual" ? false : true
+	);
+	const [playerIsChosen, setPlayerIsChosen] = useState(playerMode && true);
+
+	// When a player join a room
+	const [roomIsSelected, setRoomIsSelected] = useState(
+		playerMode && playerMode === "single" && true
+	);
+	// When a player leaves a room
+	const [leftRoom, setLeftRoom] = useState(false);
+
+	const [gameState, setGameState] = useState({ p1: null, p2: null, result: null });
 
 	// Show rules modal
 	const [isRulesModalShow, setIsRulesModalShow] = useState(false);
@@ -51,50 +67,35 @@ const CheckContextProvider = ({ children }) => {
 
 	const usernames = JSON.parse(localStorage.getItem("usernames"));
 	const [p1Score, setP1Score] = useState(
-		JSON.parse(
-			localStorage.getItem(
-				`${roomID + usernames?.p1Username + usernames?.p2Username}-p1score`
-			)
-		) || 0
+		(!isOnePlayer &&
+			JSON.parse(
+				localStorage.getItem(
+					`${roomID + usernames?.p1Username + usernames?.p2Username}-p1score`
+				)
+			)) ||
+			0
 	);
 	const [p2Score, setP2Score] = useState(
-		JSON.parse(
-			localStorage.getItem(
-				`${roomID + usernames?.p1Username + usernames?.p2Username}-p2score`
-			)
-		) || 0
+		(!isOnePlayer &&
+			JSON.parse(
+				localStorage.getItem(
+					`${roomID + usernames?.p1Username + usernames?.p2Username}-p2score`
+				)
+			)) ||
+			0
 	);
 
+	const p1localStorageScore = `${roomID + usernames?.p1Username + usernames?.p2Username}-p1score`;
 	useEffect(() => {
-		localStorage.setItem(
-			`${roomID + usernames?.p1Username + usernames?.p2Username}-p1score`,
-			JSON.stringify(p1Score)
-		);
+		if (playerMove)
+			!isOnePlayer && localStorage.setItem(p1localStorageScore, JSON.stringify(p1Score));
 	}, [p1Score]);
 
+	const p2localStorageScore = `${roomID + usernames?.p1Username + usernames?.p2Username}-p2score`;
 	useEffect(() => {
-		localStorage.setItem(
-			`${roomID + usernames?.p1Username + usernames?.p2Username}-p2score`,
-			JSON.stringify(p2Score)
-		);
+		if (computerMove)
+			!isOnePlayer && localStorage.setItem(p2localStorageScore, JSON.stringify(p2Score));
 	}, [p2Score]);
-
-	//Check if it's a one player game
-	// When a player joins a room
-	const playerMode = JSON.parse(localStorage.getItem("player-mode"));
-	const [isOnePlayer, setIsOnePlayer] = useState(
-		playerMode && playerMode === "dual" ? false : true
-	);
-	const [playerIsChosen, setPlayerIsChosen] = useState(playerMode && true);
-
-	// When a player join a room
-	const [roomIsSelected, setRoomIsSelected] = useState(
-		playerMode && playerMode === "single" && true
-	);
-	// When a player leaves a room
-	const [leftRoom, setLeftRoom] = useState(false);
-
-	const [gameState, setGameState] = useState({ p1: null, p2: null, result: null });
 
 	useEffect(() => {
 		if (isOnePlayer) {
@@ -149,7 +150,7 @@ const CheckContextProvider = ({ children }) => {
 		isOnePlayer && generateComputerMove(setComputerMove);
 	};
 
-	const [stats, setStats] = useState({
+	const [currentUserStats, setCurrentUserStats] = useState({
 		score: 0,
 		username: user?.username,
 		gamesPlayed: 0,
@@ -157,37 +158,49 @@ const CheckContextProvider = ({ children }) => {
 		loses: 0,
 		ties: 0,
 	});
-	const getUserStats = async () => {
-		try {
-			const res = await Axios.get(
-				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${user?.username}`
-			);
-			const data = res?.data[0] || {};
 
-			setStats((prevStats) => ({
-				...prevStats,
-				score: data.score || 0,
-				gamesPlayed: data.games_played || 0,
-				lastPlayed: data.last_played,
-				loses: data.loses || 0,
-				ties: data.ties || 0,
-				wins: data.wins || 0,
-				username: user?.username,
-			}));
+	const [selectedUserStats, setSelectedUserStats] = useState(
+		JSON.parse(localStorage.getItem("selectedUser")) || null
+	);
+
+	const getUserStats = async (username) => {
+		try {
+			if (username === user?.username) {
+				setCurrentUserStats({
+					...currentUserStats,
+					score: data.score || 0,
+					gamesPlayed: data.games_played || 0,
+					lastPlayed: data.last_played,
+					loses: data.loses || 0,
+					ties: data.ties || 0,
+					wins: data.wins || 0,
+					username: user?.username,
+				});
+			} else {
+				setSelectedUserStats(data);
+			}
 		} catch (error) {
 			console.error("🚀 ~ getUserStats ~ error:", error);
 		}
 	};
 
 	useEffect(() => {
-		if (isOnePlayer && user?.username) {
-			getUserStats();
+		localStorage.setItem("selectedUser", JSON.stringify(selectedUserStats));
+	}, [selectedUserStats]);
+
+	useEffect(() => {
+		if (
+			isOnePlayer &&
+			currentUserStats.username === user?.username &&
+			currentUserStats.gamesPlayed > 0
+		) {
+			socket.emit("updateStats", currentUserStats);
 		}
-	}, [isOnePlayer, user?.username]);
+	}, [currentUserStats, isOnePlayer]);
 
 	useEffect(() => {
 		if (isOnePlayer) {
-			setStats((prevStats) => {
+			setCurrentUserStats((prevStats) => {
 				let updatedStats = { ...prevStats };
 
 				if (result === "Tie") {
@@ -207,11 +220,11 @@ const CheckContextProvider = ({ children }) => {
 	}, [result, isOnePlayer]);
 
 	useEffect(() => {
-		if (isOnePlayer && stats.gamesPlayed > 0) {
+		if (isOnePlayer && currentUserStats.gamesPlayed > 0) {
 			// Ensure `gamesPlayed` is not null
-			socket.emit("updateStats", stats);
+			socket.emit("updateStats", currentUserStats);
 		}
-	}, [stats, isOnePlayer]);
+	}, [currentUserStats, isOnePlayer]);
 
 	useEffect(() => {
 		socket.on("clearMoves", (newGameState) => {
@@ -298,10 +311,13 @@ const CheckContextProvider = ({ children }) => {
 				listenToMove,
 				leftRoom,
 				setLeftRoom,
-				stats,
-				setStats,
+				currentUserStats,
+				setCurrentUserStats,
 				scores,
 				setScores,
+				getUserStats,
+				currentUserStats,
+				selectedUserStats,
 			}}
 		>
 			{children}
