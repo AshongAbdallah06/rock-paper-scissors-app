@@ -86,7 +86,7 @@ const PlayerSelection = () => {
 
 				<span className="or">OR</span>
 
-				<p
+				<Link
 					className="change-mode"
 					style={{ marginTop: "1rem" }}
 					onClick={() => {
@@ -95,7 +95,7 @@ const PlayerSelection = () => {
 					}}
 				>
 					Change Mode
-				</p>
+				</Link>
 			</div>
 		</form>
 	);

@@ -316,7 +316,6 @@ const CheckContextProvider = ({ children }) => {
 				scores,
 				setScores,
 				getUserStats,
-				currentUserStats,
 				selectedUserStats,
 			}}
 		>
