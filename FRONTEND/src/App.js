@@ -1,130 +1,190 @@
 import "./App.css";
-
 import { createContext, useEffect, useState } from "react";
 import useCheckContext from "./hooks/useCheckContext";
-import { BrowserRouter as Router, Routes, Route, Navigate, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PlayerSelection from "./pages/PlayerSelection";
 import Room from "./pages/Room";
 import Home from "./pages/Home";
 import Leaderboard from "./pages/Leaderboard";
-import Axios from "axios";
 import Audios from "./components/Audios";
 import GameType from "./pages/GameType";
 import Profile from "./pages/Profile";
 import PlayerProfile from "./pages/PlayerProfile";
+import NotFound from "./pages/NotFound";
+import Loader from "./components/Loader";
 
 export const GameContext = createContext();
-function App() {
-	const { playerIsChosen, roomIsSelected, userExists, setUserExists, scores } = useCheckContext();
+
+function PrivateRoute({ userExists, children }) {
+	return userExists ? children : <Navigate to="/login" />;
+}
+
+function PublicRoute({ userExists, children }) {
+	return userExists ? <Navigate to="/" /> : children;
+}
+
+function Loading({ isRendered, setIsRendered, children }) {
+	const location = useLocation();
 
 	useEffect(() => {
-		const user = JSON.parse(localStorage.getItem("user"));
+		setIsRendered(false);
+		// console.log(window.location.pathname);
 
-		if (user) {
-			setUserExists(true);
-		} else {
-			setUserExists(false);
-		}
-	}, []);
+		const timer = setTimeout(() => {
+			setIsRendered(true);
+		}, 2000);
+
+		return () => clearTimeout(timer);
+	}, [location.pathname]);
+
+	return isRendered ? children : <Loader />;
+}
+
+function App() {
+	const { playerIsChosen, roomIsSelected, userExists, setUserExists } = useCheckContext();
+	const [isRendered, setIsRendered] = useState(false);
 
 	const user = JSON.parse(localStorage.getItem("user"));
 
-	const [renderUnknown, setRenderUnknown] = useState(false);
-
 	useEffect(() => {
-		setRenderUnknown(false);
-
-		setTimeout(() => {
-			setRenderUnknown(true);
-		}, 2000);
-	}, []);
+		setUserExists(!!user);
+	}, [setUserExists, user]);
 
 	return (
 		<>
 			<Audios />
 			<Router>
 				<Routes>
-					{/* {userExists } */}
 					<Route
 						path="/"
 						element={
-							userExists ? (
-								playerIsChosen && roomIsSelected ? (
-									<Home />
-								) : !playerIsChosen ? (
-									<PlayerSelection />
+							<PrivateRoute userExists={userExists}>
+								{playerIsChosen ? (
+									roomIsSelected ? (
+										<Loading
+											isRendered={isRendered}
+											setIsRendered={setIsRendered}
+										>
+											<Home />
+										</Loading>
+									) : (
+										<Navigate to="/select-room" />
+									)
 								) : (
-									!roomIsSelected && <Room />
-								)
-							) : (
-								<Navigate to="/login" />
-							)
+									<Navigate to="/select-player-mode" />
+								)}
+							</PrivateRoute>
 						}
 					/>
 
 					<Route
-						path="/select-player"
-						element={<PlayerSelection />}
+						path="/select-player-mode"
+						element={
+							<PrivateRoute userExists={userExists}>
+								<Loading
+									isRendered={isRendered}
+									setIsRendered={setIsRendered}
+								>
+									<PlayerSelection />
+								</Loading>
+							</PrivateRoute>
+						}
 					/>
 
 					<Route
 						path="/select-room"
-						element={<Room />}
+						element={
+							<PrivateRoute userExists={userExists}>
+								<Room />
+							</PrivateRoute>
+						}
 					/>
 
 					<Route
 						path="/select-game-type"
-						element={<GameType />}
+						element={
+							<PrivateRoute userExists={userExists}>
+								<Loading
+									isRendered={isRendered}
+									setIsRendered={setIsRendered}
+								>
+									<GameType />
+								</Loading>
+							</PrivateRoute>
+						}
 					/>
 
 					<Route
 						path="/leaderboard"
-						element={userExists ? <Leaderboard /> : <Navigate to="/login" />}
+						element={
+							<PrivateRoute userExists={userExists}>
+								<Loading
+									isRendered={isRendered}
+									setIsRendered={setIsRendered}
+								>
+									<Leaderboard />
+								</Loading>
+							</PrivateRoute>
+						}
 					/>
 
 					<Route
-						path={`/profile`}
-						element={userExists ? <Profile /> : <Navigate to="/login" />}
+						path={`/p/${user?.username}`}
+						element={
+							<PrivateRoute userExists={userExists}>
+								<Loading
+									isRendered={isRendered}
+									setIsRendered={setIsRendered}
+								>
+									<Profile />
+								</Loading>
+							</PrivateRoute>
+						}
 					/>
 
 					<Route
-						path={`/p/${user.username}`}
-						element={userExists ? <Profile /> : <Navigate to="/login" />}
+						path="/p/:username"
+						element={
+							<PrivateRoute userExists={userExists}>
+								<Loading
+									isRendered={isRendered}
+									setIsRendered={setIsRendered}
+								>
+									<PlayerProfile />
+								</Loading>
+							</PrivateRoute>
+						}
 					/>
-
-					{scores?.map((score) => (
-						<Route
-							path={`/p/${score?.username}`}
-							element={userExists ? <PlayerProfile /> : <Navigate to="/login" />}
-						/>
-					))}
 
 					<Route
 						path="/login"
-						element={!userExists ? <Login /> : <Navigate to="/" />}
+						element={
+							<PublicRoute userExists={userExists}>
+								<Login />
+							</PublicRoute>
+						}
 					/>
 
 					<Route
-						path={"/signup"}
-						element={!userExists ? <Signup /> : <Navigate to="/" />}
+						path="/signup"
+						element={
+							<PublicRoute userExists={userExists}>
+								<Signup />
+							</PublicRoute>
+						}
 					/>
 
 					<Route
 						path="*"
 						element={
-							renderUnknown && (
-								<div style={{ color: "white", textAlign: "center" }}>
-									<h1>Page not found</h1>
-									<Link
-										to="/select-player"
-										style={{ color: "white" }}
-									>
-										Select Game Mode
-									</Link>
-								</div>
-							)
+							<Loading
+								isRendered={isRendered}
+								setIsRendered={setIsRendered}
+							>
+								<NotFound />
+							</Loading>
 						}
 					/>
 				</Routes>

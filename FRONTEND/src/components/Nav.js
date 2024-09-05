@@ -38,24 +38,15 @@ const Nav = () => {
 					</button>
 
 					<Link
-						className=""
+						to="/select-player-mode"
 						onClick={() => {
 							localStorage.removeItem("player-mode");
-							window.location.href = "/";
 						}}
 					>
 						Change Mode
 					</Link>
 
-					<Link
-						className=""
-						onClick={() => {
-							// localStorage.removeItem("player-mode");
-							window.location.href = "/select-game-type";
-						}}
-					>
-						Select Game Type
-					</Link>
+					<Link to="/select-game-type">Select Game Type</Link>
 
 					{!isOnePlayer && (
 						<Link

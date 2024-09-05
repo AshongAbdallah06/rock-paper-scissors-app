@@ -239,7 +239,6 @@ const useFunctions = () => {
 	};
 
 	// Leave Room
-
 	const leaveRoom = (socket, setLeftRoom, roomID) => {
 		try {
 			socket.emit("leaveRoom", user.username);

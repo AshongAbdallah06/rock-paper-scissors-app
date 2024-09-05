@@ -939,6 +939,357 @@ form .room input {
 	width: 10rem;
 }
 
+/* Form */
+.form__group {
+	position: relative;
+	padding: 20px 0 0;
+	width: 100%;
+	max-width: 180px;
+}
+
+.form__field {
+	font-family: inherit;
+	width: 100%;
+	border: none;
+	border-bottom: 2px solid #9b9b9b;
+	outline: 0;
+	font-size: 17px;
+	color: #fff;
+	padding: 7px 0;
+	background: transparent;
+	transition: border-color 0.2s;
+}
+
+.form__field::placeholder {
+	color: transparent;
+}
+
+.form__field:placeholder-shown ~ .form__label {
+	font-size: 17px;
+	cursor: text;
+	top: 20px;
+}
+
+.form__label {
+	position: absolute;
+	top: 0;
+	display: block;
+	transition: 0.2s;
+	font-size: 17px;
+	color: #9b9b9b;
+	pointer-events: none;
+}
+
+.form__field:focus {
+	padding-bottom: 6px;
+	font-weight: 700;
+	border-width: 3px;
+	border-image: linear-gradient(to right, #116399, #38caef);
+	border-image-slice: 1;
+}
+
+.form__field:focus ~ .form__label {
+	position: absolute;
+	top: 0;
+	display: block;
+	transition: 0.2s;
+	font-size: 17px;
+	color: #38caef;
+	font-weight: 700;
+}
+
+/* reset input */
+.form__field:required,
+.form__field:invalid {
+	box-shadow: none;
+}
+
+/* Logout */
+/* From Uiverse.io by vinodjangid07 */
+.Btn {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	width: 45px;
+	height: 45px;
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+	position: relative;
+	overflow: hidden;
+	transition-duration: 0.3s;
+	box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+	background-color: rgb(255, 65, 65);
+}
+
+/* plus sign */
+.sign {
+	width: 100%;
+	transition-duration: 0.3s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.sign svg {
+	width: 17px;
+}
+
+.sign svg path {
+	fill: white;
+}
+/* text */
+.text {
+	position: absolute;
+	right: 0%;
+	width: 0%;
+	opacity: 0;
+	color: white;
+	font-size: 1.2em;
+	font-weight: 600;
+	transition-duration: 0.3s;
+}
+/* hover effect on button width */
+.Btn:hover {
+	width: 125px;
+	border-radius: 40px;
+	transition-duration: 0.3s;
+}
+
+.Btn:hover .sign {
+	width: 30%;
+	transition-duration: 0.3s;
+	padding-left: 20px;
+}
+/* hover effect button's text */
+.Btn:hover .text {
+	opacity: 1;
+	width: 70%;
+	transition-duration: 0.3s;
+	padding-right: 10px;
+}
+/* button click effect*/
+.Btn:active {
+	transform: translate(2px, 2px);
+}
+
+/* Loading Animation */
+.pl {
+	width: 6em;
+	height: 6em;
+}
+
+.pl__ring {
+	animation: ringA 2s linear infinite;
+}
+
+.pl__ring--a {
+	stroke: #f42f25;
+}
+
+.pl__ring--b {
+	animation-name: ringB;
+	stroke: #f49725;
+}
+
+.pl__ring--c {
+	animation-name: ringC;
+	stroke: #255ff4;
+}
+
+.pl__ring--d {
+	animation-name: ringD;
+	stroke: #f42582;
+}
+
+/* Animations */
+@keyframes ringA {
+	from,
+	4% {
+		stroke-dasharray: 0 660;
+		stroke-width: 20;
+		stroke-dashoffset: -330;
+	}
+
+	12% {
+		stroke-dasharray: 60 600;
+		stroke-width: 30;
+		stroke-dashoffset: -335;
+	}
+
+	32% {
+		stroke-dasharray: 60 600;
+		stroke-width: 30;
+		stroke-dashoffset: -595;
+	}
+
+	40%,
+	54% {
+		stroke-dasharray: 0 660;
+		stroke-width: 20;
+		stroke-dashoffset: -660;
+	}
+
+	62% {
+		stroke-dasharray: 60 600;
+		stroke-width: 30;
+		stroke-dashoffset: -665;
+	}
+
+	82% {
+		stroke-dasharray: 60 600;
+		stroke-width: 30;
+		stroke-dashoffset: -925;
+	}
+
+	90%,
+	to {
+		stroke-dasharray: 0 660;
+		stroke-width: 20;
+		stroke-dashoffset: -990;
+	}
+}
+
+@keyframes ringB {
+	from,
+	12% {
+		stroke-dasharray: 0 220;
+		stroke-width: 20;
+		stroke-dashoffset: -110;
+	}
+
+	20% {
+		stroke-dasharray: 20 200;
+		stroke-width: 30;
+		stroke-dashoffset: -115;
+	}
+
+	40% {
+		stroke-dasharray: 20 200;
+		stroke-width: 30;
+		stroke-dashoffset: -195;
+	}
+
+	48%,
+	62% {
+		stroke-dasharray: 0 220;
+		stroke-width: 20;
+		stroke-dashoffset: -220;
+	}
+
+	70% {
+		stroke-dasharray: 20 200;
+		stroke-width: 30;
+		stroke-dashoffset: -225;
+	}
+
+	90% {
+		stroke-dasharray: 20 200;
+		stroke-width: 30;
+		stroke-dashoffset: -305;
+	}
+
+	98%,
+	to {
+		stroke-dasharray: 0 220;
+		stroke-width: 20;
+		stroke-dashoffset: -330;
+	}
+}
+
+@keyframes ringC {
+	from {
+		stroke-dasharray: 0 440;
+		stroke-width: 20;
+		stroke-dashoffset: 0;
+	}
+
+	8% {
+		stroke-dasharray: 40 400;
+		stroke-width: 30;
+		stroke-dashoffset: -5;
+	}
+
+	28% {
+		stroke-dasharray: 40 400;
+		stroke-width: 30;
+		stroke-dashoffset: -175;
+	}
+
+	36%,
+	58% {
+		stroke-dasharray: 0 440;
+		stroke-width: 20;
+		stroke-dashoffset: -220;
+	}
+
+	66% {
+		stroke-dasharray: 40 400;
+		stroke-width: 30;
+		stroke-dashoffset: -225;
+	}
+
+	86% {
+		stroke-dasharray: 40 400;
+		stroke-width: 30;
+		stroke-dashoffset: -395;
+	}
+
+	94%,
+	to {
+		stroke-dasharray: 0 440;
+		stroke-width: 20;
+		stroke-dashoffset: -440;
+	}
+}
+
+@keyframes ringD {
+	from,
+	8% {
+		stroke-dasharray: 0 440;
+		stroke-width: 20;
+		stroke-dashoffset: 0;
+	}
+
+	16% {
+		stroke-dasharray: 40 400;
+		stroke-width: 30;
+		stroke-dashoffset: -5;
+	}
+
+	36% {
+		stroke-dasharray: 40 400;
+		stroke-width: 30;
+		stroke-dashoffset: -175;
+	}
+
+	44%,
+	50% {
+		stroke-dasharray: 0 440;
+		stroke-width: 20;
+		stroke-dashoffset: -220;
+	}
+
+	58% {
+		stroke-dasharray: 40 400;
+		stroke-width: 30;
+		stroke-dashoffset: -225;
+	}
+
+	78% {
+		stroke-dasharray: 40 400;
+		stroke-width: 30;
+		stroke-dashoffset: -395;
+	}
+
+	86%,
+	to {
+		stroke-dasharray: 0 440;
+		stroke-width: 20;
+		stroke-dashoffset: -440;
+	}
+}
+
 /* Mobile */
 @media (max-width: 500px) {
 	body {
