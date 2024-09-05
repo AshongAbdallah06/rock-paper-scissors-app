@@ -1,7 +1,14 @@
 import "./App.css";
 import { createContext, useEffect, useState } from "react";
 import useCheckContext from "./hooks/useCheckContext";
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import {
+	BrowserRouter as Router,
+	Routes,
+	Route,
+	Navigate,
+	useLocation,
+	Link,
+} from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PlayerSelection from "./pages/PlayerSelection";
@@ -14,6 +21,7 @@ import Profile from "./pages/Profile";
 import PlayerProfile from "./pages/PlayerProfile";
 import NotFound from "./pages/NotFound";
 import Loader from "./components/Loader";
+import Logo from "./components/Logo";
 
 export const GameContext = createContext();
 
@@ -63,12 +71,15 @@ function App() {
 							<PrivateRoute userExists={userExists}>
 								{playerIsChosen ? (
 									roomIsSelected ? (
-										<Loading
-											isRendered={isRendered}
-											setIsRendered={setIsRendered}
-										>
-											<Home />
-										</Loading>
+										<>
+											{!isRendered && <Logo />}
+											<Loading
+												isRendered={isRendered}
+												setIsRendered={setIsRendered}
+											>
+												<Home />
+											</Loading>
+										</>
 									) : (
 										<Navigate to="/select-room" />
 									)
@@ -83,6 +94,8 @@ function App() {
 						path="/select-player-mode"
 						element={
 							<PrivateRoute userExists={userExists}>
+								{!isRendered && <Logo />}
+
 								<Loading
 									isRendered={isRendered}
 									setIsRendered={setIsRendered}
@@ -106,6 +119,8 @@ function App() {
 						path="/select-game-type"
 						element={
 							<PrivateRoute userExists={userExists}>
+								{!isRendered && <Logo />}
+
 								<Loading
 									isRendered={isRendered}
 									setIsRendered={setIsRendered}
@@ -120,6 +135,8 @@ function App() {
 						path="/leaderboard"
 						element={
 							<PrivateRoute userExists={userExists}>
+								{!isRendered && <Logo />}
+
 								<Loading
 									isRendered={isRendered}
 									setIsRendered={setIsRendered}
@@ -134,6 +151,8 @@ function App() {
 						path={`/p/${user?.username}`}
 						element={
 							<PrivateRoute userExists={userExists}>
+								{!isRendered && <Logo />}
+
 								<Loading
 									isRendered={isRendered}
 									setIsRendered={setIsRendered}
@@ -148,6 +167,8 @@ function App() {
 						path="/p/:username"
 						element={
 							<PrivateRoute userExists={userExists}>
+								{!isRendered && <Logo />}
+
 								<Loading
 									isRendered={isRendered}
 									setIsRendered={setIsRendered}
