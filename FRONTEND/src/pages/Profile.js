@@ -8,18 +8,19 @@ const Profile = () => {
 	const user = JSON.parse(localStorage.getItem("user"));
 	const { currentUserStats } = useCheckContext();
 
-	const [isRendered, setIsRendered] = useState(false);
+	const [renderRoutes, setRenderRoutes] = useState(false);
+
 	useEffect(() => {
-		setIsRendered(false);
+		setRenderRoutes(false);
+		const timer = setTimeout(() => {
+			setRenderRoutes(true);
+		}, 100);
 
-		setTimeout(() => {
-			setIsRendered(true);
-		}, 2000);
+		return () => clearTimeout(timer);
 	}, []);
-
 	return (
 		<>
-			{isRendered && (
+			{renderRoutes && (
 				<>
 					<Link
 						to="/"
