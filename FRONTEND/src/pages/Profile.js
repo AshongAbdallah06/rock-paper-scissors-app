@@ -19,7 +19,6 @@ const Profile = () => {
 
 	return (
 		<>
-			{!isRendered && <Loader />}
 			{isRendered && (
 				<>
 					<Link
