@@ -103,6 +103,7 @@ const Home = () => {
 					/>
 
 					<GameBoard />
+
 					{!bonus ? <Dialog /> : <BonusDialog />}
 					{chatIsShowing ? <Chat setChatIsShowing={setChatIsShowing} /> : ""}
 					<footer>

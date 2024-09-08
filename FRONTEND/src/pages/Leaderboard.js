@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import logo from "../images/logo.svg";
+import filterLogo from "../images/filter-outline.svg";
 import back from "../images/arrow-back-outline.svg";
 import useCheckContext from "../hooks/useCheckContext";
 import useFunctions from "../hooks/useFunctions";
+import Scores from "../components/Scores";
+import FilterDropdown from "../components/FilterDropdown";
 
 const Leaderboard = () => {
-	const { scores, setScores, socket, getUserStats } = useCheckContext();
+	const { setScores, socket } = useCheckContext();
 	const { getAllScores } = useFunctions();
 
 	const user = JSON.parse(localStorage.getItem("user"));
-
-	useEffect(() => {
-		getAllScores(socket, setScores);
-	}, []);
+	const [optChanges, setOptChanges] = useState(null);
 
 	const [renderRoutes, setRenderRoutes] = useState(false);
-
 	useEffect(() => {
+		getAllScores(socket, setScores);
+		setOptChanges("wins");
+
 		setRenderRoutes(false);
 		const timer = setTimeout(() => {
 			setRenderRoutes(true);
@@ -25,6 +27,8 @@ const Leaderboard = () => {
 
 		return () => clearTimeout(timer);
 	}, []);
+
+	const [showFilterDropdown, setShowFilterDropdown] = useState(false);
 
 	return (
 		<>
@@ -61,57 +65,38 @@ const Leaderboard = () => {
 						</Link>
 					</header>
 					<div className="leaderboard-container">
-						<h1>Leaderboard</h1>
+						<header>
+							<h1>Leaderboard</h1>
+
+							<img
+								src={filterLogo}
+								alt="filter"
+								title="filter"
+								className="filter-icon"
+								onClick={() => setShowFilterDropdown(!showFilterDropdown)}
+							/>
+
+							{showFilterDropdown && (
+								<FilterDropdown
+									optChanges={optChanges}
+									setOptChanges={setOptChanges}
+									setShowFilterDropdown={setShowFilterDropdown}
+								/>
+							)}
+						</header>
 
 						<div className="header-labels">
 							<p>Username</p>
-							<p>Score</p>
-							<p>Win %</p>
+							<p>
+								{(!optChanges || optChanges) === "wins" && "Wins"}
+								{optChanges === "losses" && "Losses"}
+								{optChanges === "ties" && "Ties"}
+								{optChanges === "games_played" && "Games Played"}
+							</p>
+							<p>Percent %</p>
 						</div>
 
-						<ul>
-							{scores?.map((score) => (
-								<Link
-									to={`/p/${score?.username}`}
-									title={score?.username}
-									style={{
-										textDecoration: "none",
-										backgroundColor:
-											user?.username === score?.username &&
-											"hsl(349, 70%, 56%)",
-										color: user?.username === score?.username && "black",
-									}}
-									className="user"
-									key={score?.username}
-									onClick={() => {
-										getUserStats(score?.username);
-									}}
-								>
-									<p
-										style={{
-											fontWeight:
-												user?.username === score?.username
-													? "bold"
-													: "normal",
-										}}
-									>
-										{score?.username}
-									</p>
-									<span
-										title={score?.wins}
-										style={{ color: "orange" }}
-									>
-										{score?.wins}
-									</span>
-									<span
-										title={score?.wins}
-										style={{ color: "orange" }}
-									>
-										{((score?.wins / score.games_played) * 100).toFixed(2)}%
-									</span>
-								</Link>
-							))}
-						</ul>
+						<Scores optChanges={optChanges} />
 					</div>
 				</div>
 			)}
