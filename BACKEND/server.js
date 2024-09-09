@@ -37,7 +37,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 const gameRooms = {};
 const game = {};
-let numClients = {};
 let usernames = {};
 
 app.get("/", (req, res) => {
@@ -47,19 +46,9 @@ app.get("/", (req, res) => {
 io.on("connect", (socket) => {
 	let roomId;
 
-	socket.on("move-made", (username) => {
-		socket.broadcast.to(roomId).emit("move-made", { msg: username + " has made a move" });
-	});
-
 	socket.on("join_room", (id) => {
 		roomId = id;
 		socket.join(roomId);
-
-		if (!numClients[roomId]) {
-			numClients[roomId] = 1;
-		} else {
-			numClients[roomId]++;
-		}
 
 		if (!gameRooms[roomId]) {
 			gameRooms[roomId] = { p1_ID: null, p2_ID: null };
@@ -79,6 +68,10 @@ io.on("connect", (socket) => {
 			game[roomId] = { p1: null, p2: null, result: null };
 		}
 		console.log("Joined: ", socket.id);
+	});
+
+	socket.on("move-made", (username) => {
+		socket.broadcast.to(roomId).emit("move-made", { msg: username + " has made a move" });
 	});
 
 	socket.on("leaveRoom", (username) => {
@@ -215,6 +208,39 @@ io.on("connect", (socket) => {
 			const scores = response.rows;
 
 			io.emit("getAllScores", scores);
+		} catch (error) {
+			console.error("🚀 ~ getScores ~ error:", error);
+		}
+	});
+
+	socket.on("getScoresByLosses", async () => {
+		try {
+			const response = await pool.query("SELECT * FROM SCORES ORDER BY LOSES DESC");
+			const scores = response.rows;
+
+			io.emit("getScoresByLosses", scores);
+		} catch (error) {
+			console.error("🚀 ~ getScores ~ error:", error);
+		}
+	});
+
+	socket.on("getScoresByTies", async () => {
+		try {
+			const response = await pool.query("SELECT * FROM SCORES ORDER BY TIES DESC");
+			const scores = response.rows;
+
+			io.emit("getScoresByTies", scores);
+		} catch (error) {
+			console.error("🚀 ~ getScores ~ error:", error);
+		}
+	});
+
+	socket.on("getScoresByGamesPlayed", async () => {
+		try {
+			const response = await pool.query("SELECT * FROM SCORES ORDER BY GAMES_PLAYED DESC");
+			const scores = response.rows;
+
+			io.emit("getScoresByGamesPlayed", scores);
 		} catch (error) {
 			console.error("🚀 ~ getScores ~ error:", error);
 		}

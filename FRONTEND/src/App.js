@@ -1,14 +1,7 @@
 import "./App.css";
 import { createContext, useEffect, useState } from "react";
 import useCheckContext from "./hooks/useCheckContext";
-import {
-	BrowserRouter as Router,
-	Routes,
-	Route,
-	Navigate,
-	useLocation,
-	Link,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PlayerSelection from "./pages/PlayerSelection";

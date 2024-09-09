@@ -58,7 +58,7 @@ const Profile = () => {
 								<p className="number">{selectedUserStats?.ties}</p>
 							</div>
 							<div className="card">
-								<p>Loses</p>
+								<p>Losses</p>
 								<p className="number">{selectedUserStats?.loses}</p>
 							</div>
 						</div>
