@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import logo from "../images/logo.svg";
 import plane from "../images/paper-plane-outline.svg";
-import trophy from "../images/trophy-outline.svg";
 import useCheckContext from "../hooks/useCheckContext";
-import { Link } from "react-router-dom";
 
 const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 	const {
@@ -101,21 +99,6 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 						alt="messages"
 					/>
 				</div>
-			)}
-
-			{isOnePlayer && (
-				<Link
-					to="/leaderboard"
-					className="menu"
-					onClick={() => setChatIsShowing(!chatIsShowing)}
-					title="Messages"
-				>
-					<img
-						src={trophy}
-						alt="messages"
-						title="Leaderboard"
-					/>
-				</Link>
 			)}
 		</>
 	);
