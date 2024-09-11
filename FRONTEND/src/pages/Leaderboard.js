@@ -71,7 +71,7 @@ const Leaderboard = () => {
 							<img
 								src={filterLogo}
 								alt="filter"
-								title="filter"
+								title="Filter by"
 								className="filter-icon"
 								onClick={() => setShowFilterDropdown(!showFilterDropdown)}
 							/>

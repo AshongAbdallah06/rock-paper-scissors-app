@@ -40,7 +40,14 @@ function Loading({ isRendered, setIsRendered, children }) {
 		return () => clearTimeout(timer);
 	}, [location.pathname]);
 
-	return isRendered ? children : <Loader />;
+	return isRendered ? (
+		children
+	) : (
+		<>
+			<Logo />
+			<Loader />;
+		</>
+	);
 }
 
 function App() {
@@ -52,6 +59,18 @@ function App() {
 	useEffect(() => {
 		setUserExists(!!user);
 	}, [setUserExists, user]);
+
+	/**
+	 	All todo:
+	 * 	- Interactive Tutorials: Create a tutorial mode to help new players learn the game.
+	 * 	- Statistics Tracking: Provide detailed stats, such as win/loss ratio, most picked moves, streaks(wins, losses, ties), etc.
+	 * 	- todo: Remove chat popup when an empty space is clicked <------ Next todo:
+	 *		- Create dual-player game stats
+	 		- Create feature where players are allowed to play the game even when they are not logged in, and remind them that scores will not be saved 
+				- Will be lost when page is refreshed
+				- Cant view profile, leaderboard
+				- Cant play bonus or dual mode
+	 */
 
 	return (
 		<>
@@ -65,7 +84,6 @@ function App() {
 								{playerIsChosen ? (
 									roomIsSelected ? (
 										<>
-											{!isRendered && <Logo />}
 											<Loading
 												isRendered={isRendered}
 												setIsRendered={setIsRendered}
@@ -87,8 +105,6 @@ function App() {
 						path="/select-player-mode"
 						element={
 							<PrivateRoute userExists={userExists}>
-								{!isRendered && <Logo />}
-
 								<Loading
 									isRendered={isRendered}
 									setIsRendered={setIsRendered}
@@ -112,8 +128,6 @@ function App() {
 						path="/select-game-type"
 						element={
 							<PrivateRoute userExists={userExists}>
-								{!isRendered && <Logo />}
-
 								<Loading
 									isRendered={isRendered}
 									setIsRendered={setIsRendered}
@@ -128,8 +142,6 @@ function App() {
 						path="/leaderboard"
 						element={
 							<PrivateRoute userExists={userExists}>
-								{!isRendered && <Logo />}
-
 								<Loading
 									isRendered={isRendered}
 									setIsRendered={setIsRendered}
@@ -144,8 +156,6 @@ function App() {
 						path={`/p/${user?.username}`}
 						element={
 							<PrivateRoute userExists={userExists}>
-								{!isRendered && <Logo />}
-
 								<Loading
 									isRendered={isRendered}
 									setIsRendered={setIsRendered}
@@ -160,8 +170,6 @@ function App() {
 						path="/p/:username"
 						element={
 							<PrivateRoute userExists={userExists}>
-								{!isRendered && <Logo />}
-
 								<Loading
 									isRendered={isRendered}
 									setIsRendered={setIsRendered}
