@@ -31,7 +31,6 @@ function Loading({ isRendered, setIsRendered, children }) {
 
 	useEffect(() => {
 		setIsRendered(false);
-		// console.log(window.location.pathname);
 
 		const timer = setTimeout(() => {
 			setIsRendered(true);

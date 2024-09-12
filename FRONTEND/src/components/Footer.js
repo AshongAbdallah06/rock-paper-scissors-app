@@ -106,7 +106,10 @@ const Footer = ({
 			{!isOnePlayer && (
 				<Link
 					className="link"
-					onClick={() => setChatIsShowing(!chatIsShowing)}
+					onClick={() => {
+						setChatIsShowing(!chatIsShowing);
+						setSidebarIsShowing(false);
+					}}
 				>
 					<img
 						src={chatIcon}
@@ -170,16 +173,12 @@ const Footer = ({
 						</svg>
 					</div>
 
-					<div class="text">Leave</div>
+					<div className="text">Leave</div>
 				</button>
 			) : (
 				<button
 					className="Btn logout-btn"
-					onClick={() => {
-						leaveRoom(socket, setLeftRoom);
-						setRoomID(null);
-						setRoomIsSelected(false);
-					}}
+					onClick={() => {}}
 				>
 					<div className="sign">
 						<svg viewBox="0 0 512 512">
@@ -187,7 +186,7 @@ const Footer = ({
 						</svg>
 					</div>
 
-					<div class="text">Logout</div>
+					<div className="text">Logout</div>
 				</button>
 			)}
 		</footer>

@@ -56,17 +56,18 @@ h3 {
 		transform: translateX(1.5rem);
 	}
 }
+
 body,
 #root {
 	position: relative;
 	z-index: -100;
 	display: flex;
-	justify-content: center;
 	align-items: center;
+	justify-content: center;
 	flex-direction: column;
-	overflow-x: hidden;
+	overflow: hidden;
 }
-body {
+#root {
 	min-height: 100vh;
 	background: no-repeat radial-gradient(circle, hsl(214, 47%, 23%), hsl(237, 49%, 15%));
 }
@@ -103,7 +104,8 @@ img[alt="scissors"] {
 	padding: 0.625rem;
 	border-radius: 0.625rem;
 	width: 40rem;
-	margin: 1.25rem auto;
+	/* margin: 1.25rem auto; */
+	margin-top: -3rem;
 	position: relative;
 }
 .scoreBoard .imgCont {
@@ -149,6 +151,7 @@ img[alt="scissors"] {
 	font-size: 18px;
 	color: hsl(349, 70%, 56%);
 }
+
 .leaderboard-container {
 	border: 1px solid white;
 	width: 25rem;
@@ -228,7 +231,7 @@ img[alt="scissors"] {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	margin-top: 4rem;
+	margin-top: 3rem;
 }
 .Gboard .stale {
 	text-align: center;
@@ -406,6 +409,10 @@ form {
 	width: 20rem;
 	padding: 2rem;
 	border: 1px solid white;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 form .room,
 form div {
@@ -729,7 +736,7 @@ textarea {
 	position: absolute;
 	right: 0%;
 	width: 0%;
-	opacity: 0;
+	opacity: 1;
 	color: white;
 	font-size: 1.2em;
 	font-weight: 600;
@@ -885,7 +892,7 @@ form .room input {
 	display: block;
 	position: absolute;
 	right: 1rem;
-	top: 2rem;
+	top: 0.5rem;
 	cursor: pointer;
 	z-index: 10;
 	width: 2.5rem;
@@ -1467,14 +1474,16 @@ ul {
 
 /* Mobile */
 @media (max-width: 500px) {
-	body {
+	body,
+	#root {
 		width: 100%;
-		margin-top: 4rem;
-		overflow-x: hidden;
+		overflow: hidden;
+		justify-content: flex-start;
 	}
 	.scoreBoard {
 		width: 20.875rem;
 		align-items: center;
+		margin: 3.5rem;
 		justify-content: space-between;
 	}
 
@@ -1500,7 +1509,7 @@ ul {
 	.Gboard {
 		position: relative;
 		top: -2rem;
-		height: 30rem;
+		height: 20rem;
 	}
 	.gameBoard {
 		height: 10.5rem;
@@ -1607,13 +1616,51 @@ ul {
 		grid-template-columns: 1fr 1fr;
 		row-gap: 1rem;
 	}
+	.Btn {
+		width: 125px; /* Adjusted width to always show text */
+		border-radius: 40px;
+		bottom: 15rem;
+	}
+
+	.sign {
+		width: 30%;
+		padding-left: 20px;
+	}
+
+	.text {
+		width: 70%;
+		padding-right: 10px;
+	}
+
+	.leaderboard,
+	.profile-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		/* margin: auto; */
+		margin-top: 8rem;
+	}
+	.selection,
+	.loader {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 80vh;
+	}
+	form {
+		/* height: 80vh; */
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 10rem;
+	}
 }
 
 @media (max-height: 500px) {
 	body {
 		width: 100%;
 		margin-top: 4rem;
-		overflow-x: hidden;
+		overflow: hidden;
 	}
 	.scoreBoard {
 		width: 20.875rem;
