@@ -550,13 +550,14 @@ textarea {
 	white-space: pre-wrap;
 }
 .link {
-	display: flex;
+	display: grid;
+	grid-template-columns: 0.3fr 1fr;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
 	color: white;
 	text-decoration: none;
-	font-size: 1rem;
+	font-size: 0.85rem;
 }
 .link img {
 	height: 1.2rem;
@@ -668,6 +669,11 @@ textarea {
 	color: white;
 	width: 13rem;
 	height: 100%;
+	z-index: 100;
+}
+.footer-sidebar .close-icon {
+	height: 1rem;
+	width: 1rem;
 }
 
 .footer-sidebar a,
@@ -881,19 +887,8 @@ form .room input {
 	right: 1rem;
 	top: 2rem;
 	cursor: pointer;
-}
-
-.menu-bar span {
-	background-color: white;
-	display: block;
-	height: 0.3rem;
-	width: 2rem;
-	margin-bottom: 0.2rem;
-	cursor: pointer;
-}
-
-.menu-bar:hover span {
-	background-color: hsl(40, 84%, 53%);
+	z-index: 10;
+	width: 2.5rem;
 }
 
 .link-bar span {

@@ -2,12 +2,22 @@ import React from "react";
 import useCheckContext from "../hooks/useCheckContext";
 import copyIcon from "../images/copy-regular.svg";
 import { Link } from "react-router-dom";
-import trophy from "../images/trophy-outline.svg";
 import profile from "../images/person-circle-outline.svg";
 import closeIcon from "../images/icon-close nav.svg";
+import statsIcon from "../images/stats-chart-outline.svg";
+import appsIcon from "../images/apps-outline.svg";
+import modeIcon from "../images/game-controller-outline.svg";
+import rulesIcon from "../images/book-outline.svg";
+import chatIcon from "../images/chatbubbles-outline.svg";
 import useFunctions from "../hooks/useFunctions";
 
-const Footer = ({ setShowCopiedAlert, user, setSidebarIsShowing }) => {
+const Footer = ({
+	setShowCopiedAlert,
+	user,
+	setSidebarIsShowing,
+	chatIsShowing,
+	setChatIsShowing,
+}) => {
 	const {
 		roomID,
 		isOnePlayer,
@@ -58,7 +68,7 @@ const Footer = ({ setShowCopiedAlert, user, setSidebarIsShowing }) => {
 					title="Go to Leaderboard"
 				>
 					<img
-						src={trophy}
+						src={statsIcon}
 						alt="messages"
 						title="Leaderboard"
 					/>
@@ -71,13 +81,13 @@ const Footer = ({ setShowCopiedAlert, user, setSidebarIsShowing }) => {
 					className="link"
 					onClick={copyRoomID}
 				>
-					<p>Room ID: {roomID}</p>
 					<img
 						src={copyIcon}
 						alt="copyIcon"
 						className="copy-icon"
 						title="copy"
 					/>
+					Room ID: {roomID}
 				</Link>
 			)}
 
@@ -85,10 +95,27 @@ const Footer = ({ setShowCopiedAlert, user, setSidebarIsShowing }) => {
 				className="link"
 				onClick={showModal}
 			>
+				<img
+					src={rulesIcon}
+					alt="messages"
+					title="Leaderboard"
+				/>
 				Rules
 			</Link>
 
-			{/* <div className="nav-links"> */}
+			{!isOnePlayer && (
+				<Link
+					className="link"
+					onClick={() => setChatIsShowing(!chatIsShowing)}
+				>
+					<img
+						src={chatIcon}
+						alt="messages"
+						title="Leaderboard"
+					/>
+					Live Chat
+				</Link>
+			)}
 
 			<Link
 				to="/select-player-mode"
@@ -97,6 +124,11 @@ const Footer = ({ setShowCopiedAlert, user, setSidebarIsShowing }) => {
 					localStorage.removeItem("player-mode");
 				}}
 			>
+				<img
+					src={modeIcon}
+					alt="messages"
+					title="Leaderboard"
+				/>
 				Change Mode
 			</Link>
 
@@ -104,6 +136,11 @@ const Footer = ({ setShowCopiedAlert, user, setSidebarIsShowing }) => {
 				to="/select-game-type"
 				className="link"
 			>
+				<img
+					src={appsIcon}
+					alt="messages"
+					title="Leaderboard"
+				/>
 				Select Game Type
 			</Link>
 
