@@ -260,6 +260,14 @@ const useFunctions = () => {
 		};
 	};
 
+	const logout = () => {
+		localStorage.removeItem("user");
+		localStorage.removeItem("usernames");
+		localStorage.removeItem("selectedUser");
+
+		window.location.href = "/login";
+	};
+
 	return {
 		generateComputerMove,
 		checkPlayersMoves,
@@ -272,6 +280,7 @@ const useFunctions = () => {
 		joinRoom,
 		leaveRoom,
 		getAllScores,
+		logout,
 	};
 };
 

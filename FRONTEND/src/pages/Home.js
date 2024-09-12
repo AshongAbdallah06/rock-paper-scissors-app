@@ -32,7 +32,6 @@ const Home = () => {
 	}, [hasLeftRoom]);
 
 	const bonus = JSON.parse(localStorage.getItem("bonus"));
-
 	const user = JSON.parse(localStorage.getItem("user"));
 
 	const [renderRoutes, setRenderRoutes] = useState(false);
@@ -66,6 +65,7 @@ const Home = () => {
 	}, []);
 
 	const [sidebarIsShowing, setSidebarIsShowing] = useState(false);
+	const [bonusState, setBonusState] = useState(bonus);
 
 	return (
 		<>
@@ -84,9 +84,12 @@ const Home = () => {
 
 					<ScoreBoard />
 
-					<GameBoard />
+					<GameBoard
+						bonusState={bonusState}
+						setBonusState={setBonusState}
+					/>
 
-					{!bonus ? <Dialog /> : <BonusDialog />}
+					{!bonusState ? <Dialog /> : <BonusDialog />}
 					{chatIsShowing ? <Chat setChatIsShowing={setChatIsShowing} /> : ""}
 
 					{sidebarIsShowing && (
@@ -96,6 +99,8 @@ const Home = () => {
 							setSidebarIsShowing={setSidebarIsShowing}
 							setChatIsShowing={setChatIsShowing}
 							chatIsShowing={chatIsShowing}
+							bonusState={bonusState}
+							setBonusState={setBonusState}
 						/>
 					)}
 				</>

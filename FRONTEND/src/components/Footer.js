@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import useCheckContext from "../hooks/useCheckContext";
 import copyIcon from "../images/copy-regular.svg";
 import { Link } from "react-router-dom";
@@ -9,6 +9,10 @@ import appsIcon from "../images/apps-outline.svg";
 import modeIcon from "../images/game-controller-outline.svg";
 import rulesIcon from "../images/book-outline.svg";
 import chatIcon from "../images/chatbubbles-outline.svg";
+import singleIcon from "../images/person-outline.svg";
+import dualIcon from "../images/people-outline.svg";
+import normalIcon from "../images/cube-outline.svg";
+import bonusIcon from "../images/gift-outline.svg";
 import useFunctions from "../hooks/useFunctions";
 
 const Footer = ({
@@ -17,6 +21,8 @@ const Footer = ({
 	setSidebarIsShowing,
 	chatIsShowing,
 	setChatIsShowing,
+	bonusState,
+	setBonusState,
 }) => {
 	const {
 		roomID,
@@ -26,8 +32,10 @@ const Footer = ({
 		setLeftRoom,
 		setRoomIsSelected,
 		setRoomID,
+		setIsOnePlayer,
+		setPlayerIsChosen,
 	} = useCheckContext();
-	const { leaveRoom } = useFunctions();
+	const { leaveRoom, logout } = useFunctions();
 
 	const showModal = () => {
 		setIsRulesModalShow(true);
@@ -48,6 +56,8 @@ const Footer = ({
 		}
 	};
 
+	const [changeMode, setChangeMode] = useState(false);
+	const [changeGameType, setChangeGameType] = useState(false);
 	return (
 		<footer className="footer-sidebar">
 			<div
@@ -121,10 +131,9 @@ const Footer = ({
 			)}
 
 			<Link
-				to="/select-player-mode"
 				className="link"
 				onClick={() => {
-					localStorage.removeItem("player-mode");
+					setChangeMode(!changeMode);
 				}}
 			>
 				<img
@@ -135,9 +144,55 @@ const Footer = ({
 				Change Mode
 			</Link>
 
+			{changeMode && (
+				<>
+					{!isOnePlayer && (
+						<div
+							onClick={() => {
+								setIsOnePlayer(true);
+								setPlayerIsChosen(true);
+								setRoomIsSelected(true);
+								setSidebarIsShowing(false);
+
+								window.location.reload();
+							}}
+							className="link sub-link"
+						>
+							<img
+								src={singleIcon}
+								alt="messages"
+								title="Leaderboard"
+							/>
+							Single
+						</div>
+					)}
+
+					{isOnePlayer && (
+						<Link
+							to="/select-room"
+							className="link sub-link"
+							onClick={() => {
+								setIsOnePlayer(false);
+								setPlayerIsChosen(true);
+								setSidebarIsShowing(false);
+							}}
+						>
+							<img
+								src={dualIcon}
+								alt="messages"
+								title="Leaderboard"
+							/>
+							Dual
+						</Link>
+					)}
+				</>
+			)}
+
 			<Link
-				to="/select-game-type"
 				className="link"
+				onClick={() => {
+					setChangeGameType(!changeGameType);
+				}}
 			>
 				<img
 					src={appsIcon}
@@ -146,6 +201,52 @@ const Footer = ({
 				/>
 				Select Game Type
 			</Link>
+
+			{changeGameType && (
+				<>
+					{bonusState && (
+						<Link
+							onClick={() => {
+								localStorage.setItem("bonus", JSON.stringify(false));
+								setBonusState("setting");
+								setTimeout(() => {
+									setBonusState(JSON.parse(localStorage.getItem("bonus")));
+								}, 2000);
+								setSidebarIsShowing(false);
+							}}
+							className="link sub-link"
+						>
+							<img
+								src={normalIcon}
+								alt="messages"
+								title="Leaderboard"
+							/>
+							Normal
+						</Link>
+					)}
+
+					{!bonusState && (
+						<Link
+							className="link sub-link"
+							onClick={() => {
+								localStorage.setItem("bonus", JSON.stringify(true));
+								setBonusState("setting");
+								setTimeout(() => {
+									setBonusState(JSON.parse(localStorage.getItem("bonus")));
+								}, 2000);
+								setSidebarIsShowing(false);
+							}}
+						>
+							<img
+								src={bonusIcon}
+								alt="messages"
+								title="Leaderboard"
+							/>
+							Bonus
+						</Link>
+					)}
+				</>
+			)}
 
 			<Link
 				to={`/p/${user?.username}`}
@@ -178,7 +279,7 @@ const Footer = ({
 			) : (
 				<button
 					className="Btn logout-btn"
-					onClick={() => {}}
+					onClick={logout}
 				>
 					<div className="sign">
 						<svg viewBox="0 0 512 512">
