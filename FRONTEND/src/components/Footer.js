@@ -60,6 +60,8 @@ const Footer = ({
 	const [changeGameType, setChangeGameType] = useState(false);
 	return (
 		<footer className="footer-sidebar">
+			<h1>Menu</h1>
+			<br />
 			<div
 				className="sidebar-link"
 				onClick={() => setSidebarIsShowing(false)}
