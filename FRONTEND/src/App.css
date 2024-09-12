@@ -414,6 +414,9 @@ form {
 	justify-content: center;
 	align-items: center;
 }
+form h1 {
+	font-size: 1.3rem;
+}
 form .room,
 form div {
 	display: flex;
