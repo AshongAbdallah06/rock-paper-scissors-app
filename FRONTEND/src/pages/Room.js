@@ -38,7 +38,6 @@ const PlayerSelection = () => {
 	// const savedID = JSON.parse(localStorage.getItem("room-id"));
 	return (
 		<form
-			className="selection"
 			onSubmit={(e) => {
 				e.preventDefault();
 				roomID && joinRoom(socket, roomID, setLeftRoom);
