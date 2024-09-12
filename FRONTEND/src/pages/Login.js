@@ -62,7 +62,10 @@ const Login = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit(onsubmit)}>
+		<form
+			className="auth-form"
+			onSubmit={handleSubmit(onsubmit)}
+		>
 			<Link
 				to="/signup"
 				className="links"

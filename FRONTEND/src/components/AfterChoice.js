@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useCheckContext from "../hooks/useCheckContext";
 
-const AfterChoice = () => {
+const AfterChoice = ({ bonusState }) => {
 	const {
 		playerMove,
 		setPlayerMove,
@@ -33,7 +33,6 @@ const AfterChoice = () => {
 		}
 	}, []);
 
-	const bonus = JSON.parse(localStorage.getItem("bonus"));
 	const user = JSON.parse(localStorage.getItem("user"));
 
 	return (
@@ -56,7 +55,7 @@ const AfterChoice = () => {
 							: ""
 					}`}
 				>
-					{!bonus ? (
+					{!bonusState ? (
 						<img
 							src={playerMoveImage}
 							alt={
@@ -123,7 +122,7 @@ const AfterChoice = () => {
 							: ""
 					}`}
 				>
-					{!bonus ? (
+					{!bonusState ? (
 						<img
 							src={computerMoveImage}
 							alt={

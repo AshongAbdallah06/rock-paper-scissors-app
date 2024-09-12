@@ -3,7 +3,7 @@ import rockIcon from "../images/icon-rock.svg";
 import useCheckContext from "../hooks/useCheckContext";
 import useFunctions from "../hooks/useFunctions";
 
-const Rock = () => {
+const Rock = ({ bonusState }) => {
 	const { moveOnclick, socket, listenToMove } = useCheckContext();
 	const { sendMoveAck } = useFunctions();
 
@@ -11,11 +11,9 @@ const Rock = () => {
 		listenToMove();
 	}, [socket]);
 
-	const bonus = JSON.parse(localStorage.getItem("bonus"));
-
 	return (
 		<div
-			className={!bonus ? "gameOpt" : "gameOpt-bonus"}
+			className={!bonusState ? "gameOpt" : "gameOpt-bonus"}
 			onClick={() => {
 				sendMoveAck(socket);
 				moveOnclick("r");

@@ -44,7 +44,7 @@ function Loading({ isRendered, setIsRendered, children }) {
 	) : (
 		<>
 			<Logo />
-			<Loader />;
+			<Loader />
 		</>
 	);
 }
@@ -119,20 +119,6 @@ function App() {
 						element={
 							<PrivateRoute userExists={userExists}>
 								<Room />
-							</PrivateRoute>
-						}
-					/>
-
-					<Route
-						path="/select-game-type"
-						element={
-							<PrivateRoute userExists={userExists}>
-								<Loading
-									isRendered={isRendered}
-									setIsRendered={setIsRendered}
-								>
-									<GameType />
-								</Loading>
 							</PrivateRoute>
 						}
 					/>

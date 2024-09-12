@@ -3,7 +3,7 @@ import paperIcon from "../images/icon-paper.svg";
 import useCheckContext from "../hooks/useCheckContext";
 import useFunctions from "../hooks/useFunctions";
 
-const Paper = () => {
+const Paper = ({ bonusState }) => {
 	const { moveOnclick, socket, listenToMove } = useCheckContext();
 	const { sendMoveAck } = useFunctions();
 
@@ -11,11 +11,9 @@ const Paper = () => {
 		listenToMove();
 	}, [socket]);
 
-	const bonus = JSON.parse(localStorage.getItem("bonus"));
-
 	return (
 		<div
-			className={!bonus ? "gameOpt" : "gameOpt-bonus"}
+			className={!bonusState ? "gameOpt" : "gameOpt-bonus"}
 			onClick={() => {
 				sendMoveAck(socket);
 				moveOnclick("p");

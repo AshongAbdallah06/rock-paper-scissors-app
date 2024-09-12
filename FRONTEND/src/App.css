@@ -414,6 +414,9 @@ form {
 	justify-content: center;
 	align-items: center;
 }
+.auth-form {
+	display: block;
+}
 form h1 {
 	font-size: 1.3rem;
 }
@@ -568,6 +571,19 @@ textarea {
 	color: white;
 	text-decoration: none;
 	font-size: 0.85rem;
+	border-top: 1px solid hsl(238, 24%, 23%);
+	border-bottom: 1px solid hsl(238, 24%, 23%);
+	padding: 1rem;
+	cursor: pointer;
+}
+.link:hover {
+	background-color: hsl(214, 50%, 39%);
+}
+.sub-link {
+	padding-left: 2rem;
+}
+.sub-link:hover {
+	background-color: hsl(214, 63%, 24%);
 }
 .link img {
 	height: 1.2rem;
@@ -686,20 +702,12 @@ textarea {
 	width: 1rem;
 }
 
-.footer-sidebar a,
-.footer-sidebar .rules-btn {
-	border-bottom: 1px solid hsl(238, 24%, 23%);
-	padding: 1rem;
-}
 .sidebar-link {
 	margin-bottom: 1rem;
 	cursor: pointer;
 	position: absolute;
 	top: 1rem;
 	right: 1rem;
-}
-.footer-sidebar a:hover {
-	background-color: hsl(214, 50%, 39%);
 }
 .Btn {
 	display: flex;

@@ -13,8 +13,9 @@ import spockIcon from "./images/icon-spock.svg";
 import LoadingDots from "./components/LoadingDots";
 import Lizard from "./components/bonus/Lizard";
 import Spock from "./components/bonus/Spock";
+import Loader from "./components/Loader";
 
-const GameBoard = () => {
+const GameBoard = ({ bonusState }) => {
 	const { playerMove, computerMove, isOnePlayer } = useCheckContext();
 	const [showAfterChoice, setShowAfterChoice] = useState(null);
 
@@ -27,70 +28,83 @@ const GameBoard = () => {
 		}
 	}, [playerMove, computerMove]);
 
-	const bonus = JSON.parse(localStorage.getItem("bonus"));
-
 	return (
 		<section className="Gboard">
-			{!playerMove && !computerMove && (
-				<div className={bonus ? "gameBoard-bonus" : "gameBoard"}>
-					<Paper />
+			{bonusState === true || bonusState === false ? (
+				<>
+					{!playerMove && !computerMove && (
+						<div className={bonusState === true ? "gameBoard-bonus" : "gameBoard"}>
+							<Paper bonusState={bonusState} />
 
-					<Scissors />
+							<Scissors bonusState={bonusState} />
 
-					<Rock />
+							<Rock bonusState={bonusState} />
 
-					{bonus && (
-						<>
-							<Lizard />
+							{bonusState === true && (
+								<>
+									<Lizard bonusState={bonusState} />
 
-							<Spock />
-						</>
+									<Spock bonusState={bonusState} />
+								</>
+							)}
+						</div>
 					)}
-				</div>
-			)}
-			{!isOnePlayer && playerMove && !computerMove && (
-				<span className="stale">
-					<h3>
-						Waiting for opponent's move
-						<LoadingDots />
-					</h3>
-					<div className="picked">
-						{!bonus ? (
-							<img
-								src={
-									(playerMove === "r" && rockIcon) ||
-									(playerMove === "p" && paperIcon) ||
-									(playerMove === "s" && scissorsIcon)
-								}
-								alt={
-									(playerMove === "r" && "rock") ||
-									(playerMove === "p" && "paper") ||
-									(playerMove === "s" && "scissors")
-								}
-							/>
-						) : (
-							<img
-								src={
-									(playerMove === "r" && rockIcon) ||
-									(playerMove === "p" && paperIcon) ||
-									(playerMove === "s" && scissorsIcon) ||
-									(playerMove === "l" && lizardIcon) ||
-									(playerMove === "sp" && spockIcon)
-								}
-								alt={
-									(playerMove === "r" && "rock") ||
-									(playerMove === "p" && "paper") ||
-									(playerMove === "s" && "scissors") ||
-									(playerMove === "l" && "lizard") ||
-									(playerMove === "sp" && "spock")
-								}
-							/>
-						)}
-					</div>
-				</span>
-			)}
 
-			{playerMove && computerMove ? !showAfterChoice ? <MakingMove /> : <AfterChoice /> : ""}
+					{!isOnePlayer && playerMove && !computerMove && (
+						<span className="stale">
+							<h3>
+								Waiting for opponent's move
+								<LoadingDots />
+							</h3>
+							<div className="picked">
+								{bonusState === false ? (
+									<img
+										src={
+											(playerMove === "r" && rockIcon) ||
+											(playerMove === "p" && paperIcon) ||
+											(playerMove === "s" && scissorsIcon)
+										}
+										alt={
+											(playerMove === "r" && "rock") ||
+											(playerMove === "p" && "paper") ||
+											(playerMove === "s" && "scissors")
+										}
+									/>
+								) : (
+									<img
+										src={
+											(playerMove === "r" && rockIcon) ||
+											(playerMove === "p" && paperIcon) ||
+											(playerMove === "s" && scissorsIcon) ||
+											(playerMove === "l" && lizardIcon) ||
+											(playerMove === "sp" && spockIcon)
+										}
+										alt={
+											(playerMove === "r" && "rock") ||
+											(playerMove === "p" && "paper") ||
+											(playerMove === "s" && "scissors") ||
+											(playerMove === "l" && "lizard") ||
+											(playerMove === "sp" && "spock")
+										}
+									/>
+								)}
+							</div>
+						</span>
+					)}
+
+					{playerMove && computerMove ? (
+						!showAfterChoice ? (
+							<MakingMove />
+						) : (
+							<AfterChoice bonusState={bonusState} />
+						)
+					) : (
+						""
+					)}
+				</>
+			) : (
+				<Loader />
+			)}
 		</section>
 	);
 };
