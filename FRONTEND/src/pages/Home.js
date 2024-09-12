@@ -82,10 +82,7 @@ const Home = () => {
 						<p className="copied-alert">{leftRoom}</p>
 					)}
 
-					<ScoreBoard
-						setChatIsShowing={setChatIsShowing}
-						chatIsShowing={chatIsShowing}
-					/>
+					<ScoreBoard />
 
 					<GameBoard />
 
@@ -97,6 +94,8 @@ const Home = () => {
 							setShowCopiedAlert={setShowCopiedAlert}
 							user={user}
 							setSidebarIsShowing={setSidebarIsShowing}
+							setChatIsShowing={setChatIsShowing}
+							chatIsShowing={chatIsShowing}
 						/>
 					)}
 				</>

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import logo from "../images/logo.svg";
-import plane from "../images/paper-plane-outline.svg";
 import useCheckContext from "../hooks/useCheckContext";
 
-const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
+const ScoreBoard = () => {
 	const {
 		roomID,
 		p1Score,
@@ -87,19 +86,6 @@ const ScoreBoard = ({ chatIsShowing, setChatIsShowing }) => {
 					</div>
 				)}
 			</section>
-
-			{!isOnePlayer && !chatIsShowing && (
-				<div
-					className="menu"
-					onClick={() => setChatIsShowing(!chatIsShowing)}
-					title="Messages"
-				>
-					<img
-						src={plane}
-						alt="messages"
-					/>
-				</div>
-			)}
 		</>
 	);
 };
