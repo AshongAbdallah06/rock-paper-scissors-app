@@ -13,6 +13,7 @@ import singleIcon from "../images/person-outline.svg";
 import dualIcon from "../images/people-outline.svg";
 import normalIcon from "../images/cube-outline.svg";
 import bonusIcon from "../images/gift-outline.svg";
+import helpIcon from "../images/help-circle-outline.svg";
 import useFunctions from "../hooks/useFunctions";
 
 const Footer = ({
@@ -259,6 +260,17 @@ const Footer = ({
 					alt="profile"
 				/>
 				My Profile
+			</Link>
+
+			<Link
+				to="/help"
+				className="link"
+			>
+				<img
+					src={helpIcon}
+					alt="profile"
+				/>
+				Help
 			</Link>
 
 			{!isOnePlayer ? (
