@@ -5,10 +5,10 @@ import bonusRules from "../../images/image-rules-bonus.svg";
 import viewProfileVideo from "../../images/outcomes/view-profile.mp4";
 import { Link } from "react-router-dom";
 
-const Other = ({ page, setPage }) => {
+const Other = ({ page, setPage, docsContentRef }) => {
 	return (
 		<>
-			<section>
+			<section ref={docsContentRef}>
 				<h2>View Live Leaderboard</h2>
 				<p>
 					The Live Leaderboard is where you can track your progress and see how you rank

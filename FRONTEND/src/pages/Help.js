@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import DocsContent from "../components/DocsContent";
 import Logo from "../components/Logo";
@@ -7,9 +7,18 @@ import statsIcon from "../images/stats-chart-outline.svg";
 const Help = () => {
 	const [page, setPage] = useState("introduction");
 
+	const docsContentRef = useRef(null);
+
 	const [searchParams, setSearchParams] = useSearchParams();
 	useEffect(() => {
 		setSearchParams((params) => ({ ...params, page }));
+
+		if (docsContentRef.current) {
+			docsContentRef.current.scrollIntoView({
+				top: 0,
+				behavior: "smooth",
+			});
+		}
 	}, [page]);
 
 	return (
@@ -46,6 +55,7 @@ const Help = () => {
 				</div>
 
 				<DocsContent
+					docsContentRef={docsContentRef}
 					page={page}
 					setPage={setPage}
 				/>
