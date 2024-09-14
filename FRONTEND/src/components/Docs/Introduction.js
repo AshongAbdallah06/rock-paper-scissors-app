@@ -5,10 +5,10 @@ import scissorsWin from "../../images/outcomes/scissors-win.png";
 import video from "../../images/outcomes/Media1.mp4";
 import arrowForward from "../../images/arrow-forward-outline.svg";
 
-const Introduction = ({ setPage }) => {
+const Introduction = ({ setPage, docsContentRef }) => {
 	return (
 		<>
-			<section>
+			<section ref={docsContentRef}>
 				<h2>Overview</h2>
 				<p>
 					Welcome to Rock Paper Scissors, a game that tests your strategy and luck! The
