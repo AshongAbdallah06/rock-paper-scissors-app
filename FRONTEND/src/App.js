@@ -15,6 +15,7 @@ import PlayerProfile from "./pages/PlayerProfile";
 import NotFound from "./pages/NotFound";
 import Loader from "./components/Loader";
 import Logo from "./components/Logo";
+import Help from "./pages/Help";
 
 export const GameContext = createContext();
 
@@ -61,6 +62,9 @@ function App() {
 
 	/**
 	 	All todo:
+		Create an invite template that users can share in two player mode(maybe also in single player)
+		Create 'Create Room' or 'Join Room(enter code)' feature 
+		Create Invite a friend button
 	 * 	- Interactive Tutorials: Create a tutorial mode to help new players learn the game.
 	 * 	- Statistics Tracking: Provide detailed stats, such as win/loss ratio, most picked moves, streaks(wins, losses, ties), etc.
 	 * 	- todo: Remove chat popup when an empty space is clicked <------ Next todo:
@@ -132,6 +136,20 @@ function App() {
 									setIsRendered={setIsRendered}
 								>
 									<Leaderboard />
+								</Loading>
+							</PrivateRoute>
+						}
+					/>
+
+					<Route
+						path={"/help"}
+						element={
+							<PrivateRoute userExists={userExists}>
+								<Loading
+									isRendered={isRendered}
+									setIsRendered={setIsRendered}
+								>
+									<Help />
 								</Loading>
 							</PrivateRoute>
 						}
