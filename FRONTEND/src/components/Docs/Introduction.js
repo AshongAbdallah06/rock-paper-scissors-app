@@ -1,11 +1,11 @@
-import React from "react";
-import rockWin from "../../images/outcomes/rock-win.png";
-import paperWin from "../../images/outcomes/paper-win.png";
-import scissorsWin from "../../images/outcomes/scissors-win.png";
-import video from "../../images/outcomes/Media1.mp4";
+import React, { useEffect, useState } from "react";
+import rulesNormal from "../../images/image-rules.svg";
+import normalGamePlay from "../../images/outcomes/Media1.mp4";
+import bonusGamePlay from "../../images/outcomes/bonus-game-play.mp4";
 import arrowForward from "../../images/arrow-forward-outline.svg";
 
 const Introduction = ({ setPage, docsContentRef }) => {
+	const [gameMode, setGameMode] = useState("normal");
 	return (
 		<>
 			<section ref={docsContentRef}>
@@ -37,29 +37,9 @@ const Introduction = ({ setPage, docsContentRef }) => {
 				<div className="outcome-images">
 					<div>
 						<img
-							src={rockWin}
-							alt="outcomes"
-							className="outcomes"
+							src={rulesNormal}
+							alt=""
 						/>
-						<span>Rock beats Scissors</span>
-					</div>
-
-					<div>
-						<img
-							src={paperWin}
-							alt="outcomes"
-							className="outcomes"
-						/>
-						<span>Paper beats Rock</span>
-					</div>
-
-					<div>
-						<img
-							src={scissorsWin}
-							alt="outcomes"
-							className="outcomes"
-						/>
-						<span>Scissors beats Paper</span>
 					</div>
 				</div>
 			</section>
@@ -98,12 +78,40 @@ const Introduction = ({ setPage, docsContentRef }) => {
 
 				<p>Try to win as many rounds as possible to improve your stats and ranking.</p>
 
-				<video
-					src={video}
-					className="outcomes"
-					controls={true}
-					autoPlay={true}
-				/>
+				<div className="buttons">
+					<div
+						onClick={() => setGameMode("normal")}
+						className={`${gameMode === "normal" ? "active" : ""}`}
+					>
+						Normal
+					</div>
+					<div
+						onClick={() => setGameMode("bonus")}
+						className={`${gameMode === "bonus" ? "active" : ""}`}
+					>
+						Bonus
+					</div>
+				</div>
+
+				{gameMode === "normal" && (
+					<video
+						src={normalGamePlay}
+						className="outcomes"
+						controls={false}
+						autoPlay={true}
+						muted={true}
+					/>
+				)}
+
+				{gameMode === "bonus" && (
+					<video
+						src={bonusGamePlay}
+						className="outcomes"
+						controls={false}
+						autoPlay={true}
+						muted={true}
+					/>
+				)}
 			</section>
 
 			<div className="buttons">

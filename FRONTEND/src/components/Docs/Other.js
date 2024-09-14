@@ -27,8 +27,9 @@ const Other = ({ page, setPage, docsContentRef }) => {
 				<video
 					src={video}
 					className="outcomes"
-					controls={true}
+					controls={false}
 					autoPlay={true}
+					muted={true}
 				/>
 			</section>
 
@@ -67,8 +68,9 @@ const Other = ({ page, setPage, docsContentRef }) => {
 				<video
 					src={viewProfileVideo}
 					className="outcomes"
-					controls={true}
+					controls={false}
 					autoPlay={true}
+					muted={true}
 				/>
 			</section>
 
