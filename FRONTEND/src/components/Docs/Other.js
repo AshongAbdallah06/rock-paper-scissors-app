@@ -1,14 +1,41 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import video from "../../images/outcomes/Leaderboard.mp4";
 import arrowBack from "../../images/arrow-back-outline.svg";
 import bonusRules from "../../images/image-rules-bonus.svg";
 import viewProfileVideo from "../../images/outcomes/view-profile.mp4";
 import { Link } from "react-router-dom";
 
-const Other = ({ page, setPage, docsContentRef }) => {
+const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }) => {
+	const profileRef = useRef(null);
+	const modesRef = useRef(null);
+	const leaderboardRef = useRef("leaderboard");
+
+	useEffect(() => {
+		if (feature === "leaderboard") {
+			leaderboardRef.current.scrollIntoView({
+				top: 0,
+				behavior: "smooth",
+			});
+			setSearchParams((params) => ({ ...params, feature }));
+		} else if (feature === "profile") {
+			profileRef.current.scrollIntoView({
+				top: 0,
+				behavior: "smooth",
+			});
+			setSearchParams((params) => ({ ...params, feature }));
+		} else if (feature === "modes") {
+			modesRef.current.scrollIntoView({
+				top: 0,
+				behavior: "smooth",
+			});
+			setSearchParams((params) => ({ ...params, feature }));
+		}
+	}, [feature]);
+
 	return (
 		<>
-			<section ref={docsContentRef}>
+			<div ref={docsContentRef} />
+			<section ref={leaderboardRef}>
 				<h2>View Live Leaderboard</h2>
 				<p>
 					The Live Leaderboard is where you can track your progress and see how you rank
@@ -27,12 +54,13 @@ const Other = ({ page, setPage, docsContentRef }) => {
 				<video
 					src={video}
 					className="outcomes"
-					controls={true}
+					controls={false}
 					autoPlay={true}
+					muted={true}
 				/>
 			</section>
 
-			<section>
+			<section ref={profileRef}>
 				<h2>View Your Profile</h2>
 				<p>
 					Your profile page is where you get detailed information about your game-play.
@@ -40,7 +68,8 @@ const Other = ({ page, setPage, docsContentRef }) => {
 					stats, such as win/loss ratio, most picked moves, streaks(wins, losses, ties),
 					and many more.
 				</p>
-				<p>
+
+				<span>
 					<b>You can access your profile page via the Home page by:</b>
 					<ul>
 						<li>
@@ -51,7 +80,8 @@ const Other = ({ page, setPage, docsContentRef }) => {
 							Click on <b>My Profile</b> to navigate to your Profile page
 						</li>
 					</ul>
-				</p>
+				</span>
+
 				<p>
 					<li>
 						You can also access it via the <b>Leaderboard </b>
@@ -67,12 +97,13 @@ const Other = ({ page, setPage, docsContentRef }) => {
 				<video
 					src={viewProfileVideo}
 					className="outcomes"
-					controls={true}
+					controls={false}
 					autoPlay={true}
+					muted={true}
 				/>
 			</section>
 
-			<section>
+			<section ref={modesRef}>
 				<h2>Game & Player Modes</h2>
 				<p>
 					There are two(2) player modes and also two(2) game modes in this
@@ -177,12 +208,12 @@ const Other = ({ page, setPage, docsContentRef }) => {
 							Try it Now
 						</Link>
 						.
-						<div className="bonus-rules">
+						<span className="bonus-rules">
 							<img
 								src={bonusRules}
 								alt=""
 							/>
-						</div>
+						</span>
 					</p>
 				</ul>
 			</section>
@@ -190,7 +221,10 @@ const Other = ({ page, setPage, docsContentRef }) => {
 			<div className="buttons">
 				<button
 					className="next-btn"
-					onClick={() => setPage("introduction")}
+					onClick={() => {
+						setPage("introduction");
+						setFeature("overview");
+					}}
 				>
 					<img src={arrowBack} />
 					Previous

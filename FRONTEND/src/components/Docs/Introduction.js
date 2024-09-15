@@ -1,14 +1,43 @@
-import React from "react";
-import rockWin from "../../images/outcomes/rock-win.png";
-import paperWin from "../../images/outcomes/paper-win.png";
-import scissorsWin from "../../images/outcomes/scissors-win.png";
-import video from "../../images/outcomes/Media1.mp4";
+import React, { useEffect, useRef, useState } from "react";
+import rulesNormal from "../../images/image-rules.svg";
+import normalGamePlay from "../../images/outcomes/Media1.mp4";
+import bonusGamePlay from "../../images/outcomes/bonus-game-play.mp4";
 import arrowForward from "../../images/arrow-forward-outline.svg";
+import { useSearchParams } from "react-router-dom";
 
-const Introduction = ({ setPage, docsContentRef }) => {
+const Introduction = ({ setPage, setSearchParams, feature }) => {
+	const [gameMode, setGameMode] = useState("normal");
+	const overviewRef = useRef("overview");
+	const rulesRef = useRef(null);
+	const howToPlayRef = useRef(null);
+
+	const [anotherParam, setAnotherParam] = useSearchParams();
+	useEffect(() => {
+		if (feature === "overview") {
+			overviewRef.current.scrollIntoView({
+				top: 0,
+				behavior: "smooth",
+			});
+			setSearchParams((params) => ({ ...params, feature }));
+			setAnotherParam((params) => ({ ...params, feature }));
+		} else if (feature === "rules") {
+			rulesRef.current.scrollIntoView({
+				top: 0,
+				behavior: "smooth",
+			});
+			setSearchParams((params) => ({ ...params, feature }));
+		} else if (feature === "how-to-play") {
+			howToPlayRef.current.scrollIntoView({
+				top: 0,
+				behavior: "smooth",
+			});
+			setSearchParams((params) => ({ ...params, feature }));
+		}
+	}, [feature]);
+
 	return (
 		<>
-			<section ref={docsContentRef}>
+			<section ref={overviewRef}>
 				<h2>Overview</h2>
 				<p>
 					Welcome to Rock Paper Scissors, a game that tests your strategy and luck! The
@@ -26,7 +55,7 @@ const Introduction = ({ setPage, docsContentRef }) => {
 				</p>
 			</section>
 
-			<section>
+			<section ref={rulesRef}>
 				<h2>Rules</h2>
 				<p>
 					In every round, your objective is to select the hand sign that beats your
@@ -37,34 +66,14 @@ const Introduction = ({ setPage, docsContentRef }) => {
 				<div className="outcome-images">
 					<div>
 						<img
-							src={rockWin}
-							alt="outcomes"
-							className="outcomes"
+							src={rulesNormal}
+							alt=""
 						/>
-						<span>Rock beats Scissors</span>
-					</div>
-
-					<div>
-						<img
-							src={paperWin}
-							alt="outcomes"
-							className="outcomes"
-						/>
-						<span>Paper beats Rock</span>
-					</div>
-
-					<div>
-						<img
-							src={scissorsWin}
-							alt="outcomes"
-							className="outcomes"
-						/>
-						<span>Scissors beats Paper</span>
 					</div>
 				</div>
 			</section>
 
-			<section>
+			<section ref={howToPlayRef}>
 				<h2>How To Play (Single Player Mode)</h2>
 				<p>
 					In Single Player Mode, you face off against a computer-controlled opponent.
@@ -92,18 +101,44 @@ const Introduction = ({ setPage, docsContentRef }) => {
 						"Defeat..." screen if you lose, or a "Tie" if you both select the same hand
 						sign.
 					</li>
-					{/* <li>The winner of the round is determined based on the rules.</li> */}
-					{/* Play continues until one player wins enough rounds to be declared the victor. */}
 				</ul>
 
 				<p>Try to win as many rounds as possible to improve your stats and ranking.</p>
 
-				<video
-					src={video}
-					className="outcomes"
-					controls={true}
-					autoPlay={true}
-				/>
+				<div className="buttons">
+					<div
+						onClick={() => setGameMode("normal")}
+						className={`${gameMode === "normal" ? "active" : ""}`}
+					>
+						Normal
+					</div>
+					<div
+						onClick={() => setGameMode("bonus")}
+						className={`${gameMode === "bonus" ? "active" : ""}`}
+					>
+						Bonus
+					</div>
+				</div>
+
+				{gameMode === "normal" && (
+					<video
+						src={normalGamePlay}
+						className="outcomes"
+						controls={false}
+						autoPlay={true}
+						muted={true}
+					/>
+				)}
+
+				{gameMode === "bonus" && (
+					<video
+						src={bonusGamePlay}
+						className="outcomes"
+						controls={false}
+						autoPlay={true}
+						muted={true}
+					/>
+				)}
 			</section>
 
 			<div className="buttons">
