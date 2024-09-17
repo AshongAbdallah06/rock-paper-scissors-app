@@ -22,26 +22,35 @@ const Help = () => {
 		}
 	}, [page]);
 
+	const [renderRoutes, setRenderRoutes] = useState(false);
+	useEffect(() => {
+		setRenderRoutes(false);
+		const timer = setTimeout(() => {
+			setRenderRoutes(true);
+		}, 100);
+	}, []);
 	return (
 		<div className="help-section">
-			<div className="help">
-				<HelpSidebar
-					page={page}
-					setPage={setPage}
-					setFeature={setFeature}
-					feature={feature}
-				/>
+			{renderRoutes && (
+				<div className="help">
+					<HelpSidebar
+						page={page}
+						setPage={setPage}
+						setFeature={setFeature}
+						feature={feature}
+					/>
 
-				<DocsContent
-					docsContentRef={docsContentRef}
-					page={page}
-					setPage={setPage}
-					feature={feature}
-					setFeature={setFeature}
-					featureRef={featureRef}
-					setSearchParams={setSearchParams}
-				/>
-			</div>
+					<DocsContent
+						docsContentRef={docsContentRef}
+						page={page}
+						setPage={setPage}
+						feature={feature}
+						setFeature={setFeature}
+						featureRef={featureRef}
+						setSearchParams={setSearchParams}
+					/>
+				</div>
+			)}
 		</div>
 	);
 };

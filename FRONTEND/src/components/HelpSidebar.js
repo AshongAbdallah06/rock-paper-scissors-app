@@ -16,7 +16,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 			<Logo />
 
 			<div
-				className="link"
+				className="help-link"
 				onClick={() => {
 					setPage("introduction");
 					setFeature("overview");
@@ -105,7 +105,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 			)}
 
 			<Link
-				className="link"
+				className="help-link"
 				onClick={() => {
 					setPage("features");
 					setFeature("leaderboard");
@@ -204,7 +204,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 			)}
 
 			<Link
-				className={`link ${page === "contact" ? "active" : ""}`}
+				className={`help-link ${page === "contact" ? "active" : ""}`}
 				onClick={() => {
 					setPage("contact");
 					setFeature("contact");
