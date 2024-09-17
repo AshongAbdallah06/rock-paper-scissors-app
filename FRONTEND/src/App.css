@@ -415,7 +415,47 @@ form {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
+	border-radius: 3px;
+}
+.contact {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 	align-items: center;
+	margin: auto;
+}
+.feedback-form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	border: none;
+}
+.feedback-form h1 {
+	font-size: 2.2rem;
+	color: white;
+	margin-bottom: 1rem;
+}
+.feedback-form label {
+	font-size: 1.2rem;
+}
+.feedback-form input {
+	padding: 1rem;
+	font-size: 1.2rem;
+}
+.feedback-form input,
+.feedback-form textarea {
+	width: 30rem;
+}
+.feedback {
+	min-width: 100%;
+	max-width: 30rem;
+	max-height: 15rem;
+	min-height: 5rem;
+	outline: none;
+	padding: 0.5rem;
+	font-size: 1.1rem;
 }
 .auth-form {
 	display: block;
@@ -428,6 +468,7 @@ form div {
 	display: flex;
 	flex-direction: column;
 	margin: 1rem 0;
+	width: 100%;
 }
 form .room input,
 form input {
@@ -1521,7 +1562,12 @@ ul {
 	line-height: 2rem;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	padding-bottom: 10rem;
+	/* padding-bottom: 10rem; */
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	margin: auto;
 }
 .help .content p {
 	margin: 1rem 0;
@@ -1560,7 +1606,7 @@ ul {
 }
 
 .outcomes {
-	height: 90%;
+	/* height: 90%; */
 	width: 100%;
 	border-radius: 6px;
 	border: 2px solid white;
@@ -1620,6 +1666,12 @@ video {
 .next-btn:hover {
 	background-color: hsl(39, 100%, 67%);
 }
+
+.unresponsive {
+	text-align: center;
+	color: white;
+}
+
 /* Mobile */
 @media (max-width: 500px) {
 	body,

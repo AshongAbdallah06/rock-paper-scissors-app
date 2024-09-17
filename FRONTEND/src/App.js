@@ -16,6 +16,10 @@ import NotFound from "./pages/NotFound";
 import Loader from "./components/Loader";
 import Logo from "./components/Logo";
 import Help from "./pages/Help";
+import Axios from "axios";
+import Unresponsive from "./components/Unresponsive";
+import ErrorOccurred from "./components/ErrorOccurred";
+import Contact from "./pages/Contact";
 
 export const GameContext = createContext();
 
@@ -51,7 +55,14 @@ function Loading({ isRendered, setIsRendered, children }) {
 }
 
 function App() {
-	const { playerIsChosen, roomIsSelected, userExists, setUserExists } = useCheckContext();
+	const {
+		playerIsChosen,
+		roomIsSelected,
+		userExists,
+		setUserExists,
+		errorOccurred,
+		setErrorOccurred,
+	} = useCheckContext();
 	const [isRendered, setIsRendered] = useState(false);
 
 	const user = JSON.parse(localStorage.getItem("user"));
@@ -75,145 +86,190 @@ function App() {
 				- Cant play bonus or dual mode
 	 */
 
+	/**fixme: refactor CSS */
+
+	const [isServerOk, setIsServerOk] = useState(true);
+	const startServer = async () => {
+		try {
+			const res = await Axios.get(
+				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/${user?.username}`,
+				`http://localhost:4001/api/ser/${user?.username}`,
+				{
+					headers: { Authorization: `Bearer ${user.token}` },
+				}
+			);
+
+			if (res.data) setIsServerOk(true);
+		} catch (error) {
+			setIsServerOk(false);
+			console.log(error);
+		}
+	};
+	// useEffect(() => {
+	// 	startServer();
+	// 	console.log("Hey");
+	// }, []);
+
 	return (
 		<>
-			<Audios />
-			<Router>
-				<Routes>
-					<Route
-						path="/"
-						element={
-							<PrivateRoute userExists={userExists}>
-								{playerIsChosen ? (
-									roomIsSelected ? (
-										<>
-											<Loading
-												isRendered={isRendered}
-												setIsRendered={setIsRendered}
-											>
-												<Home />
-											</Loading>
-										</>
-									) : (
-										<Navigate to="/select-room" />
-									)
-								) : (
-									<Navigate to="/select-player-mode" />
-								)}
-							</PrivateRoute>
-						}
-					/>
+			{isServerOk ? (
+				<>
+					{errorOccurred && <ErrorOccurred />}
+					<Audios />
+					<Router>
+						<Routes>
+							<Route
+								path="/"
+								element={
+									<PrivateRoute userExists={userExists}>
+										{playerIsChosen ? (
+											roomIsSelected ? (
+												<>
+													<Loading
+														isRendered={isRendered}
+														setIsRendered={setIsRendered}
+													>
+														<Home />
+													</Loading>
+												</>
+											) : (
+												<Navigate to="/select-room" />
+											)
+										) : (
+											<Navigate to="/select-player-mode" />
+										)}
+									</PrivateRoute>
+								}
+							/>
 
-					<Route
-						path="/select-player-mode"
-						element={
-							<PrivateRoute userExists={userExists}>
-								<Loading
-									isRendered={isRendered}
-									setIsRendered={setIsRendered}
-								>
-									<PlayerSelection />
-								</Loading>
-							</PrivateRoute>
-						}
-					/>
+							<Route
+								path="/select-player-mode"
+								element={
+									<PrivateRoute userExists={userExists}>
+										<Loading
+											isRendered={isRendered}
+											setIsRendered={setIsRendered}
+										>
+											<PlayerSelection />
+										</Loading>
+									</PrivateRoute>
+								}
+							/>
 
-					<Route
-						path="/select-room"
-						element={
-							<PrivateRoute userExists={userExists}>
-								<Room />
-							</PrivateRoute>
-						}
-					/>
+							<Route
+								path="/select-room"
+								element={
+									<PrivateRoute userExists={userExists}>
+										<Room />
+									</PrivateRoute>
+								}
+							/>
 
-					<Route
-						path="/leaderboard"
-						element={
-							<PrivateRoute userExists={userExists}>
-								<Loading
-									isRendered={isRendered}
-									setIsRendered={setIsRendered}
-								>
-									<Leaderboard />
-								</Loading>
-							</PrivateRoute>
-						}
-					/>
+							<Route
+								path="/leaderboard"
+								element={
+									<PrivateRoute userExists={userExists}>
+										<Loading
+											isRendered={isRendered}
+											setIsRendered={setIsRendered}
+										>
+											<Leaderboard />
+										</Loading>
+									</PrivateRoute>
+								}
+							/>
 
-					<Route
-						path={"/help"}
-						element={
-							<PrivateRoute userExists={userExists}>
-								<Loading
-									isRendered={isRendered}
-									setIsRendered={setIsRendered}
-								>
-									<Help />
-								</Loading>
-							</PrivateRoute>
-						}
-					/>
+							<Route
+								path={"/help"}
+								element={
+									<PrivateRoute userExists={userExists}>
+										<Loading
+											isRendered={isRendered}
+											setIsRendered={setIsRendered}
+										>
+											<Help />
+										</Loading>
+									</PrivateRoute>
+								}
+							/>
 
-					<Route
-						path={`/p/${user?.username}`}
-						element={
-							<PrivateRoute userExists={userExists}>
-								<Loading
-									isRendered={isRendered}
-									setIsRendered={setIsRendered}
-								>
-									<Profile />
-								</Loading>
-							</PrivateRoute>
-						}
-					/>
+							<Route
+								path={"/help/contact"}
+								element={
+									<PrivateRoute userExists={userExists}>
+										<Loading
+											isRendered={isRendered}
+											setIsRendered={setIsRendered}
+										>
+											<Contact />
+										</Loading>
+									</PrivateRoute>
+								}
+							/>
 
-					<Route
-						path="/p/:username"
-						element={
-							<PrivateRoute userExists={userExists}>
-								<Loading
-									isRendered={isRendered}
-									setIsRendered={setIsRendered}
-								>
-									<PlayerProfile />
-								</Loading>
-							</PrivateRoute>
-						}
-					/>
+							<Route
+								path={`/p/${user?.username}`}
+								element={
+									<PrivateRoute userExists={userExists}>
+										<Loading
+											isRendered={isRendered}
+											setIsRendered={setIsRendered}
+										>
+											<Profile />
+										</Loading>
+									</PrivateRoute>
+								}
+							/>
 
-					<Route
-						path="/login"
-						element={
-							<PublicRoute userExists={userExists}>
-								<Login />
-							</PublicRoute>
-						}
-					/>
+							<Route
+								path="/p/:username"
+								element={
+									<PrivateRoute userExists={userExists}>
+										<Loading
+											isRendered={isRendered}
+											setIsRendered={setIsRendered}
+										>
+											<PlayerProfile />
+										</Loading>
+									</PrivateRoute>
+								}
+							/>
 
-					<Route
-						path="/signup"
-						element={
-							<PublicRoute userExists={userExists}>
-								<Signup />
-							</PublicRoute>
-						}
-					/>
+							<Route
+								path="/login"
+								element={
+									<PublicRoute userExists={userExists}>
+										<Login />
+									</PublicRoute>
+								}
+							/>
 
-					<Route
-						path="*"
-						element={
-							<Loading
-								isRendered={isRendered}
-								setIsRendered={setIsRendered}
-							>
-								<NotFound />
-							</Loading>
-						}
-					/>
-				</Routes>
-			</Router>
+							<Route
+								path="/signup"
+								element={
+									<PublicRoute userExists={userExists}>
+										<Signup />
+									</PublicRoute>
+								}
+							/>
+
+							<Route
+								path="*"
+								element={
+									<Loading
+										isRendered={isRendered}
+										setIsRendered={setIsRendered}
+									>
+										<NotFound />
+									</Loading>
+								}
+							/>
+						</Routes>
+					</Router>
+				</>
+			) : (
+				<Unresponsive />
+			)}
 		</>
 	);
 }

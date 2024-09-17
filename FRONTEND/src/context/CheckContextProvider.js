@@ -3,7 +3,9 @@ import io from "socket.io-client";
 import Axios from "axios";
 import useFunctions from "../hooks/useFunctions";
 
-const socket = io("https://rock-paper-scissors-app-iybf.onrender.com");
+// const socket = io("https://rock-paper-scissors-app-iybf.onrender.com");
+// const socket = io("http://192.168.8.197:4001");
+const socket = io("http://localhost:4001");
 export const CheckContext = createContext();
 
 const CheckContextProvider = ({ children }) => {
@@ -26,46 +28,23 @@ const CheckContextProvider = ({ children }) => {
 		playerMode && playerMode === "dual" ? false : true
 	);
 	const [playerIsChosen, setPlayerIsChosen] = useState(playerMode && true);
-
 	// When a player join a room
 	const [roomIsSelected, setRoomIsSelected] = useState(
 		playerMode && playerMode === "single" && true
 	);
 	// When a player leaves a room
 	const [leftRoom, setLeftRoom] = useState(false);
-
 	const [gameState, setGameState] = useState({ p1: null, p2: null, result: null });
-
-	// Show rules modal
 	const [isRulesModalShow, setIsRulesModalShow] = useState(false);
-
-	// Player moves and result states
 	// PlayerMove and ComputerMove are used as Player1 and Player2 in dual-mode respectively
-	const [moveAck, setMoveAck] = useState(false);
-	const listenToMove = () => {
-		socket.on("move-made", (message) => {
-			setMoveAck(message);
-			setTimeout(() => {
-				setMoveAck("");
-			}, 3000);
-		});
-
-		return () => {
-			socket.off("move-made");
-		};
-	};
-
-	useEffect(() => {
-		listenToMove();
-	}, []);
-
 	const [playerMove, setPlayerMove] = useState(null);
 	const [computerMove, setComputerMove] = useState(null);
 	const [result, setResult] = useState("");
-
+	const [moveAck, setMoveAck] = useState(false);
 	const [roomID, setRoomID] = useState(JSON.parse(localStorage.getItem("room-id")) || null);
-
 	const usernames = JSON.parse(localStorage.getItem("usernames"));
+
+	// Player 1 and Player 2 score state
 	const [p1Score, setP1Score] = useState(
 		(!isOnePlayer &&
 			JSON.parse(
@@ -84,6 +63,40 @@ const CheckContextProvider = ({ children }) => {
 			)) ||
 			0
 	);
+
+	const [currentUserStats, setCurrentUserStats] = useState({
+		score: 0,
+		username: user?.username,
+		gamesPlayed: 0,
+		wins: 0,
+		loses: 0,
+		ties: 0,
+	});
+
+	const [selectedUserStats, setSelectedUserStats] = useState(
+		JSON.parse(localStorage.getItem("selectedUser")) || null
+	);
+	const [userExists, setUserExists] = useState(null);
+	// Score on leaderboard
+	const [scores, setScores] = useState(null);
+	const [errorOccurred, setErrorOccurred] = useState(null);
+
+	const listenToMove = () => {
+		socket.on("move-made", (message) => {
+			setMoveAck(message);
+			setTimeout(() => {
+				setMoveAck("");
+			}, 3000);
+		});
+
+		return () => {
+			socket.off("move-made");
+		};
+	};
+
+	useEffect(() => {
+		listenToMove();
+	}, []);
 
 	const p1localStorageScore = `${roomID + usernames?.p1Username + usernames?.p2Username}-p1score`;
 	useEffect(() => {
@@ -150,22 +163,12 @@ const CheckContextProvider = ({ children }) => {
 		isOnePlayer && generateComputerMove(setComputerMove);
 	};
 
-	const [currentUserStats, setCurrentUserStats] = useState({
-		score: 0,
-		username: user?.username,
-		gamesPlayed: 0,
-		wins: 0,
-		loses: 0,
-		ties: 0,
-	});
-
-	const [selectedUserStats, setSelectedUserStats] = useState(
-		JSON.parse(localStorage.getItem("selectedUser")) || null
-	);
-
 	const getUserStats = async (username) => {
 		try {
-			const res = await Axios.get(`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${username}`);
+			const res = await Axios
+				.get
+				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${username}`
+				();
 			const data = res?.data[0] || {};
 
 			if (username === user?.username) {
@@ -184,6 +187,8 @@ const CheckContextProvider = ({ children }) => {
 			}
 		} catch (error) {
 			console.error("🚀 ~ getUserStats ~ error:", error);
+
+			setErrorOccurred("Could not fetch user data.");
 		}
 	};
 
@@ -248,11 +253,12 @@ const CheckContextProvider = ({ children }) => {
 		socket.emit("clearMoves");
 	};
 
-	const [userExists, setUserExists] = useState(null);
 	const authorize = async () => {
 		try {
 			const res = await Axios.get(
-				"https://rock-paper-scissors-app-iybf.onrender.com/api/user",
+				// "https://rock-paper-scissors-app-iybf.onrender.com/api/user",
+				// "http://192.168.8.197:4001/api/user",
+				"http://localhost:4001/api/user",
 				{
 					headers: { Authorization: `Bearer ${user.token}` },
 				}
@@ -268,9 +274,6 @@ const CheckContextProvider = ({ children }) => {
 			}
 		}
 	};
-
-	// Score on leader board
-	const [scores, setScores] = useState(null);
 
 	useEffect(() => {
 		getAllScores(socket, setScores);
@@ -320,6 +323,8 @@ const CheckContextProvider = ({ children }) => {
 				setScores,
 				getUserStats,
 				selectedUserStats,
+				errorOccurred,
+				setErrorOccurred,
 			}}
 		>
 			{children}

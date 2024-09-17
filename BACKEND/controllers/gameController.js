@@ -2,11 +2,20 @@ const pool = require("../db");
 
 const getHome = async (req, res) => {
 	const user_id = req.user;
+	const { username } = req.params;
 
 	try {
-		res.json({ user: user_id });
+		const userScoreDetails = await pool.query("SELECT * FROM SCORES WHERE USERNAME = $1", [
+			username,
+		]);
+		const userInfoDetails = await pool.query("SELECT * FROM USERS WHERE USERNAME = $1", [
+			username,
+		]);
+
+		if (userScoreDetails.rowCount > 0 && userInfoDetails.rowCount > 0)
+			res.status(201).json({ msg: "ok" });
 	} catch (error) {
-		res.status(401).json({ msg: "Invalid Token. Access Unauthorized" });
+		res.status(401).json(error);
 	}
 };
 
