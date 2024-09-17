@@ -24,9 +24,10 @@
 	top: 1rem;
 	right: 1rem;
 }
-.link {
+.link,
+.help-link {
 	display: grid;
-	grid-template-columns: 1fr 0fr;
+	grid-template-columns: 0.3fr 1fr;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
@@ -37,6 +38,9 @@
 	border-bottom: 1px solid hsl(238, 24%, 23%);
 	padding: 1rem;
 	cursor: pointer;
+}
+.help-link {
+	grid-template-columns: 1fr 0fr;
 }
 .link:hover {
 	background-color: hsl(214, 50%, 39%);

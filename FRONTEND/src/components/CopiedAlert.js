@@ -5,8 +5,7 @@ const CopiedAlert = () => {
 	const { roomID } = useCheckContext();
 	return (
 		<div className="copied-alert">
-			Room ID: <span style={{ fontWeight: "bolder" }}>{roomID} </span>
-			copied. <br />
+			Invite Link copied. <br />
 			{/* Share to your friend to play against each other */}
 		</div>
 	);

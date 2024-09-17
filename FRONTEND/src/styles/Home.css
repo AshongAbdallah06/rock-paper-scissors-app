@@ -333,7 +333,8 @@ img[alt="scissors"] {
 		radial-gradient(circle, rgba(0, 0, 0, 0.1) 10%, hsl(0, 2%, 37%) 20%, transparent);
 	box-shadow: 0 0 0.3125rem rgba(0, 0, 0, 0.3);
 }
-.rules-overlay {
+.rules-overlay,
+.manual {
 	background-color: rgba(0, 0, 0, 0.7);
 	z-index: 1000;
 	min-height: 100vh;
@@ -527,4 +528,40 @@ form .room input {
 .pl__ring--d {
 	animation-name: ringD;
 	stroke: #f42582;
+}
+
+.manual {
+	text-align: center;
+	color: white;
+	display: flex;
+	justify-content: center;
+
+	align-items: center;
+	flex-direction: column;
+	background-color: rgba(0, 0, 0, 0.9);
+}
+.manual a {
+	/* color: white; */
+	/* text-decoration: underline; */
+	font-weight: bold;
+	margin-right: 1rem;
+	border-radius: 3px;
+	padding: 0.5rem;
+	border: none;
+	font-size: 1rem;
+	cursor: pointer;
+	text-align: center;
+	display: inline-block;
+	margin-top: 1rem;
+	background-color: white;
+	text-decoration: none;
+	color: #000;
+}
+.manual a:first-child:hover {
+	background-color: hsl(40, 84%, 53%);
+	color: white;
+}
+.manual a:last-child:hover {
+	background-color: hsl(0, 100%, 60%);
+	color: white;
 }
