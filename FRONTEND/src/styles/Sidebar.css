@@ -26,7 +26,7 @@
 }
 .link {
 	display: grid;
-	grid-template-columns: 0.3fr 1fr 0fr;
+	grid-template-columns: 1fr 0fr;
 	justify-content: center;
 	align-items: center;
 	width: 100%;
@@ -43,11 +43,13 @@
 }
 .sub-link {
 	padding-left: 2rem;
+	grid-template-columns: 0.3fr 1fr;
 }
 .sub-link:hover {
 	background-color: hsl(214, 63%, 24%);
 }
-.link img {
+.link img,
+.icons {
 	height: 1.2rem;
 	width: 1.2rem;
 	cursor: pointer;

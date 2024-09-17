@@ -1,14 +1,28 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import video from "../../images/outcomes/Leaderboard.mp4";
+import arrowForward from "../../images/arrow-forward-outline.svg";
 import arrowBack from "../../images/arrow-back-outline.svg";
+import chatIcon from "../../images/chatbubbles-outline.svg";
 import bonusRules from "../../images/image-rules-bonus.svg";
 import viewProfileVideo from "../../images/outcomes/view-profile.mp4";
+import demo1 from "../../images/select-change-mode.png";
+import statsIcon from "../../images/stats-chart-outline.svg";
+import modeIcon from "../../images/game-controller-outline.svg";
+import profileIcon from "../../images/person-circle-outline.svg";
+
+import demo2 from "../../images/select-dual.png";
+import demo3 from "../../images/room-id.png";
+import demo4Normal from "../../images/dual-play-home-bonus.png";
+import demo4Bonus from "../../images/dual-play-home-normal.png";
+import demo5 from "../../images/live-chat.png";
 import { Link } from "react-router-dom";
 
 const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }) => {
+	const [gameMode, setGameMode] = useState("normal");
 	const profileRef = useRef(null);
 	const modesRef = useRef(null);
 	const leaderboardRef = useRef("leaderboard");
+	const liveChatRef = useRef("live-chat");
 
 	useEffect(() => {
 		if (feature === "leaderboard") {
@@ -29,6 +43,12 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 				behavior: "smooth",
 			});
 			setSearchParams((params) => ({ ...params, feature }));
+		} else if (feature === "live-chat") {
+			liveChatRef.current.scrollIntoView({
+				top: 0,
+				behavior: "smooth",
+			});
+			setSearchParams((params) => ({ ...params, feature }));
 		}
 	}, [feature]);
 
@@ -36,7 +56,14 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 		<>
 			<div ref={docsContentRef} />
 			<section ref={leaderboardRef}>
-				<h2>View Live Leaderboard</h2>
+				<div className="feature-header">
+					<img
+						src={statsIcon}
+						className="icons"
+						alt="chatIcon"
+					/>
+					<h1>View Live Leaderboard</h1>
+				</div>
 				<p>
 					The Live Leaderboard is where you can track your progress and see how you rank
 					against other players in real-time. It gives you real-time information about
@@ -61,7 +88,14 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 			</section>
 
 			<section ref={profileRef}>
-				<h2>View Your Profile</h2>
+				<div className="feature-header">
+					<img
+						src={profileIcon}
+						className="icons"
+						alt="chatIcon"
+					/>
+					<h1>View Your Profile</h1>
+				</div>
 				<p>
 					Your profile page is where you get detailed information about your game-play.
 					There are more things to discover on this page. It provides you with detailed
@@ -104,7 +138,14 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 			</section>
 
 			<section ref={modesRef}>
-				<h2>Game & Player Modes</h2>
+				<div className="feature-header">
+					<img
+						src={modeIcon}
+						className="icons"
+						alt="chatIcon"
+					/>
+					<h1>Game & Player Modes</h1>
+				</div>
 				<p>
 					There are two(2) player modes and also two(2) game modes in this
 					rock-paper-scissors game to make it more fun and entertaining for players.
@@ -149,19 +190,52 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 						>
 							Rules
 						</Link>{" "}
-						for single player also apply here.{" "}
-						<Link
-							onClick={() => {
-								localStorage.setItem("player-mode", JSON.stringify("dual"));
-								window.location.href = "/";
-							}}
-							to="/"
-							className="here"
-						>
-							Play Now
-						</Link>
-						.
+						for single player also apply here.
 					</p>
+					<div>
+						<p>
+							- To begin playing dual mode, click on <b>Change Mode</b> on the Menu
+							bar and select <b>Dual.</b>
+						</p>
+						<img
+							className="outcomes"
+							src={demo1}
+							alt="Clicking on Change Mode in the menu bar on the Home page"
+						/>
+						<img
+							className="outcomes"
+							src={demo2}
+							alt="Clicking on Change Mode in the menu bar on the Home page"
+						/>
+
+						<p>
+							- You will be navigated to a screen to enter a room ID. You can enter
+							any ID between 5 and 20. Click on the <b>JOIN ROOM</b> button after
+							entering the ID.{" "}
+							<em>
+								i.e. Room ID allows two players to play against each other in dual
+								player mode.
+							</em>
+						</p>
+						<img
+							className="outcomes"
+							src={demo3}
+							alt="Clicking on Change Mode in the menu bar on the Home page"
+						/>
+						<p>
+							Share the code with your opponent to play against them.{" "}
+							<Link
+								onClick={() => {
+									localStorage.setItem("player-mode", JSON.stringify("dual"));
+									window.location.href = "/";
+								}}
+								to="/"
+								className="here"
+							>
+								Play Now
+							</Link>
+						</p>
+					</div>
 
 					<li>
 						<b>Game Modes</b>
@@ -216,6 +290,69 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 						</span>
 					</p>
 				</ul>
+				<p>
+					<b>
+						<em>
+							Please note that values entered for the room ID are case-sensitive and
+							also game-type-sensitive.{" "}
+						</em>
+					</b>
+					For instance, entering these two '<b>4oVxC2k</b>' and '<b>4oVxC2K</b>', will not
+					match against each other, rather both will be in different rooms. Also, two
+					players cannot play against each other when one player is in a{" "}
+					<b>bonus-play mode</b> and another is in a <b>normal-play mode.</b>{" "}
+				</p>
+				<div className="buttons">
+					<div
+						onClick={() => setGameMode("normal")}
+						className={`${gameMode === "normal" ? "active" : ""}`}
+					>
+						Normal
+					</div>
+					<div
+						onClick={() => setGameMode("bonus")}
+						className={`${gameMode === "bonus" ? "active" : ""}`}
+					>
+						Bonus
+					</div>
+				</div>{" "}
+				{gameMode === "bonus" ? (
+					<img
+						src={demo4Normal}
+						alt=""
+						className="outcomes"
+					/>
+				) : (
+					<img
+						src={demo4Bonus}
+						alt=""
+						className="outcomes"
+					/>
+				)}
+			</section>
+
+			<section ref={liveChatRef}>
+				<div className="feature-header">
+					<img
+						src={chatIcon}
+						className="icons"
+						alt="chatIcon"
+					/>
+					<h1>Live Chat</h1>
+				</div>
+				<p>
+					A live-chat app has also been added to the game, which allows you to chat with
+					your opponent live during the game. To use this feature, open the{" "}
+					<b>Menu bar</b> and click on <b>Live Chat</b> to start a conversation.
+				</p>
+				<img
+					src={demo5}
+					alt="Using live chat feature"
+					className="outcomes"
+				/>
+				<p>
+					<b>Note: </b>This feature is only available in Dual-player mode.
+				</p>
 			</section>
 
 			<div className="buttons">
@@ -237,6 +374,7 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 					}}
 				>
 					Next
+					<img src={arrowForward} />
 				</button>
 			</div>
 		</>

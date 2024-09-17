@@ -169,6 +169,8 @@ function App() {
 								path="/select-room"
 								element={
 									<PrivateRoute userExists={userExists}>
+										<Logo />
+
 										<Room />
 									</PrivateRoute>
 								}

@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import Logo from "../components/Logo";
 import statsIcon from "../images/stats-chart-outline.svg";
 import downIcon from "../images/chevron-down-outline.svg";
+import chatIcon from "../images/chatbubbles-outline.svg";
+import modeIcon from "../images/game-controller-outline.svg";
+import profileIcon from "../images/person-circle-outline.svg";
 import { Link } from "react-router-dom";
 
-const HelpSidebar = ({ setPage, setFeature }) => {
+const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 	const [showFeaturesDropdown, setShowFeaturesDropdown] = useState(null);
 	const [showIntroDropdown, setShowIntroDropdown] = useState(null);
 
@@ -19,12 +22,6 @@ const HelpSidebar = ({ setPage, setFeature }) => {
 					setFeature("overview");
 				}}
 			>
-				<img
-					src={statsIcon}
-					alt="copyIcon"
-					className="copy-icon"
-					title="copy"
-				/>
 				Introduction
 				{!showIntroDropdown ? (
 					<img
@@ -54,7 +51,9 @@ const HelpSidebar = ({ setPage, setFeature }) => {
 			{showIntroDropdown && (
 				<>
 					<Link
-						className="link sub-link"
+						className={`link sub-link ${
+							page === "introduction" && feature === "overview" ? "active" : ""
+						}`}
 						onClick={() => {
 							setPage("introduction");
 							setFeature("overview");
@@ -69,7 +68,9 @@ const HelpSidebar = ({ setPage, setFeature }) => {
 						Overview
 					</Link>
 					<Link
-						className="link sub-link"
+						className={`link sub-link ${
+							page === "introduction" && feature === "rules" ? "active" : ""
+						}`}
 						onClick={() => {
 							setPage("introduction");
 							setFeature("rules");
@@ -84,7 +85,9 @@ const HelpSidebar = ({ setPage, setFeature }) => {
 						Rules
 					</Link>
 					<Link
-						className="link sub-link"
+						className={`link sub-link ${
+							page === "introduction" && feature === "how-to-play" ? "active" : ""
+						}`}
 						onClick={() => {
 							setPage("introduction");
 							setFeature("how-to-play");
@@ -108,19 +111,13 @@ const HelpSidebar = ({ setPage, setFeature }) => {
 					setFeature("leaderboard");
 				}}
 			>
-				<img
-					src={statsIcon}
-					alt="copyIcon"
-					className="copy-icon"
-					title="copy"
-				/>
 				Features
 				{!showFeaturesDropdown ? (
 					<img
 						src={downIcon}
-						alt="copyIcon"
+						alt="down-icon"
 						className="copy-icon"
-						title="copy"
+						title="Collapse"
 						onClick={() => {
 							setShowIntroDropdown(false);
 
@@ -130,9 +127,9 @@ const HelpSidebar = ({ setPage, setFeature }) => {
 				) : (
 					<img
 						src={statsIcon}
-						alt="copyIcon"
+						alt="down-icon"
 						className="copy-icon"
-						title="copy"
+						title="Fold"
 						onClick={() => {
 							setShowIntroDropdown(false);
 							setShowFeaturesDropdown((prev) => !prev);
@@ -144,50 +141,75 @@ const HelpSidebar = ({ setPage, setFeature }) => {
 			{showFeaturesDropdown && (
 				<>
 					<Link
-						className="link sub-link"
+						className={`link sub-link ${
+							page === "features" && feature === "leaderboard" ? "active" : ""
+						}`}
 						onClick={() => {
 							setPage("features");
 							setFeature("leaderboard");
 						}}
 					>
+						<img
+							src={statsIcon}
+							alt="statsIcon"
+						/>
 						Leaderboard
 					</Link>
 					<Link
-						className="link sub-link"
+						className={`link sub-link ${
+							page === "features" && feature === "profile" ? "active" : ""
+						}`}
 						onClick={() => {
 							setPage("features");
 							setFeature("profile");
 						}}
 					>
+						<img
+							src={profileIcon}
+							alt="profileIcon"
+						/>
 						Profile
 					</Link>
 					<Link
-						className="link sub-link"
+						className={`link sub-link ${
+							page === "features" && feature === "modes" ? "active" : ""
+						}`}
 						onClick={() => {
 							setPage("features");
 							setFeature("modes");
 						}}
 					>
+						<img
+							src={modeIcon}
+							alt="modeIcon"
+						/>
 						Modes
+					</Link>
+					<Link
+						className={`link sub-link ${
+							page === "features" && feature === "live-chat" ? "active" : ""
+						}`}
+						onClick={() => {
+							setPage("features");
+							setFeature("live-chat");
+						}}
+					>
+						<img
+							src={chatIcon}
+							alt="chatIcon"
+						/>
+						Live Chat
 					</Link>
 				</>
 			)}
 
 			<Link
-				// to="/help/contact"
-				className="link"
+				className={`link ${page === "contact" ? "active" : ""}`}
 				onClick={() => {
 					setPage("contact");
-					// setShowIntroDropdown((prev) => !prev);
-					// setFeature("overview");
+					setFeature("contact");
 				}}
 			>
-				<img
-					src={statsIcon}
-					alt="copyIcon"
-					className="copy-icon"
-					title="copy"
-				/>
 				Contact
 			</Link>
 		</div>

@@ -83,6 +83,13 @@
 	border: 2px solid white;
 	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
 }
+.feature-header {
+	display: flex;
+	align-items: center;
+}
+.feature-header img {
+	margin-left: 0.5rem;
+}
 video {
 	outline: none;
 }

@@ -29,6 +29,7 @@ const Help = () => {
 					page={page}
 					setPage={setPage}
 					setFeature={setFeature}
+					feature={feature}
 				/>
 
 				<DocsContent
