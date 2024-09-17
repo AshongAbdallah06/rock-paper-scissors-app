@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Logo from "../components/Logo";
 import statsIcon from "../images/stats-chart-outline.svg";
+import downIcon from "../images/chevron-down-outline.svg";
 import { Link } from "react-router-dom";
 
 const HelpSidebar = ({ setPage, setFeature }) => {
@@ -15,7 +16,6 @@ const HelpSidebar = ({ setPage, setFeature }) => {
 				className="link"
 				onClick={() => {
 					setPage("introduction");
-					setShowIntroDropdown((prev) => !prev);
 					setFeature("overview");
 				}}
 			>
@@ -26,6 +26,29 @@ const HelpSidebar = ({ setPage, setFeature }) => {
 					title="copy"
 				/>
 				Introduction
+				{!showIntroDropdown ? (
+					<img
+						src={downIcon}
+						alt="copyIcon"
+						className="copy-icon"
+						title="copy"
+						onClick={() => {
+							setShowFeaturesDropdown(false);
+							setShowIntroDropdown((prev) => !prev);
+						}}
+					/>
+				) : (
+					<img
+						src={statsIcon}
+						alt="copyIcon"
+						className="copy-icon"
+						title="copy"
+						onClick={() => {
+							setShowFeaturesDropdown(false);
+							setShowIntroDropdown((prev) => !prev);
+						}}
+					/>
+				)}
 			</div>
 
 			{showIntroDropdown && (
@@ -83,7 +106,6 @@ const HelpSidebar = ({ setPage, setFeature }) => {
 				onClick={() => {
 					setPage("features");
 					setFeature("leaderboard");
-					setShowFeaturesDropdown((prev) => !prev);
 				}}
 			>
 				<img
@@ -93,6 +115,30 @@ const HelpSidebar = ({ setPage, setFeature }) => {
 					title="copy"
 				/>
 				Features
+				{!showFeaturesDropdown ? (
+					<img
+						src={downIcon}
+						alt="copyIcon"
+						className="copy-icon"
+						title="copy"
+						onClick={() => {
+							setShowIntroDropdown(false);
+
+							setShowFeaturesDropdown((prev) => !prev);
+						}}
+					/>
+				) : (
+					<img
+						src={statsIcon}
+						alt="copyIcon"
+						className="copy-icon"
+						title="copy"
+						onClick={() => {
+							setShowIntroDropdown(false);
+							setShowFeaturesDropdown((prev) => !prev);
+						}}
+					/>
+				)}
 			</Link>
 
 			{showFeaturesDropdown && (

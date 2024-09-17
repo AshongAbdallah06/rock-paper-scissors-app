@@ -1,8 +1,8 @@
 import React from "react";
-import HelpSidebar from "../components/HelpSidebar";
+import arrowBack from "../images/arrow-back-outline.svg";
 import Logo from "../components/Logo";
 
-const Contact = () => {
+const Contact = ({ setPage, setFeature }) => {
 	return (
 		<div className="contact">
 			<Logo />
@@ -20,6 +20,19 @@ const Contact = () => {
 
 				<button>Submit</button>
 			</form>
+
+			<div className="buttons">
+				<button
+					className="next-btn"
+					onClick={() => {
+						setPage("features");
+						setFeature("leaderboard");
+					}}
+				>
+					<img src={arrowBack} />
+					Go Back
+				</button>
+			</div>
 		</div>
 	);
 };

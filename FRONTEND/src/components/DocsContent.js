@@ -23,7 +23,12 @@ const DocsContent = ({ page, setPage, docsContentRef, feature, setFeature, setSe
 					setSearchParams={setSearchParams}
 				/>
 			)}
-			{page === "contact" && <Contact />}
+			{page === "contact" && (
+				<Contact
+					setFeature={setFeature}
+					setPage={setPage}
+				/>
+			)}
 		</div>
 	);
 };

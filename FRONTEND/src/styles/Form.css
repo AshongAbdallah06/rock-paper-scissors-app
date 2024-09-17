@@ -1,0 +1,152 @@
+/* Form */
+form {
+	color: white;
+	min-width: 20rem;
+	padding: 4rem;
+	border: 1px solid white;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	border-radius: 3px;
+}
+.contact {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: auto;
+}
+.feedback-form {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	border: none;
+}
+.feedback-form h1 {
+	font-size: 2.2rem;
+	color: white;
+	margin-bottom: 1rem;
+}
+.feedback-form label {
+	font-size: 1.2rem;
+}
+.feedback-form input {
+	padding: 1rem;
+	font-size: 1.2rem;
+}
+.feedback-form input,
+.feedback-form textarea {
+	width: 30rem;
+}
+.feedback {
+	min-width: 100%;
+	max-width: 30rem;
+	max-height: 15rem;
+	min-height: 5rem;
+	outline: none;
+	padding: 0.5rem;
+	font-size: 1.1rem;
+}
+.auth-form {
+	display: block;
+}
+form h1 {
+	font-size: 1.3rem;
+}
+form .room,
+form div {
+	display: flex;
+	flex-direction: column;
+	margin: 1rem 0;
+	width: 100%;
+}
+form .room input,
+form input {
+	padding: 0.4rem;
+	width: 100%;
+	outline: none;
+}
+form button {
+	text-align: right;
+	width: 100%;
+	margin-top: 1rem;
+	background-color: hsl(214, 47%, 23%);
+	color: white;
+	font-size: 1.5rem;
+	cursor: pointer;
+}
+form .links {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	color: white;
+	font-weight: 700;
+	font-size: 1.3rem;
+}
+
+/* Form */
+.form__group {
+	position: relative;
+	padding: 20px 0 0;
+	width: 100%;
+	max-width: 180px;
+}
+
+.form__field {
+	font-family: inherit;
+	width: 100%;
+	border: none;
+	border-bottom: 2px solid #9b9b9b;
+	outline: 0;
+	font-size: 17px;
+	color: #fff;
+	padding: 7px 0;
+	background: transparent;
+	transition: border-color 0.2s;
+}
+
+.form__field::placeholder {
+	color: transparent;
+}
+
+.form__field:placeholder-shown ~ .form__label {
+	font-size: 17px;
+	cursor: text;
+	top: 20px;
+}
+
+.form__label {
+	position: absolute;
+	top: 0;
+	display: block;
+	transition: 0.2s;
+	font-size: 17px;
+	color: #9b9b9b;
+	pointer-events: none;
+}
+
+.form__field:focus {
+	padding-bottom: 6px;
+	font-weight: 700;
+	border-width: 3px;
+	border-image: linear-gradient(to right, #116399, #38caef);
+	border-image-slice: 1;
+}
+
+.form__field:focus ~ .form__label {
+	position: absolute;
+	top: 0;
+	display: block;
+	transition: 0.2s;
+	font-size: 17px;
+	color: #38caef;
+	font-weight: 700;
+}
+
+/* reset input */
+.form__field:required,
+.form__field:invalid {
+	box-shadow: none;
+}

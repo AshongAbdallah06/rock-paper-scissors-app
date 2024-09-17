@@ -232,8 +232,9 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 
 				<button
 					className="next-btn"
-					onClick={() => setPage("features")}
-					disabled
+					onClick={() => {
+						setPage("contact");
+					}}
 				>
 					Next
 				</button>

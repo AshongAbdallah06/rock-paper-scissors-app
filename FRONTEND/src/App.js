@@ -1,4 +1,13 @@
-import "./App.css";
+import "./styles/Animation.css";
+import "./styles/Home.css";
+import "./styles/Leaderboard.css";
+import "./styles/Form.css";
+import "./styles/Profile.css";
+import "./styles/Help.css";
+import "./styles/Mobile.css";
+import "./styles/Chat.css";
+import "./styles/Sidebar.css";
+import "./styles/Room.css";
 import { createContext, useEffect, useState } from "react";
 import useCheckContext from "./hooks/useCheckContext";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";

@@ -1,0 +1,122 @@
+.footer-sidebar {
+	background-color: hsl(237, 49%, 15%);
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 3rem 1rem;
+	color: white;
+	width: 13rem;
+	height: 100%;
+	z-index: 100;
+}
+.footer-sidebar .close-icon {
+	height: 1rem;
+	width: 1rem;
+}
+
+.sidebar-link {
+	margin-bottom: 1rem;
+	cursor: pointer;
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+}
+.link {
+	display: grid;
+	grid-template-columns: 0.3fr 1fr 0fr;
+	justify-content: center;
+	align-items: center;
+	width: 100%;
+	color: white;
+	text-decoration: none;
+	font-size: 0.85rem;
+	border-top: 1px solid hsl(238, 24%, 23%);
+	border-bottom: 1px solid hsl(238, 24%, 23%);
+	padding: 1rem;
+	cursor: pointer;
+}
+.link:hover {
+	background-color: hsl(214, 50%, 39%);
+}
+.sub-link {
+	padding-left: 2rem;
+}
+.sub-link:hover {
+	background-color: hsl(214, 63%, 24%);
+}
+.link img {
+	height: 1.2rem;
+	width: 1.2rem;
+	cursor: pointer;
+	margin-right: 0.4rem;
+}
+.Btn {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	width: 45px;
+	height: 45px;
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+	position: absolute;
+	bottom: 1rem;
+	overflow: hidden;
+	transition-duration: 0.3s;
+	box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+	background-color: rgb(255, 65, 65);
+}
+
+/* plus sign */
+.sign {
+	width: 100%;
+	transition-duration: 0.3s;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.sign svg {
+	width: 17px;
+}
+
+.sign svg path {
+	fill: white;
+}
+/* text */
+.text {
+	position: absolute;
+	right: 0%;
+	width: 0%;
+	opacity: 1;
+	color: white;
+	font-size: 1.2em;
+	font-weight: 600;
+	transition-duration: 0.3s;
+}
+/* hover effect on button width */
+.Btn:hover {
+	width: 125px;
+	border-radius: 40px;
+	transition-duration: 0.3s;
+}
+
+.Btn:hover .sign {
+	width: 30%;
+	transition-duration: 0.3s;
+	padding-left: 20px;
+}
+/* hover effect button's text */
+.Btn:hover .text {
+	opacity: 1;
+	width: 70%;
+	transition-duration: 0.3s;
+	padding-right: 10px;
+}
+/* button click effect*/
+.Btn:active {
+	transform: translate(2px, 2px);
+}

@@ -1,0 +1,139 @@
+/*  */
+.help-section {
+	position: fixed;
+	align-items: center;
+	bottom: 0;
+	left: 0;
+	top: 0;
+	right: 0;
+}
+.help {
+	display: flex;
+	width: 100%;
+	height: 100%;
+}
+.help .sidebar {
+	background-color: hsl(237, 49%, 15%);
+	position: relative;
+	bottom: 0;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 2rem 1rem;
+	color: white;
+	min-width: 15rem;
+	height: 100%;
+	z-index: 100;
+	padding-top: 8rem;
+}
+.help .content {
+	padding: 2rem 5rem;
+	color: white;
+	text-align: justify;
+	line-height: 2rem;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	/* padding-bottom: 10rem; */
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	height: 100vh;
+	margin: auto;
+}
+.help .content p {
+	margin: 1rem 0;
+}
+.help .content section {
+	padding: 1rem;
+	border-bottom: 1px solid #585454;
+}
+.help .content section:first-child {
+	margin-top: 0;
+}
+.help .content section h2 {
+	margin-top: 1rem;
+}
+.help .content section ul {
+	list-style: square;
+	margin-bottom: 1rem;
+}
+.help .content section ul li {
+	margin-left: 3rem;
+	margin-top: 1rem;
+}
+.outcome-images {
+	display: grid;
+	/* grid-template-columns: repeat(3, 1fr); */
+	column-gap: 1rem;
+	row-gap: 1rem;
+	text-align: center;
+}
+.outcome-images div {
+	margin-bottom: 1rem;
+}
+.outcome-images span {
+	height: 10%;
+	display: block;
+}
+
+.outcomes {
+	/* height: 90%; */
+	width: 100%;
+	border-radius: 6px;
+	border: 2px solid white;
+	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.5);
+}
+video {
+	outline: none;
+}
+.here {
+	color: white;
+	text-decoration: underline;
+}
+.here:hover {
+	color: hsl(39, 89%, 49%);
+}
+.bonus-rules {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	cursor: pointer;
+}
+.buttons {
+	display: flex;
+	justify-content: space-between;
+}
+.buttons div {
+	width: 100%;
+	text-align: center;
+	margin-bottom: 0.3rem;
+	cursor: pointer;
+	border: 1px solid #255ff4;
+}
+.buttons div:hover {
+	background-color: hsl(214, 63%, 24%);
+}
+.active {
+	background-color: hsl(214, 63%, 38%);
+}
+.next-btn {
+	background-color: hsl(40, 84%, 53%);
+	border-radius: 3px;
+	border: none;
+	font-weight: bold;
+	font-size: 1.2rem;
+	padding: 0.5rem 1rem;
+	margin-top: 3rem;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.next-btn img {
+	height: 1rem;
+	width: 1rem;
+	vertical-align: middle;
+}
+.next-btn:hover {
+	background-color: hsl(39, 100%, 67%);
+}
