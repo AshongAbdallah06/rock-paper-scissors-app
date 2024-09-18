@@ -166,9 +166,7 @@ const CheckContextProvider = ({ children }) => {
 	const getUserStats = async (username) => {
 		try {
 			const res = await Axios
-				.get
-				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${username}`
-				();
+				.get(`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${username}`);
 			const data = res?.data[0] || {};
 
 			if (username === user?.username) {
