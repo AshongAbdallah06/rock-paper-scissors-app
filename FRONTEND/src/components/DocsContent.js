@@ -1,6 +1,7 @@
 import React from "react";
 import Introduction from "./Docs/Introduction";
 import Other from "./Docs/Other";
+import Contact from "../pages/Contact";
 
 const DocsContent = ({ page, setPage, docsContentRef, feature, setFeature, setSearchParams }) => {
 	return (
@@ -20,6 +21,12 @@ const DocsContent = ({ page, setPage, docsContentRef, feature, setFeature, setSe
 					setFeature={setFeature}
 					docsContentRef={docsContentRef}
 					setSearchParams={setSearchParams}
+				/>
+			)}
+			{page === "contact" && (
+				<Contact
+					setFeature={setFeature}
+					setPage={setPage}
 				/>
 			)}
 		</div>

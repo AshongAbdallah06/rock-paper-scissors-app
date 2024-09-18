@@ -1,0 +1,115 @@
+.selection {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	color: white;
+	text-align: center;
+}
+.room {
+	margin-top: 1rem;
+}
+.selection h1 {
+	font-size: 0.9rem;
+}
+.room-input {
+	width: 12rem;
+	border: none;
+	outline: none;
+	border-bottom: 2px solid white;
+	background-color: transparent;
+	color: white;
+	font-size: 1rem;
+	padding: 0.3rem;
+	text-align: center;
+}
+.remember {
+	margin-top: 1rem;
+	display: flex;
+}
+.remember span {
+	margin-left: 0.5rem;
+	font-size: 0.8rem;
+}
+.mode-links {
+	margin-top: 2rem;
+}
+
+.mode-links a,
+.join-room {
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	font-size: 1rem;
+	padding: 0.6rem;
+	color: hsl(237, 49%, 15%);
+	background-color: white;
+	font-weight: bold;
+	border-radius: 0.3rem;
+	border: none;
+	cursor: pointer;
+	transition: all 0.15s;
+}
+.mode-links a:last-child {
+	margin-left: 1rem;
+}
+.mode-links p {
+	background-color: transparent;
+	color: white;
+	text-decoration: underline;
+}
+.mode-links a:hover,
+.join-room:hover {
+	background-color: hsl(39, 89%, 49%);
+	color: white;
+	padding: 0.7rem;
+}
+.or {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin-top: 1.5rem;
+	width: 90%;
+	color: rgb(211, 211, 211);
+}
+
+.or::before,
+.or::after {
+	content: "";
+	display: block;
+	background-color: rgb(211, 211, 211);
+	height: 1px;
+	width: 70%;
+}
+
+.or::before {
+	margin-right: 0.5rem;
+}
+.or::after {
+	margin-left: 0.5rem;
+}
+
+.change-mode {
+	color: white;
+	text-decoration: underline;
+	font-weight: bold;
+	padding: 0.5rem;
+	border: none;
+	font-size: 1rem;
+	cursor: pointer;
+	text-align: center;
+	display: inline-block;
+}
+.change-mode:hover {
+	color: hsl(40, 84%, 53%);
+}
+
+/* remember */
+.remember {
+	margin-top: 1rem;
+	display: flex;
+}
+.remember span {
+	margin-left: 0.5rem;
+	font-size: 0.8rem;
+}

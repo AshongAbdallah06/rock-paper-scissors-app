@@ -42,9 +42,12 @@ const Footer = ({
 		setIsRulesModalShow(true);
 	};
 
-	const copyRoomID = async () => {
+	const copyInviteLink = async () => {
 		try {
-			await navigator.clipboard.writeText(roomID);
+			await navigator.clipboard.writeText(
+				`Your friend ${user?.username}, is inviting you to a game of rock-paper-scissors. Click on the link below to play against each other. \n \n https://rock-paper-scissors-app-iybf.onrender.com\n \n1. Click on Dual to enable 2-player mode.\n2. Enter the code '${roomID}' and click on Join Room to play against ${user?.username}`
+			);
+
 			await navigator.clipboard.readText();
 
 			setShowCopiedAlert(true);
@@ -53,7 +56,7 @@ const Footer = ({
 				setShowCopiedAlert(false);
 			}, 2000);
 		} catch (error) {
-			console.log("🚀 ~ copyRoomID ~ error:", error);
+			console.log("🚀 ~ copyInviteLink ~ error:", error);
 		}
 	};
 
@@ -92,7 +95,7 @@ const Footer = ({
 			{!isOnePlayer && (
 				<Link
 					className="link"
-					onClick={copyRoomID}
+					onClick={copyInviteLink}
 				>
 					<img
 						src={copyIcon}
@@ -100,7 +103,7 @@ const Footer = ({
 						className="copy-icon"
 						title="copy"
 					/>
-					Room ID: {roomID}
+					Copy Invite Link
 				</Link>
 			)}
 

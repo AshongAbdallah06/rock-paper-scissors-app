@@ -1,0 +1,320 @@
+/* Mobile */
+@media (max-width: 500px) {
+	body,
+	#root {
+		width: 100%;
+		overflow: hidden;
+		justify-content: flex-start;
+	}
+	.scoreBoard {
+		width: 20.875rem;
+		align-items: center;
+		margin: 3.5rem;
+		justify-content: space-between;
+	}
+
+	.scoreBoard .imgCont {
+		display: flex;
+		align-items: center;
+	}
+
+	.scoreBoard .imgCont img {
+		height: 3rem;
+	}
+
+	.score {
+		width: 5rem;
+		border-radius: 0.2rem;
+	}
+
+	.score p:nth-child(2) {
+		font-size: 2.5rem;
+	}
+
+	/* Gameboard */
+	.Gboard {
+		position: relative;
+		top: -2rem;
+		height: 20rem;
+	}
+	.gameBoard {
+		height: 10.5rem;
+		width: 10.5rem;
+	}
+	.gameOpt {
+		width: 8rem;
+		height: 8rem;
+	}
+	.p2 {
+		right: -140px;
+	}
+
+	.making-move {
+		text-align: center;
+		font-size: 1.5rem;
+	}
+
+	/* todo: Create responsiveness for tablets and iPads */
+	.rules-modal {
+		top: 42%;
+	}
+	.rules {
+		bottom: 0;
+		right: 7.5rem;
+	}
+
+	/* After move */
+	.Desktop-step2 {
+		height: 11.5625rem;
+		margin-top: -4rem;
+		position: relative;
+	}
+
+	.results {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 100;
+		bottom: -12rem;
+		width: 100%;
+	}
+
+	.results > h1 {
+		font-size: 2.5rem;
+	}
+
+	.results button {
+		margin-top: 0.5rem;
+	}
+
+	.picked,
+	.hPicked {
+		width: 8rem;
+		height: 8rem;
+	}
+
+	.you-picked,
+	.house-picked {
+		height: 90%;
+	}
+
+	.you-picked h1,
+	.house-picked h1 {
+		font-size: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.picked::before,
+	.hPicked::before {
+		width: 6rem;
+		height: 6rem;
+	}
+
+	.mode-links a:first-child {
+		margin-bottom: 1rem;
+	}
+
+	aside {
+		height: 400px;
+		padding-bottom: 1rem;
+	}
+
+	aside .content {
+		height: 100%;
+	}
+
+	.chat-container {
+		height: 260px;
+	}
+
+	.input-container {
+		margin-bottom: 1rem;
+	}
+	.gameBoard-bonus {
+		width: 18rem;
+	}
+	.gameBoard-bonus {
+		width: 18rem;
+	}
+
+	.stats {
+		grid-template-columns: 1fr 1fr;
+		row-gap: 1rem;
+	}
+	.Btn {
+		width: 125px; /* Adjusted width to always show text */
+		border-radius: 40px;
+		bottom: 15rem;
+	}
+
+	.sign {
+		width: 30%;
+		padding-left: 20px;
+	}
+
+	.text {
+		width: 70%;
+		padding-right: 10px;
+	}
+
+	.leaderboard,
+	.profile-container {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		/* margin: auto; */
+		margin-top: 8rem;
+	}
+	.selection,
+	.loader {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 80vh;
+	}
+	form {
+		/* height: 80vh; */
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		margin-top: 10rem;
+	}
+}
+
+@media (max-height: 500px) {
+	body {
+		width: 100%;
+		margin-top: 4rem;
+		overflow: hidden;
+	}
+	.scoreBoard {
+		width: 20.875rem;
+		align-items: center;
+		justify-content: space-between;
+	}
+
+	.scoreBoard .imgCont {
+		display: flex;
+		align-items: center;
+	}
+
+	.scoreBoard .imgCont img {
+		height: 3rem;
+	}
+
+	.score {
+		width: 5rem;
+		border-radius: 0.2rem;
+	}
+
+	.score p:nth-child(2) {
+		font-size: 2.5rem;
+	}
+
+	/* Gameboard */
+	.Gboard {
+		position: relative;
+		top: -2rem;
+		height: 30rem;
+	}
+	.gameBoard {
+		height: 10.5rem;
+		width: 10.5rem;
+	}
+	.gameOpt {
+		width: 8rem;
+		height: 8rem;
+	}
+	.p2 {
+		right: -140px;
+	}
+
+	.making-move {
+		text-align: center;
+		font-size: 1.5rem;
+	}
+
+	/* todo: Create responsiveness for tablets and iPads */
+	.rules-modal {
+		top: 42%;
+	}
+	.rules {
+		bottom: 0;
+	}
+
+	/* After move */
+	.Desktop-step2 {
+		height: 11.5625rem;
+		margin-top: -4rem;
+		position: relative;
+	}
+
+	.results {
+		position: absolute;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		z-index: 100;
+		bottom: -12rem;
+		width: 100%;
+	}
+
+	.results > h1 {
+		font-size: 2.5rem;
+	}
+
+	.results button {
+		margin-top: 0.5rem;
+	}
+
+	.picked,
+	.hPicked {
+		width: 8rem;
+		height: 8rem;
+	}
+
+	.you-picked,
+	.house-picked {
+		height: 90%;
+	}
+
+	.you-picked h1,
+	.house-picked h1 {
+		font-size: 1rem;
+		margin-bottom: 1rem;
+	}
+
+	.picked::before,
+	.hPicked::before {
+		width: 6rem;
+		height: 6rem;
+	}
+
+	.mode-links a:first-child {
+		margin-bottom: 1rem;
+	}
+
+	aside {
+		height: 400px;
+		padding-bottom: 1rem;
+	}
+
+	aside .content {
+		height: 100%;
+	}
+
+	.chat-container {
+		height: 260px;
+	}
+
+	.input-container {
+		margin-bottom: 1rem;
+	}
+}
+
+@media (min-width: 500px) {
+	.footer-sidebar p {
+		margin-bottom: 0;
+	}
+}

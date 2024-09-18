@@ -1,13 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import DocsContent from "../components/DocsContent";
-import Logo from "../components/Logo";
-import statsIcon from "../images/stats-chart-outline.svg";
+import HelpSidebar from "../components/HelpSidebar";
 
 const Help = () => {
 	const [page, setPage] = useState("introduction");
-	const [showFeaturesDropdown, setShowFeaturesDropdown] = useState("introduction");
-	const [showIntroDropdown, setShowIntroDropdown] = useState("overview");
 	const [feature, setFeature] = useState("introduction");
 
 	const docsContentRef = useRef(null);
@@ -23,142 +20,37 @@ const Help = () => {
 				behavior: "smooth",
 			});
 		}
-		console.log("searchParams", searchParams);
 	}, [page]);
 
+	const [renderRoutes, setRenderRoutes] = useState(false);
+	useEffect(() => {
+		setRenderRoutes(false);
+		const timer = setTimeout(() => {
+			setRenderRoutes(true);
+		}, 100);
+	}, []);
 	return (
 		<div className="help-section">
-			<div className="help">
-				<div className="sidebar">
-					<Logo />
+			{renderRoutes && (
+				<div className="help">
+					<HelpSidebar
+						page={page}
+						setPage={setPage}
+						setFeature={setFeature}
+						feature={feature}
+					/>
 
-					<Link
-						className="link"
-						onClick={() => {
-							setPage("introduction");
-							setShowIntroDropdown((prev) => !prev);
-							setFeature("overview");
-						}}
-					>
-						<img
-							src={statsIcon}
-							alt="copyIcon"
-							className="copy-icon"
-							title="copy"
-						/>
-						Introduction
-					</Link>
-
-					{showIntroDropdown && (
-						<>
-							<Link
-								className="link sub-link"
-								onClick={() => {
-									setPage("introduction");
-									setFeature("overview");
-								}}
-							>
-								<img
-									src={statsIcon}
-									alt="copyIcon"
-									className="copy-icon"
-									title="copy"
-								/>
-								Overview
-							</Link>
-							<Link
-								className="link sub-link"
-								onClick={() => {
-									setPage("introduction");
-									setFeature("rules");
-								}}
-							>
-								<img
-									src={statsIcon}
-									alt="copyIcon"
-									className="copy-icon"
-									title="copy"
-								/>
-								Rules
-							</Link>
-							<Link
-								className="link sub-link"
-								onClick={() => {
-									setPage("introduction");
-									setFeature("how-to-play");
-								}}
-							>
-								<img
-									src={statsIcon}
-									alt="copyIcon"
-									className="copy-icon"
-									title="copy"
-								/>
-								How To Play
-							</Link>
-						</>
-					)}
-
-					<Link
-						className="link"
-						onClick={() => {
-							setPage("features");
-							setFeature("leaderboard");
-							setShowFeaturesDropdown((prev) => !prev);
-						}}
-					>
-						<img
-							src={statsIcon}
-							alt="copyIcon"
-							className="copy-icon"
-							title="copy"
-						/>
-						Features
-					</Link>
-
-					{showFeaturesDropdown && (
-						<>
-							<Link
-								className="link sub-link"
-								onClick={() => {
-									setPage("features");
-									setFeature("leaderboard");
-								}}
-							>
-								Leaderboard
-							</Link>
-							<Link
-								className="link sub-link"
-								onClick={() => {
-									setPage("features");
-									setFeature("profile");
-								}}
-							>
-								Profile
-							</Link>
-							<Link
-								className="link sub-link"
-								onClick={() => {
-									setPage("features");
-									setFeature("modes");
-								}}
-							>
-								Modes
-							</Link>
-						</>
-					)}
+					<DocsContent
+						docsContentRef={docsContentRef}
+						page={page}
+						setPage={setPage}
+						feature={feature}
+						setFeature={setFeature}
+						featureRef={featureRef}
+						setSearchParams={setSearchParams}
+					/>
 				</div>
-
-				<DocsContent
-					docsContentRef={docsContentRef}
-					page={page}
-					setPage={setPage}
-					feature={feature}
-					setFeature={setFeature}
-					featureRef={featureRef}
-					setSearchParams={setSearchParams}
-				/>
-			</div>
+			)}
 		</div>
 	);
 };

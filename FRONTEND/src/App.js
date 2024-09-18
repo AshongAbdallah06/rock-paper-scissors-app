@@ -1,4 +1,13 @@
-import "./App.css";
+import "./styles/Animation.css";
+import "./styles/Home.css";
+import "./styles/Leaderboard.css";
+import "./styles/Form.css";
+import "./styles/Profile.css";
+import "./styles/Help.css";
+import "./styles/Mobile.css";
+import "./styles/Chat.css";
+import "./styles/Sidebar.css";
+import "./styles/Room.css";
 import { createContext, useEffect, useState } from "react";
 import useCheckContext from "./hooks/useCheckContext";
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
@@ -16,6 +25,9 @@ import NotFound from "./pages/NotFound";
 import Loader from "./components/Loader";
 import Logo from "./components/Logo";
 import Help from "./pages/Help";
+import Axios from "axios";
+import ErrorOccurred from "./components/ErrorOccurred";
+import Contact from "./pages/Contact";
 
 export const GameContext = createContext();
 
@@ -51,7 +63,14 @@ function Loading({ isRendered, setIsRendered, children }) {
 }
 
 function App() {
-	const { playerIsChosen, roomIsSelected, userExists, setUserExists } = useCheckContext();
+	const {
+		playerIsChosen,
+		roomIsSelected,
+		userExists,
+		setUserExists,
+		errorOccurred,
+		setErrorOccurred,
+	} = useCheckContext();
 	const [isRendered, setIsRendered] = useState(false);
 
 	const user = JSON.parse(localStorage.getItem("user"));
@@ -63,7 +82,6 @@ function App() {
 	/**
 	 	All todo:
 		Create an invite template that users can share in two player mode(maybe also in single player)
-		Create 'Create Room' or 'Join Room(enter code)' feature 
 		Create Invite a friend button
 	 * 	- Interactive Tutorials: Create a tutorial mode to help new players learn the game.
 	 * 	- Statistics Tracking: Provide detailed stats, such as win/loss ratio, most picked moves, streaks(wins, losses, ties), etc.
@@ -75,8 +93,33 @@ function App() {
 				- Cant play bonus or dual mode
 	 */
 
+	/**fixme: refactor CSS */
+
+	const [isServerOk, setIsServerOk] = useState(true);
+	const startServer = async () => {
+		try {
+			const res = await Axios.get(
+				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/${user?.username}`,
+				`http://localhost:4001/api/ser/${user?.username}`,
+				{
+					headers: { Authorization: `Bearer ${user.token}` },
+				}
+			);
+
+			if (res.data) setIsServerOk(true);
+		} catch (error) {
+			setIsServerOk(false);
+			console.log(error);
+		}
+	};
+	// useEffect(() => {
+	// 	startServer();
+	// 	console.log("Hey");
+	// }, []);
+
 	return (
 		<>
+			{/* {errorOccurred && <ErrorOccurred />} */}
 			<Audios />
 			<Router>
 				<Routes>
@@ -122,6 +165,8 @@ function App() {
 						path="/select-room"
 						element={
 							<PrivateRoute userExists={userExists}>
+								<Logo />
+
 								<Room />
 							</PrivateRoute>
 						}
@@ -150,6 +195,20 @@ function App() {
 									setIsRendered={setIsRendered}
 								>
 									<Help />
+								</Loading>
+							</PrivateRoute>
+						}
+					/>
+
+					<Route
+						path={"/help/contact"}
+						element={
+							<PrivateRoute userExists={userExists}>
+								<Loading
+									isRendered={isRendered}
+									setIsRendered={setIsRendered}
+								>
+									<Contact />
 								</Loading>
 							</PrivateRoute>
 						}

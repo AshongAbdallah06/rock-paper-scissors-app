@@ -44,7 +44,7 @@ const PlayerSelection = () => {
 				roomID && setRoomIsSelected(true);
 			}}
 		>
-			<h1>{roomID ? `ROOM ID: ${roomID}` : "Enter room ID"}</h1>
+			<h1 style={{ textAlign: "center" }}>{roomID ? `ID: ${roomID}` : "Enter room ID: "}</h1>
 
 			<div className="room">
 				<input
@@ -63,6 +63,8 @@ const PlayerSelection = () => {
 							joinRoom(socket, roomID, setLeftRoom);
 							setRoomIsSelected(true);
 							setIsOnePlayer(false);
+						} else if (roomID === "") {
+							alert("Please enter an ID for the room");
 						}
 					}}
 					to={roomID && "/"}

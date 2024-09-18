@@ -5,6 +5,6 @@ const router = Router();
 
 router.get("/stats/:username", getUserStats);
 
-router.get("/", requireAuth, getHome);
+router.get("/:username", requireAuth, getHome);
 
 module.exports = router;
