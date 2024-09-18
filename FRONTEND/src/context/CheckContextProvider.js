@@ -3,9 +3,7 @@ import io from "socket.io-client";
 import Axios from "axios";
 import useFunctions from "../hooks/useFunctions";
 
-// const socket = io("https://rock-paper-scissors-app-iybf.onrender.com");
-// const socket = io("http://192.168.8.197:4001");
-const socket = io("http://localhost:4001");
+const socket = io("https://rock-paper-scissors-app-iybf.onrender.com");
 export const CheckContext = createContext();
 
 const CheckContextProvider = ({ children }) => {
@@ -254,9 +252,7 @@ const CheckContextProvider = ({ children }) => {
 	const authorize = async () => {
 		try {
 			const res = await Axios.get(
-				// "https://rock-paper-scissors-app-iybf.onrender.com/api/user",
-				// "http://192.168.8.197:4001/api/user",
-				"http://localhost:4001/api/user",
+				"https://rock-paper-scissors-app-iybf.onrender.com/api/user",
 				{
 					headers: { Authorization: `Bearer ${user.token}` },
 				}
