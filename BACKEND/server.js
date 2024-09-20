@@ -101,9 +101,12 @@ io.on("connect", (socket) => {
 			usernames[roomId].p1Username = username;
 		} else if (!usernames[roomId].p2Username && username !== usernames[roomId].p1Username) {
 			usernames[roomId].p2Username = username;
-		} else {
-			console.log("Both usernames are already assigned or username is a duplicate.");
 		}
+		// else {
+		// 	console.log("Both usernames are already assigned or username is a duplicate.");
+		// }
+
+		// console.log("Joined: ", usernames);todo:
 
 		io.to(roomId).emit("updateUsernames", usernames[roomId]);
 	});
@@ -260,6 +263,33 @@ io.on("connect", (socket) => {
 		} catch (error) {
 			console.log("🚀 ~ socket.on ~ error:", error);
 		}
+	});
+
+	socket.on("updateDualPlayerStats", async (data) => {
+		try {
+			await pool.query(`UPDATE DUAL_PLAYER_SCORES SET GAMES_PLAYED = $1, TIES = $2`, [
+				data.games_played,
+				data.ties,
+			]);
+
+			await pool.query(
+				`UPDATE DUAL_PLAYER_SCORES SET PLAYER1_WINS = $1, PLAYER1_LOSSES = $2 WHERE PLAYER1_USERNAME = $3`,
+				[data.player1_wins || 0, data.player1_losses || 0, data.player1_username || 0]
+			);
+
+			await pool.query(
+				`UPDATE DUAL_PLAYER_SCORES SET PLAYER2_WINS = $1, PLAYER2_LOSSES = $2 WHERE PLAYER2_USERNAME = $3`,
+				[data.player2_wins || 0, data.player2_losses || 0, data.player2_username || 0]
+			);
+			const response = await pool.query("SELECT * FROM DUAL_PLAYER_SCORES");
+			const userStats = response.rows;
+
+			io.to(roomId).emit("updateDualPlayerStats", userStats);
+		} catch (error) {
+			console.log("🚀 ~ socket.on ~ error:", error);
+		}
+
+		io.emit("updateDualPlayerStats", "updateDualPlayerStats");
 	});
 });
 

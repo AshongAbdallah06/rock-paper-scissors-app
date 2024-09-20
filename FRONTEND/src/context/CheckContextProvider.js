@@ -192,6 +192,37 @@ const CheckContextProvider = ({ children }) => {
 		}
 	};
 
+	const getPlayerStats = async (p1Username, p2Username) => {
+		try {
+			const res = await Axios.post(
+				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${username}`
+				`http://localhost:4001/api/user/stats`,
+				{
+					p1Username,
+					p2Username,
+				}
+			);
+
+			const data = res?.data[0] || {};
+			setDualPlayerStats({
+				game_id: "1",
+				player1_username: usernames?.p1Username,
+				player1_wins: data.player1_wins,
+				user1_losses: data.user1_losses,
+				player2_username: usernames?.p2Username,
+				player2_wins: data.player2_wins,
+				player2_losses: data.player2_losses,
+				ties: data.ties,
+				games_played: data.games_played,
+				last_played: data.last_played,
+			});
+		} catch (error) {
+			console.error("🚀 ~ getUserStats ~ error:", error);
+
+			setErrorOccurred("Could not fetch user data.");
+		}
+	};
+
 	useEffect(() => {
 		localStorage.setItem("selectedUser", JSON.stringify(selectedUserStats));
 	}, [selectedUserStats]);
@@ -206,6 +237,16 @@ const CheckContextProvider = ({ children }) => {
 		}
 	}, [currentUserStats, isOnePlayer]);
 
+	const [dualPlayerStats, setDualPlayerStats] = useState({
+		player1_username: usernames?.p1Username,
+		player1_wins: 0,
+		player1_losses: 0,
+		player2_username: usernames?.p2Username,
+		player2_wins: 0,
+		player2_losses: 0,
+		ties: 0,
+		games_played: 0,
+	});
 	useEffect(() => {
 		if (isOnePlayer) {
 			setCurrentUserStats((prevStats) => {
@@ -224,22 +265,45 @@ const CheckContextProvider = ({ children }) => {
 
 				return updatedStats;
 			});
+		} else {
+			setDualPlayerStats((prevStats) => {
+				let updatedDualPlayerStats = { ...prevStats };
+
+				if (result === "Tie") {
+					updatedDualPlayerStats.ties = (updatedDualPlayerStats.ties || 0) + 1;
+				} else if (result === "Player1 wins") {
+					updatedDualPlayerStats.player1_wins =
+						(updatedDualPlayerStats.player1_wins || 0) + 1;
+					updatedDualPlayerStats.player2_losses =
+						(updatedDualPlayerStats.player2_losses || 0) + 1;
+				} else if (result === "Player2 wins") {
+					updatedDualPlayerStats.player2_wins =
+						(updatedDualPlayerStats.player2_wins || 0) + 1;
+					updatedDualPlayerStats.player1_losses =
+						(updatedDualPlayerStats.player1_losses || 0) + 1;
+				}
+
+				updatedDualPlayerStats.games_played =
+					(updatedDualPlayerStats.player1_wins || 0) +
+					(updatedDualPlayerStats.player1_losses || 0) +
+					updatedDualPlayerStats.ties;
+				return updatedDualPlayerStats;
+			});
 		}
 	}, [result, isOnePlayer]);
 
 	useEffect(() => {
-		if (isOnePlayer && currentUserStats.gamesPlayed > 0) {
-			// Ensure `gamesPlayed` is not null
-			socket.emit("updateStats", currentUserStats);
+		if (dualPlayerStats.games_played > 0) {
+			socket.emit("updateDualPlayerStats", dualPlayerStats);
+			console.log("updateDualPlayerStats", dualPlayerStats);
 		}
-	}, [currentUserStats, isOnePlayer]);
+	}, [dualPlayerStats]);
 
 	useEffect(() => {
 		socket.on("clearMoves", (newGameState) => {
 			setGameState(newGameState);
 		});
 
-		// Clean up the socket connection when the component unmounts
 		return () => {
 			socket.off("clearMoves");
 		};
@@ -322,7 +386,9 @@ const CheckContextProvider = ({ children }) => {
 				scores,
 				setScores,
 				getUserStats,
+				getPlayerStats,
 				selectedUserStats,
+				dualPlayerStats,
 				errorOccurred,
 				setErrorOccurred,
 			}}
