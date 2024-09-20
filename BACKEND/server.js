@@ -28,8 +28,8 @@ const corsOptions = {
 	},
 	methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
 	allowedHeaders: ["Content-Type", "Authorization"],
-	optionsSuccessStatus: 200, // For legacy browser support
-	credentials: true, // Enable if you need to send cookies or HTTP authentication
+	optionsSuccessStatus: 200,
+	credentials: true,
 };
 app.use(cors(corsOptions));
 
@@ -102,11 +102,6 @@ io.on("connect", (socket) => {
 		} else if (!usernames[roomId].p2Username && username !== usernames[roomId].p1Username) {
 			usernames[roomId].p2Username = username;
 		}
-		// else {
-		// 	console.log("Both usernames are already assigned or username is a duplicate.");
-		// }
-
-		// console.log("Joined: ", usernames);todo:
 
 		io.to(roomId).emit("updateUsernames", usernames[roomId]);
 	});
