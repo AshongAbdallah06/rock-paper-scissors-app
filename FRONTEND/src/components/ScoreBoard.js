@@ -5,10 +5,6 @@ import useCheckContext from "../hooks/useCheckContext";
 const ScoreBoard = () => {
 	const {
 		roomID,
-		p1Score,
-		p2Score,
-		setP1Score,
-		setP2Score,
 		isOnePlayer,
 		socket,
 		getUserStats,
@@ -25,21 +21,6 @@ const ScoreBoard = () => {
 	const [p2Username, setP2Username] = useState("");
 
 	useEffect(() => {
-		setP1Score(
-			JSON.parse(
-				localStorage.getItem(
-					`${roomID + usernames?.p1Username + usernames?.p2Username}-p1score`
-				)
-			) || 0
-		);
-		setP2Score(
-			JSON.parse(
-				localStorage.getItem(
-					`${roomID + usernames?.p1Username + usernames?.p2Username}-p2score`
-				)
-			) || 0
-		);
-
 		if (!isOnePlayer) {
 			if (user?.username) {
 				socket.emit("username", user.username);

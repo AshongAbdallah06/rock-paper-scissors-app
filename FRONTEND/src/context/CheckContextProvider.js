@@ -44,26 +44,6 @@ const CheckContextProvider = ({ children }) => {
 	const [roomID, setRoomID] = useState(JSON.parse(localStorage.getItem("room-id")) || null);
 	const usernames = JSON.parse(localStorage.getItem("usernames"));
 
-	// Player 1 and Player 2 score state
-	const [p1Score, setP1Score] = useState(
-		(!isOnePlayer &&
-			JSON.parse(
-				localStorage.getItem(
-					`${roomID + usernames?.p1Username + usernames?.p2Username}-p1score`
-				)
-			)) ||
-			0
-	);
-	const [p2Score, setP2Score] = useState(
-		(!isOnePlayer &&
-			JSON.parse(
-				localStorage.getItem(
-					`${roomID + usernames?.p1Username + usernames?.p2Username}-p2score`
-				)
-			)) ||
-			0
-	);
-
 	const [currentUserStats, setCurrentUserStats] = useState({
 		score: 0,
 		username: user?.username,
@@ -98,18 +78,6 @@ const CheckContextProvider = ({ children }) => {
 		listenToMove();
 	}, []);
 
-	const p1localStorageScore = `${roomID + usernames?.p1Username + usernames?.p2Username}-p1score`;
-	useEffect(() => {
-		if (playerMove)
-			!isOnePlayer && localStorage.setItem(p1localStorageScore, JSON.stringify(p1Score));
-	}, [p1Score]);
-
-	const p2localStorageScore = `${roomID + usernames?.p1Username + usernames?.p2Username}-p2score`;
-	useEffect(() => {
-		if (computerMove)
-			!isOnePlayer && localStorage.setItem(p2localStorageScore, JSON.stringify(p2Score));
-	}, [p2Score]);
-
 	useEffect(() => {
 		if (isOnePlayer) {
 			checkOptions(
@@ -121,12 +89,6 @@ const CheckContextProvider = ({ children }) => {
 				setResult,
 				socket
 			);
-		} else {
-			if (result === "Player1 wins") {
-				setTimeout(() => setP1Score(p1Score + 1), 3000);
-			} else if (result === "Player2 wins") {
-				setTimeout(() => setP2Score(p2Score + 1), 3000);
-			}
 		}
 	}, [playerMove, computerMove, isOnePlayer, result]);
 
@@ -165,10 +127,10 @@ const CheckContextProvider = ({ children }) => {
 
 	const getUserStats = async (username) => {
 		try {
-			const res = await Axios
-				.get
+			const res = await Axios.get(
 				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${username}`
-				();
+				`http://localhost:4001/api/user/stats/${username}`
+			);
 			const data = res?.data[0] || {};
 
 			if (username === user?.username) {
@@ -185,37 +147,6 @@ const CheckContextProvider = ({ children }) => {
 			} else {
 				setSelectedUserStats(data);
 			}
-		} catch (error) {
-			console.error("🚀 ~ getUserStats ~ error:", error);
-
-			setErrorOccurred("Could not fetch user data.");
-		}
-	};
-
-	const getPlayerStats = async (p1Username, p2Username) => {
-		try {
-			const res = await Axios.post(
-				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${username}`
-				`http://localhost:4001/api/user/stats`,
-				{
-					p1Username,
-					p2Username,
-				}
-			);
-
-			const data = res?.data[0] || {};
-			setDualPlayerStats({
-				game_id: "1",
-				player1_username: usernames?.p1Username,
-				player1_wins: data.player1_wins,
-				user1_losses: data.user1_losses,
-				player2_username: usernames?.p2Username,
-				player2_wins: data.player2_wins,
-				player2_losses: data.player2_losses,
-				ties: data.ties,
-				games_played: data.games_played,
-				last_played: data.last_played,
-			});
 		} catch (error) {
 			console.error("🚀 ~ getUserStats ~ error:", error);
 
@@ -247,6 +178,26 @@ const CheckContextProvider = ({ children }) => {
 		ties: 0,
 		games_played: 0,
 	});
+	const getPlayerStats = async (p1Username, p2Username) => {
+		try {
+			const res = await Axios.post(
+				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats`
+				`http://localhost:4001/api/user/stats`,
+				{
+					p1Username,
+					p2Username,
+				}
+			);
+
+			const data = res?.data[0] || {};
+			setDualPlayerStats(data);
+		} catch (error) {
+			console.error("🚀 ~ getUserStats ~ error:", error);
+
+			setErrorOccurred("Could not fetch user data.");
+		}
+	};
+
 	useEffect(() => {
 		if (isOnePlayer) {
 			setCurrentUserStats((prevStats) => {
@@ -295,7 +246,6 @@ const CheckContextProvider = ({ children }) => {
 	useEffect(() => {
 		if (dualPlayerStats.games_played > 0) {
 			socket.emit("updateDualPlayerStats", dualPlayerStats);
-			console.log("updateDualPlayerStats", dualPlayerStats);
 		}
 	}, [dualPlayerStats]);
 
@@ -327,7 +277,6 @@ const CheckContextProvider = ({ children }) => {
 					headers: { Authorization: `Bearer ${user.token}` },
 				}
 			);
-			// const json = res.data; //  parse JSON responses
 
 			if (window.location.pathname === "/signup" || window.location.pathname === "/login") {
 				window.location.href = "/";
@@ -366,10 +315,6 @@ const CheckContextProvider = ({ children }) => {
 				roomIsSelected,
 				setRoomIsSelected,
 				clearMoves,
-				p1Score,
-				setP1Score,
-				p2Score,
-				setP2Score,
 				authorize,
 				userExists,
 				setUserExists,
