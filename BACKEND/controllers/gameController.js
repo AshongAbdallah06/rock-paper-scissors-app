@@ -1,7 +1,6 @@
 const pool = require("../db");
 
 const getHome = async (req, res) => {
-	const user_id = req.user;
 	const { username } = req.params;
 
 	try {
@@ -37,7 +36,7 @@ const getPlayerStats = async (req, res) => {
 
 	try {
 		const response = await pool.query(
-			"SELECT * FROM DUAL_PLAYER_SCORES WHERE PLAYER1_USERNAME IN ($1, $2) AND PLAYER2_USERNAME IN ($1, $2)",
+			"SELECT * FROM DUAL_PLAYER_SCORES WHERE (PLAYER1_USERNAME = $1 AND PLAYER2_USERNAME = $2) OR (PLAYER1_USERNAME = $2 AND PLAYER2_USERNAME = $1)",
 			[p1Username, p2Username]
 		);
 		const scores = response.rows;
@@ -45,6 +44,8 @@ const getPlayerStats = async (req, res) => {
 		res.status(201).json(scores);
 	} catch (error) {
 		console.log("🚀 ~ getUserStats ~ error:", error);
+
+		return;
 	}
 };
 

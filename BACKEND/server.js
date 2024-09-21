@@ -94,11 +94,25 @@ io.on("connect", (socket) => {
 		io.to(roomId).emit("leaveRoom", { msg: username + " has left the room" });
 	});
 
-	socket.on("username", (username) => {
+	socket.on("username", async (username) => {
 		if (!usernames[roomId]?.p1Username) {
 			usernames[roomId].p1Username = username;
 		} else if (!usernames[roomId].p2Username && username !== usernames[roomId].p1Username) {
 			usernames[roomId].p2Username = username;
+		}
+
+		try {
+			const response = await pool.query(
+				"SELECT * FROM DUAL_PLAYER_SCORES WHERE (PLAYER1_USERNAME = $1 AND PLAYER2_USERNAME = $2) OR (PLAYER1_USERNAME = $2 AND PLAYER2_USERNAME = $1)",
+				[usernames[roomId]?.p1Username, usernames[roomId]?.p2Username]
+			);
+			const scores = response.rows;
+
+			io.to(roomId).emit("getDualPlayerStats", scores);
+		} catch (error) {
+			console.log("🚀 ~ getUserStats ~ error:", error);
+
+			return;
 		}
 
 		io.to(roomId).emit("updateUsernames", usernames[roomId]);
@@ -283,6 +297,30 @@ io.on("connect", (socket) => {
 		}
 
 		io.emit("updateDualPlayerStats", "updateDualPlayerStats");
+	});
+
+	socket.on("disconnect", () => {
+		// Remove the player from gameRooms and usernames
+		for (const room in gameRooms) {
+			const players = gameRooms[room];
+			if (players.p1_ID === socket.id) {
+				players.p1_ID = null;
+				usernames[room].p1Username = null;
+				io.to(roomId).emit("updateUsernames", usernames[roomId]);
+			} else if (players.p2_ID === socket.id) {
+				players.p2_ID = null;
+				usernames[room].p2Username = null;
+				io.to(roomId).emit("updateUsernames", usernames[roomId]);
+			}
+
+			// If both players have left, clear the room data
+			if (!players.p1_ID && !players.p2_ID) {
+				delete gameRooms[room];
+				delete usernames[room];
+				delete game[room];
+				io.emit("deleteUsernames");
+			}
+		}
 	});
 });
 

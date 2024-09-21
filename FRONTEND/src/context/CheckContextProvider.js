@@ -52,7 +52,16 @@ const CheckContextProvider = ({ children }) => {
 		loses: 0,
 		ties: 0,
 	});
-
+	const [dualPlayerStats, setDualPlayerStats] = useState({
+		player1_username: usernames?.p1Username,
+		player1_wins: 0,
+		player1_losses: 0,
+		player2_username: usernames?.p2Username,
+		player2_wins: 0,
+		player2_losses: 0,
+		ties: 0,
+		games_played: 0,
+	});
 	const [selectedUserStats, setSelectedUserStats] = useState(
 		JSON.parse(localStorage.getItem("selectedUser")) || null
 	);
@@ -76,6 +85,19 @@ const CheckContextProvider = ({ children }) => {
 
 	useEffect(() => {
 		listenToMove();
+		socket.emit("getDualPlayerStats");
+
+		socket.on("getDualPlayerStats", (data) => {
+			setDualPlayerStats(data[0]);
+		});
+
+		socket.on("move", (newGameState) => {
+			setGameState(newGameState);
+		});
+
+		return () => {
+			socket.off("move");
+		};
 	}, []);
 
 	useEffect(() => {
@@ -99,17 +121,6 @@ const CheckContextProvider = ({ children }) => {
 
 		!isOnePlayer && checkPlayersMoves(gameState, setPlayerMoveImage, setComputerMoveImage);
 	}, [isOnePlayer, gameState.p1 && gameState.p2]);
-
-	// Send move in dual player mode
-	useEffect(() => {
-		socket.on("move", (newGameState) => {
-			setGameState(newGameState);
-		});
-
-		return () => {
-			socket.off("move");
-		};
-	}, []);
 
 	const moveOnclick = (move) => {
 		if (!isOnePlayer) {
@@ -168,16 +179,6 @@ const CheckContextProvider = ({ children }) => {
 		}
 	}, [currentUserStats, isOnePlayer]);
 
-	const [dualPlayerStats, setDualPlayerStats] = useState({
-		player1_username: usernames?.p1Username,
-		player1_wins: 0,
-		player1_losses: 0,
-		player2_username: usernames?.p2Username,
-		player2_wins: 0,
-		player2_losses: 0,
-		ties: 0,
-		games_played: 0,
-	});
 	const getPlayerStats = async (p1Username, p2Username) => {
 		try {
 			const res = await Axios.post(
@@ -237,14 +238,21 @@ const CheckContextProvider = ({ children }) => {
 				updatedDualPlayerStats.games_played =
 					(updatedDualPlayerStats.player1_wins || 0) +
 					(updatedDualPlayerStats.player1_losses || 0) +
-					updatedDualPlayerStats.ties;
+					(updatedDualPlayerStats.ties || 0);
+
 				return updatedDualPlayerStats;
 			});
 		}
 	}, [result, isOnePlayer]);
 
 	useEffect(() => {
-		if (dualPlayerStats.games_played > 0) {
+		socket.on("getDualPlayerStats", (data) => {
+			setDualPlayerStats(data[0]);
+		});
+	}, [socket]);
+
+	useEffect(() => {
+		if (dualPlayerStats?.games_played > 0) {
 			socket.emit("updateDualPlayerStats", dualPlayerStats);
 		}
 	}, [dualPlayerStats]);
