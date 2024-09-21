@@ -40,7 +40,7 @@ const ScoreBoard = () => {
 		if (isOnePlayer) {
 			getUserStats(user?.username);
 		} else {
-			if (usernames.p1Username || usernames.p2Username) {
+			if (usernames?.p1Username && usernames?.p2Username) {
 				getPlayerStats(usernames.p1Username, usernames.p2Username);
 			}
 		}
@@ -75,7 +75,11 @@ const ScoreBoard = () => {
 
 								{usernames?.p1Username === null && "Unavailable"}
 							</p>
-							<p>{dualPlayerStats?.player1_wins || 0}</p>
+							<p>
+								{dualPlayerStats?.player1_wins && usernames?.p1Username
+									? dualPlayerStats?.player1_wins
+									: 0}
+							</p>
 						</div>
 
 						<div className="score">
@@ -87,7 +91,11 @@ const ScoreBoard = () => {
 								{usernames?.p2Username === null && "Unavailable"}
 								{/* Create a warning left sign */}
 							</p>
-							<p>{dualPlayerStats?.player2_wins || 0}</p>
+							<p>
+								{dualPlayerStats?.player2_wins && usernames?.p2Username
+									? dualPlayerStats?.player2_wins
+									: 0}
+							</p>
 						</div>
 					</div>
 				)}

@@ -593,8 +593,13 @@ form .room input {
 	padding: 1rem 2rem;
 	border-radius: 3px;
 	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
-	/* background-color: rgb(201, 201, 201); */
 	background-color: hsl(237, 49%, 15%);
+	text-align: center;
+	color: white;
+}
+.no-display {
+	grid-template-columns: 1fr;
+	padding: 2rem;
 }
 .stats-container p,
 .bottom p,
