@@ -69,39 +69,25 @@ const ScoreBoard = () => {
 					<div className="p2">
 						<div className="score">
 							<p>
-								{p1Username === user.username ? "You" : usernames?.p1Username}
-								{!usernames?.p1Username && "Unavailable"}
+								{usernames?.p1Username === user.username
+									? "You"
+									: usernames?.p1Username}
+
+								{usernames?.p1Username === null && "Unavailable"}
 							</p>
-							<p>
-								{!usernames?.p1Username
-									? 0
-									: dualPlayerStats && p1Username && p2Username
-									? dualPlayerStats.player1_username === p1Username
-										? dualPlayerStats.player1_wins
-										: dualPlayerStats.player2_username === p1Username
-										? dualPlayerStats.player2_wins
-										: 0
-									: 0}
-							</p>
+							<p>{dualPlayerStats?.player1_wins || 0}</p>
 						</div>
 
 						<div className="score">
 							<p>
-								{p2Username === user.username ? "You" : usernames?.p2Username}
-								{!usernames?.p2Username && "Unavailable"}
+								{usernames?.p2Username === user.username
+									? "You"
+									: usernames?.p2Username}
+
+								{usernames?.p2Username === null && "Unavailable"}
 								{/* Create a warning left sign */}
 							</p>
-							<p>
-								{!usernames?.p2Username
-									? 0
-									: dualPlayerStats && p1Username && p2Username
-									? dualPlayerStats.player1_username === p2Username
-										? dualPlayerStats.player1_wins
-										: dualPlayerStats.player2_username === p2Username
-										? dualPlayerStats.player2_wins
-										: 0
-									: 0}
-							</p>
+							<p>{dualPlayerStats?.player2_wins || 0}</p>
 						</div>
 					</div>
 				)}
