@@ -70,6 +70,8 @@ const ScoreBoard = () => {
 										: dualPlayerStats.player2_username === p1Username &&
 										  dualPlayerStats?.player2_wins
 									: 0}
+
+								{!dualPlayerStats && 0}
 							</p>
 						</div>
 						<div className="score">
@@ -84,6 +86,8 @@ const ScoreBoard = () => {
 										: dualPlayerStats.player2_username === p2Username &&
 										  dualPlayerStats?.player2_wins
 									: 0}
+
+								{!dualPlayerStats && 0}
 							</p>
 						</div>
 					</div>

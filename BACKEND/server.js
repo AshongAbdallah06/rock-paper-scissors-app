@@ -75,8 +75,6 @@ io.on("connect", (socket) => {
 	});
 
 	socket.on("leaveRoom", (username) => {
-		// Broadcast a message that the user has left
-
 		// Remove the username from the room
 		if (usernames[roomId]?.p1Username === username) {
 			usernames[roomId].p1Username = null;

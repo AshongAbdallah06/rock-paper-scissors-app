@@ -24,6 +24,7 @@ const Footer = ({
 	setChatIsShowing,
 	bonusState,
 	setBonusState,
+	setShowDualPlayerStats,
 }) => {
 	const {
 		roomID,
@@ -45,7 +46,7 @@ const Footer = ({
 	const copyInviteLink = async () => {
 		try {
 			await navigator.clipboard.writeText(
-				`Your friend ${user?.username}, is inviting you to a game of rock-paper-scissors. Click on the link below to play against each other. \n \n https://rock-paper-scissors-app-iybf.onrender.com\n \n1. Click on Dual to enable 2-player mode.\n2. Enter the code '${roomID}' and click on Join Room to play against ${user?.username}`
+				`Your friend ${user?.username}, is inviting you to a game of rock-paper-scissors. Click on the link below to play against each other. \n \n https://rock-paper-scissors-app-iybf.onrender.com\n \n1. Click on Dual to enable 2-player mode.\n2. Enter the code '${roomID}' and click on Join Room to play against each other`
 			);
 
 			await navigator.clipboard.readText();
@@ -104,6 +105,21 @@ const Footer = ({
 						title="copy"
 					/>
 					Copy Invite Link
+				</Link>
+			)}
+
+			{!isOnePlayer && (
+				<Link
+					className="link"
+					onClick={() => setShowDualPlayerStats(true)}
+				>
+					<img
+						src={"copyIcon"}
+						alt="copyIcon"
+						className="copy-icon"
+						title="copy"
+					/>
+					View Game Stats
 				</Link>
 			)}
 

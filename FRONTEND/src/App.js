@@ -86,7 +86,6 @@ function App() {
 	 * 	- Interactive Tutorials: Create a tutorial mode to help new players learn the game.
 	 * 	- Statistics Tracking: Provide detailed stats, such as win/loss ratio, most picked moves, streaks(wins, losses, ties), etc.
 	 * 	- todo: Remove chat popup when an empty space is clicked <------ Next todo:
-	 *		- Create dual-player game stats
 	 		- Create feature where players are allowed to play the game even when they are not logged in, and remind them that scores will not be saved 
 				- Will be lost when page is refreshed
 				- Cant view profile, leaderboard

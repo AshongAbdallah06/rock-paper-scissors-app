@@ -9,6 +9,7 @@ import BonusDialog from "../components/bonus/Dialog";
 import Nav from "../components/Nav";
 import useFunctions from "../hooks/useFunctions";
 import Footer from "../components/Footer";
+import DualPlayerStats from "../components/DualPlayerStats";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
@@ -66,11 +67,18 @@ const Home = () => {
 
 	const [sidebarIsShowing, setSidebarIsShowing] = useState(false);
 	const [bonusState, setBonusState] = useState(bonus);
+	const [showDualPlayerStats, setShowDualPlayerStats] = useState(false);
 
 	return (
 		<>
 			{renderRoutes && (
 				<>
+					{showDualPlayerStats && (
+						<DualPlayerStats
+							showDualPlayerStats={showDualPlayerStats}
+							setShowDualPlayerStats={setShowDualPlayerStats}
+						/>
+					)}
 					<Nav
 						sidebarIsShowing={sidebarIsShowing}
 						setSidebarIsShowing={setSidebarIsShowing}
@@ -101,6 +109,7 @@ const Home = () => {
 							chatIsShowing={chatIsShowing}
 							bonusState={bonusState}
 							setBonusState={setBonusState}
+							setShowDualPlayerStats={setShowDualPlayerStats}
 						/>
 					)}
 				</>
