@@ -29,7 +29,6 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 			reader.onloadend = () => {
 				setImg(reader.result); // Set image URL
 			};
-			console.log(file, reader);
 		}
 	};
 	const handleFileChange1 = (e) => {
@@ -41,7 +40,6 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 			reader.onloadend = () => {
 				setImg1(reader.result); // Set image URL
 			};
-			console.log(file1, reader);
 		}
 	};
 
@@ -64,7 +62,7 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 						<div className="player">
 							<div className="profile">
 								<img
-									src={img1}
+									src={img1 || profileIcon}
 									className="profile-icon"
 									alt="profile-icon"
 								/>
@@ -91,20 +89,13 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 									type="file"
 									onChange={handleFileChange1}
 								/>
-								{/* {img && (
-									<img
-										src={img}
-										style={{ width: "10rem", height: "10rem" }}
-										alt="Uploaded"
-									/>
-								)} */}
 							</div>
 						</div>
 
 						<div className="player">
 							<div className="profile">
 								<img
-									src={img}
+									src={img || profileIcon}
 									className="profile-icon"
 									alt="profile-icon"
 								/>
