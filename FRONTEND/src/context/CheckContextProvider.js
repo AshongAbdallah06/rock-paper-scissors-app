@@ -178,8 +178,7 @@ const CheckContextProvider = ({ children }) => {
 	const getPlayerStats = async (p1Username, p2Username) => {
 		try {
 			const res = await Axios.post(
-				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats`
-				`http://localhost:4001/api/user/stats`,
+				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats`,
 				{
 					p1Username,
 					p2Username,
