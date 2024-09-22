@@ -28,8 +28,8 @@ const corsOptions = {
 	},
 	methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
 	allowedHeaders: ["Content-Type", "Authorization"],
-	optionsSuccessStatus: 200, // For legacy browser support
-	credentials: true, // Enable if you need to send cookies or HTTP authentication
+	optionsSuccessStatus: 200,
+	credentials: true,
 };
 app.use(cors(corsOptions));
 
@@ -75,8 +75,6 @@ io.on("connect", (socket) => {
 	});
 
 	socket.on("leaveRoom", (username) => {
-		// Broadcast a message that the user has left
-
 		// Remove the username from the room
 		if (usernames[roomId]?.p1Username === username) {
 			usernames[roomId].p1Username = null;
@@ -96,13 +94,25 @@ io.on("connect", (socket) => {
 		io.to(roomId).emit("leaveRoom", { msg: username + " has left the room" });
 	});
 
-	socket.on("username", (username) => {
+	socket.on("username", async (username) => {
 		if (!usernames[roomId]?.p1Username) {
 			usernames[roomId].p1Username = username;
 		} else if (!usernames[roomId].p2Username && username !== usernames[roomId].p1Username) {
 			usernames[roomId].p2Username = username;
-		} else {
-			console.log("Both usernames are already assigned or username is a duplicate.");
+		}
+
+		try {
+			const response = await pool.query(
+				"SELECT * FROM DUAL_PLAYER_SCORES WHERE (PLAYER1_USERNAME = $1 AND PLAYER2_USERNAME = $2) OR (PLAYER1_USERNAME = $2 AND PLAYER2_USERNAME = $1)",
+				[usernames[roomId]?.p1Username, usernames[roomId]?.p2Username]
+			);
+			const scores = response.rows;
+
+			io.to(roomId).emit("getDualPlayerStats", scores);
+		} catch (error) {
+			console.log("🚀 ~ getUserStats ~ error:", error);
+
+			return;
 		}
 
 		io.to(roomId).emit("updateUsernames", usernames[roomId]);
@@ -259,6 +269,57 @@ io.on("connect", (socket) => {
 			io.to(roomId).emit("updateStats", userStats);
 		} catch (error) {
 			console.log("🚀 ~ socket.on ~ error:", error);
+		}
+	});
+
+	socket.on("updateDualPlayerStats", async (data) => {
+		try {
+			await pool.query(`UPDATE DUAL_PLAYER_SCORES SET GAMES_PLAYED = $1, TIES = $2`, [
+				data.games_played,
+				data.ties,
+			]);
+
+			await pool.query(
+				`UPDATE DUAL_PLAYER_SCORES SET PLAYER1_WINS = $1, PLAYER1_LOSSES = $2 WHERE PLAYER1_USERNAME = $3`,
+				[data.player1_wins || 0, data.player1_losses || 0, data.player1_username || 0]
+			);
+
+			await pool.query(
+				`UPDATE DUAL_PLAYER_SCORES SET PLAYER2_WINS = $1, PLAYER2_LOSSES = $2 WHERE PLAYER2_USERNAME = $3`,
+				[data.player2_wins || 0, data.player2_losses || 0, data.player2_username || 0]
+			);
+			const response = await pool.query("SELECT * FROM DUAL_PLAYER_SCORES");
+			const userStats = response.rows;
+
+			io.to(roomId).emit("updateDualPlayerStats", userStats);
+		} catch (error) {
+			console.log("🚀 ~ socket.on ~ error:", error);
+		}
+
+		io.emit("updateDualPlayerStats", "updateDualPlayerStats");
+	});
+
+	socket.on("disconnect", () => {
+		// Remove the player from gameRooms and usernames
+		for (const room in gameRooms) {
+			const players = gameRooms[room];
+			if (players.p1_ID === socket.id) {
+				players.p1_ID = null;
+				usernames[room].p1Username = null;
+				io.to(roomId).emit("updateUsernames", usernames[roomId]);
+			} else if (players.p2_ID === socket.id) {
+				players.p2_ID = null;
+				usernames[room].p2Username = null;
+				io.to(roomId).emit("updateUsernames", usernames[roomId]);
+			}
+
+			// If both players have left, clear the room data
+			if (!players.p1_ID && !players.p2_ID) {
+				delete gameRooms[room];
+				delete usernames[room];
+				delete game[room];
+				io.emit("deleteUsernames");
+			}
 		}
 	});
 });

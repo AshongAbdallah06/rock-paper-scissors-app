@@ -5,57 +5,51 @@ import useCheckContext from "../hooks/useCheckContext";
 const ScoreBoard = () => {
 	const {
 		roomID,
-		p1Score,
-		p2Score,
-		setP1Score,
-		setP2Score,
 		isOnePlayer,
 		socket,
 		getUserStats,
+		getPlayerStats,
 		currentUserStats,
+		dualPlayerStats,
+		result,
 	} = useCheckContext();
 
 	const user = JSON.parse(localStorage.getItem("user"));
-
-	const usernames = JSON.parse(localStorage.getItem("usernames"));
+	const usernames = JSON.parse(localStorage.getItem("usernames")) || {};
 	const [p1Username, setP1Username] = useState("");
 	const [p2Username, setP2Username] = useState("");
 
 	useEffect(() => {
-		setP1Score(
-			JSON.parse(
-				localStorage.getItem(
-					`${roomID + usernames?.p1Username + usernames?.p2Username}-p1score`
-				)
-			) || 0
-		);
-		setP2Score(
-			JSON.parse(
-				localStorage.getItem(
-					`${roomID + usernames?.p1Username + usernames?.p2Username}-p2score`
-				)
-			) || 0
-		);
-
-		if (!isOnePlayer) {
-			if (user?.username) {
-				socket.emit("username", user.username);
-			}
+		if (!isOnePlayer && user?.username) {
+			socket.emit("username", user.username);
 		}
 
+		// Handle username updates
 		socket.on("updateUsernames", ({ p1Username, p2Username }) => {
-			setP1Username(p1Username);
-			setP2Username(p2Username);
-			localStorage.setItem("usernames", JSON.stringify({ p1Username, p2Username }));
+			if (p1Username && p2Username && p1Username !== p2Username) {
+				setP1Username(p1Username);
+				setP2Username(p2Username);
+			}
+
+			// Save to localStorage only if they are unique
+			if (p1Username !== p2Username) {
+				localStorage.setItem("usernames", JSON.stringify({ p1Username, p2Username }));
+			}
 		});
 
-		getUserStats(user?.username);
+		if (isOnePlayer) {
+			getUserStats(user?.username);
+		} else {
+			if (usernames?.p1Username && usernames?.p2Username) {
+				getPlayerStats(usernames.p1Username, usernames.p2Username);
+			}
+		}
 
 		// Cleanup on unmount
 		return () => {
 			socket.off("updateUsernames");
 		};
-	}, []);
+	}, [isOnePlayer, user?.username, socket]);
 
 	return (
 		<>
@@ -74,14 +68,34 @@ const ScoreBoard = () => {
 				) : (
 					<div className="p2">
 						<div className="score">
-							{/* <p>Player1</p> */}
-							<p>{!p1Username ? "Player1" : p1Username}</p>
-							<p>{p1Username && p2Username ? p1Score : 0}</p>
+							<p>
+								{usernames?.p1Username === user.username
+									? "You"
+									: usernames?.p1Username}
+
+								{usernames?.p1Username === null && "Unavailable"}
+							</p>
+							<p>
+								{dualPlayerStats?.player1_wins && usernames?.p1Username
+									? dualPlayerStats?.player1_wins
+									: 0}
+							</p>
 						</div>
+
 						<div className="score">
-							{/* <p>Player2</p> */}
-							<p>{!p2Username ? "Player2" : p2Username}</p>
-							<p>{p1Username && p2Username ? p2Score : 0}</p>
+							<p>
+								{usernames?.p2Username === user.username
+									? "You"
+									: usernames?.p2Username}
+
+								{usernames?.p2Username === null && "Unavailable"}
+								{/* Create a warning left sign */}
+							</p>
+							<p>
+								{dualPlayerStats?.player2_wins && usernames?.p2Username
+									? dualPlayerStats?.player2_wins
+									: 0}
+							</p>
 						</div>
 					</div>
 				)}

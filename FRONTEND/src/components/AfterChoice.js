@@ -42,7 +42,7 @@ const AfterChoice = ({ bonusState }) => {
 				<h1>
 					{isOnePlayer
 						? "YOU PICKED"
-						: `${p1Username === user.username ? "You" : p1Username} PICKED`}
+						: `${p1Username === user.username ? "You" : p1Username} Picked`}
 				</h1>
 				<div
 					className={`picked ${
@@ -82,12 +82,14 @@ const AfterChoice = ({ bonusState }) => {
 			<div className="results">
 				<h1>
 					{isOnePlayer
-						? result === "Computer wins" && "YOU LOSE"
-						: gameState.result === "Player2 wins" && `${p2Username} wins`}
+						? result === "Player wins" && "YOU WIN"
+						: gameState.result === "Player1 wins" &&
+						  `${p1Username === user?.username ? "YOU WIN" : "YOU LOSE"}`}
 
 					{isOnePlayer
-						? result === "Player wins" && "YOU WIN"
-						: gameState.result === "Player1 wins" && `${p1Username} wins`}
+						? result === "Computer wins" && "YOU LOSE"
+						: gameState.result === "Player2 wins" &&
+						  `${p2Username === user?.username ? "YOU WIN" : "YOU LOSE"}`}
 
 					{isOnePlayer ? result === "Tie" && "TIE" : gameState.result === "Tie" && "Tie"}
 				</h1>
@@ -109,7 +111,7 @@ const AfterChoice = ({ bonusState }) => {
 				<h1>
 					{isOnePlayer
 						? "THE HOUSE PICKED"
-						: `${p2Username === user.username ? "You" : p2Username} PICKED`}
+						: `${p2Username === user.username ? "You" : p2Username} Picked`}
 				</h1>
 				<div
 					className={`hPicked ${
