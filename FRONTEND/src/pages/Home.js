@@ -59,6 +59,10 @@ const Home = () => {
 			});
 		}
 
+		if (!localStorage.getItem("bonus")) {
+			localStorage.setItem("bonus", JSON.stringify(false));
+		}
+
 		return () => {
 			socket.off("join_room");
 			clearTimeout(timer);
@@ -66,7 +70,7 @@ const Home = () => {
 	}, []);
 
 	const [sidebarIsShowing, setSidebarIsShowing] = useState(false);
-	const [bonusState, setBonusState] = useState(bonus);
+	const [bonusState, setBonusState] = useState(!bonus ? false : true);
 	const [showDualPlayerStats, setShowDualPlayerStats] = useState(false);
 
 	return (
