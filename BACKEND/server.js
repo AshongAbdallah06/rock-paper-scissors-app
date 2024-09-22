@@ -280,19 +280,34 @@ io.on("connect", (socket) => {
 
 	socket.on("updateDualPlayerStats", async (data) => {
 		try {
-			await pool.query(`UPDATE DUAL_PLAYER_SCORES SET GAMES_PLAYED = $1, TIES = $2`, [
-				data.games_played,
-				data.ties,
-			]);
-
 			await pool.query(
-				`UPDATE DUAL_PLAYER_SCORES SET PLAYER1_WINS = $1, PLAYER1_LOSSES = $2 WHERE PLAYER1_USERNAME = $3`,
-				[data.player1_wins || 0, data.player1_losses || 0, data.player1_username || 0]
+				`UPDATE DUAL_PLAYER_SCORES SET GAMES_PLAYED = $1, TIES = $2 WHERE (PLAYER1_USERNAME = $3 AND PLAYER2_USERNAME = $4) OR (PLAYER1_USERNAME = $4 AND PLAYER2_USERNAME = $3)`,
+				[
+					data.games_played || 0,
+					data.ties || 0,
+					data.player1_username,
+					data.player2_username,
+				]
 			);
 
 			await pool.query(
-				`UPDATE DUAL_PLAYER_SCORES SET PLAYER2_WINS = $1, PLAYER2_LOSSES = $2 WHERE PLAYER2_USERNAME = $3`,
-				[data.player2_wins || 0, data.player2_losses || 0, data.player2_username || 0]
+				`UPDATE DUAL_PLAYER_SCORES SET PLAYER1_WINS = $1, PLAYER1_LOSSES = $2 WHERE (PLAYER1_USERNAME = $3 AND PLAYER2_USERNAME = $4) OR (PLAYER1_USERNAME = $4 AND PLAYER2_USERNAME = $3)`,
+				[
+					data.player1_wins || 0,
+					data.player1_losses || 0,
+					data.player1_username,
+					data.player2_username,
+				]
+			);
+
+			await pool.query(
+				`UPDATE DUAL_PLAYER_SCORES SET PLAYER2_WINS = $1, PLAYER2_LOSSES = $2 WHERE (PLAYER1_USERNAME = $3 AND PLAYER2_USERNAME = $4) OR (PLAYER1_USERNAME = $4 AND PLAYER2_USERNAME = $3)`,
+				[
+					data.player2_wins || 0,
+					data.player2_losses || 0,
+					data.player2_username,
+					data.player1_username,
+				]
 			);
 			const response = await pool.query("SELECT * FROM DUAL_PLAYER_SCORES");
 			const userStats = response.rows;
