@@ -96,7 +96,7 @@ const CheckContextProvider = ({ children }) => {
 		return () => {
 			socket.off("move");
 		};
-	}, []);
+	}, [socket]);
 
 	useEffect(() => {
 		if (isOnePlayer) {
