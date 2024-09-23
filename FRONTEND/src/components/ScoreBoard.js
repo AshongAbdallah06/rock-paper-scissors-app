@@ -11,7 +11,6 @@ const ScoreBoard = () => {
 	const [showPlayer2Score, setShowPlayer2Score] = useState(null);
 
 	useEffect(() => {
-		console.log(`p1Username: ${p1Username}`, `p2Username: ${p2Username}`);
 		if (p1Username && p2Username) {
 			setShowPlayer1Score(true);
 			setShowPlayer2Score(true);

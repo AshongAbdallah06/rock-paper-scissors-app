@@ -109,11 +109,11 @@ function App() {
 		} catch (error) {
 			setIsServerOk(false);
 			console.log(error);
+			alert("Error Occurred. Check the console to see what occurred.");
 		}
 	};
 	// useEffect(() => {
 	// 	startServer();
-	// 	console.log("Hey");
 	// }, []);
 
 	return (

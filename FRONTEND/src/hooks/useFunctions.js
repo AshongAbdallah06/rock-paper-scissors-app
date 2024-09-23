@@ -246,6 +246,7 @@ const useFunctions = () => {
 		try {
 			socket.emit("leaveRoom", user.username);
 		} catch (error) {
+			alert("Error Occurred. Check the console to see what occurred.");
 			console.log("🚀 ~ leaveRoom ~ error:", error);
 		}
 

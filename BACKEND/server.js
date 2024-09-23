@@ -328,12 +328,10 @@ io.on("connect", (socket) => {
 				players.p1_ID = null;
 				usernames[room].p1Username = null;
 				io.to(roomId).emit("updateUsernames", usernames[roomId]);
-				console.log(usernames);
 			} else if (players.p2_ID === socket.id) {
 				players.p2_ID = null;
 				usernames[room].p2Username = null;
 				io.to(roomId).emit("updateUsernames", usernames[roomId]);
-				console.log(usernames);
 			}
 
 			// If both players have left, clear the room data

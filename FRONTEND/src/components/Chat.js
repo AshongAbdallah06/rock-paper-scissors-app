@@ -115,8 +115,6 @@ const Chat = ({ setChatIsShowing }) => {
 						placeholder="Enter text message"
 						onChange={(e) => {
 							setTextMessage(e.target.value);
-
-							console.log("Target Value: ", e);
 						}}
 					></textarea>
 					<button
