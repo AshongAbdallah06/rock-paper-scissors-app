@@ -92,9 +92,14 @@ const Chat = ({ setChatIsShowing }) => {
 								<p className="username">
 									<span
 										className="name"
-										style={{ textTransform: "lowercase", fontWeight: "normal" }}
+										style={{
+											textTransform: "capitalize",
+											fontWeight: "normal",
+										}}
 									>
-										{message?.username}
+										{message?.username === user.username
+											? "You"
+											: message?.username}
 									</span>
 								</p>
 								<p className="message">{message.textMessage}</p>
@@ -110,6 +115,8 @@ const Chat = ({ setChatIsShowing }) => {
 						placeholder="Enter text message"
 						onChange={(e) => {
 							setTextMessage(e.target.value);
+
+							console.log("Target Value: ", e);
 						}}
 					></textarea>
 					<button
