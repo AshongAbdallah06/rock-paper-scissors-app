@@ -4,6 +4,7 @@ import Axios from "axios";
 import useFunctions from "../hooks/useFunctions";
 
 const socket = io("https://rock-paper-scissors-app-iybf.onrender.com");
+// const socket = io("http://localhost:4001");
 export const CheckContext = createContext();
 
 const CheckContextProvider = ({ children }) => {
@@ -63,6 +64,8 @@ const CheckContextProvider = ({ children }) => {
 	const [selectedUserStats, setSelectedUserStats] = useState(
 		JSON.parse(localStorage.getItem("selectedUser")) || null
 	);
+	const [p1Username, setP1Username] = useState("");
+	const [p2Username, setP2Username] = useState("");
 	const [userExists, setUserExists] = useState(null);
 	// Score on leaderboard
 	const [scores, setScores] = useState(null);
@@ -93,8 +96,31 @@ const CheckContextProvider = ({ children }) => {
 			setGameState(newGameState);
 		});
 
+		socket.on("getDualPlayerStats", (data) => {
+			setDualPlayerStats(data[0]);
+		});
+
+		// Handle username updates
+		socket.on("updateUsernames", (data) => {
+			!data?.p1Username && setP1Username(null);
+
+			if (data?.p1Username && !data?.p2Username) {
+				setP1Username(data?.p1Username);
+				setP2Username(null);
+			}
+			if (data?.p1Username && data?.p2Username && data?.p1Username !== data?.p2Username) {
+				setP1Username(data?.p1Username);
+				setP2Username(data?.p2Username);
+
+				getPlayerStats(data?.p1Username, data?.p2Username);
+			}
+		});
+
+		// Cleanup on unmount
 		return () => {
 			socket.off("move");
+			socket.off("getDualPlayerStats");
+			socket.off("updateUsernames");
 		};
 	}, [socket]);
 
@@ -136,8 +162,10 @@ const CheckContextProvider = ({ children }) => {
 
 	const getUserStats = async (username) => {
 		try {
-
-			const res = await Axios.get(`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${username}`);
+			const res = await Axios.get(
+				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${username}`
+				`http://localhost:4001/api/user/stats/${username}`
+			);
 			const data = res?.data[0] || {};
 
 			if (username === user?.username) {
@@ -178,7 +206,8 @@ const CheckContextProvider = ({ children }) => {
 	const getPlayerStats = async (p1Username, p2Username) => {
 		try {
 			const res = await Axios.post(
-				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats`,
+				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats`,
+				`http://localhost:4001/api/user/stats`,
 				{
 					p1Username,
 					p2Username,
@@ -241,12 +270,6 @@ const CheckContextProvider = ({ children }) => {
 	}, [result, isOnePlayer]);
 
 	useEffect(() => {
-		socket.on("getDualPlayerStats", (data) => {
-			setDualPlayerStats(data[0]);
-		});
-	}, [socket]);
-
-	useEffect(() => {
 		if (dualPlayerStats?.games_played > 0) {
 			socket.emit("updateDualPlayerStats", dualPlayerStats);
 		}
@@ -273,7 +296,8 @@ const CheckContextProvider = ({ children }) => {
 	const authorize = async () => {
 		try {
 			const res = await Axios.get(
-				"https://rock-paper-scissors-app-iybf.onrender.com/api/user",
+				// "https://rock-paper-scissors-app-iybf.onrender.com/api/user",
+				"http://localhost:4001/api/user",
 				{
 					headers: { Authorization: `Bearer ${user.token}` },
 				}
@@ -337,6 +361,8 @@ const CheckContextProvider = ({ children }) => {
 				dualPlayerStats,
 				errorOccurred,
 				setErrorOccurred,
+				p1Username,
+				p2Username,
 			}}
 		>
 			{children}

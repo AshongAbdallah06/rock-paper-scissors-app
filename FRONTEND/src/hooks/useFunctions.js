@@ -231,7 +231,10 @@ const useFunctions = () => {
 
 	// Join room
 	const joinRoom = (socket, roomID, setLeftRoom) => {
-		socket.emit("join_room", `${roomID}-${bonus ? "bonus" : "normal"}`);
+		socket.emit("join-room", {
+			id: `${roomID}-${bonus ? "bonus" : "normal"}`,
+			username: user?.username,
+		});
 
 		setLeftRoom(false);
 
