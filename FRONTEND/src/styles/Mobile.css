@@ -174,7 +174,6 @@
 		height: 80vh;
 	}
 	form {
-		/* height: 80vh; */
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -316,5 +315,81 @@
 @media (min-width: 500px) {
 	.footer-sidebar p {
 		margin-bottom: 0;
+	}
+}
+
+@media (min-height: 710px) and (min-width: 530px) {
+	.scoreBoard {
+		margin-top: -3rem;
+		width: 30rem;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.p2 {
+		right: -200px;
+	}
+}
+
+@media (min-height: 1000px) {
+	.scoreBoard {
+		margin-top: -20rem;
+	}
+	.gameOpt::before,
+	.picked::before,
+	.hPicked::before {
+		width: calc(100% - 2rem);
+		height: calc(100% - 2rem);
+	}
+	.gameBoard {
+		height: 15.5rem;
+		width: 15.5rem;
+		margin-top: 3rem;
+	}
+	.gameOpt,
+	.picked,
+	.hPicked {
+		width: 11.375rem;
+		height: 11.375rem;
+	}
+	.leaderboard {
+		margin-top: -15rem;
+	}
+}
+/* Ipad Air */
+@media (min-height: 1100px) {
+	.scoreBoard {
+		margin-top: -30rem;
+	}
+	.leaderboard {
+		margin-top: -25rem;
+	}
+}
+@media (min-width: 1200px) and (min-height: 500px) {
+	.scoreBoard {
+		margin-top: 0.5rem;
+	}
+}
+/*  Asus Zenbook*/
+@media (min-height: 1200px) and (min-width: 840px) {
+	.scoreBoard {
+		margin-top: -40rem;
+		width: 30rem;
+		align-items: center;
+		justify-content: space-between;
+	}
+	.p2 {
+		right: -200px;
+	}
+	.leaderboard {
+		margin-top: -33rem;
+	}
+}
+/* Ipad Pro and Surface Pro 7 */
+@media (min-height: 1300px) {
+	.scoreBoard {
+		margin-top: -40rem;
+	}
+	.leaderboard {
+		margin-top: -40rem;
 	}
 }

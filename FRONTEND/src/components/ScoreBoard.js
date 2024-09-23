@@ -29,6 +29,8 @@ const ScoreBoard = () => {
 			if (p1Username && p2Username && p1Username !== p2Username) {
 				setP1Username(p1Username);
 				setP2Username(p2Username);
+
+				getPlayerStats(p1Username, p2Username);
 			}
 
 			// Save to localStorage only if they are unique
@@ -76,9 +78,11 @@ const ScoreBoard = () => {
 								{usernames?.p1Username === null && "Unavailable"}
 							</p>
 							<p>
-								{dualPlayerStats?.player1_wins && usernames?.p1Username
+								{usernames?.p1Username !== null &&
+								usernames?.p2Username !== null &&
+								dualPlayerStats?.player1_username === usernames?.p1Username
 									? dualPlayerStats?.player1_wins
-									: 0}
+									: dualPlayerStats?.player2_wins}
 							</p>
 						</div>
 
@@ -92,9 +96,11 @@ const ScoreBoard = () => {
 								{/* Create a warning left sign */}
 							</p>
 							<p>
-								{dualPlayerStats?.player2_wins && usernames?.p2Username
+								{usernames?.p2Username !== null &&
+								usernames?.p1Username !== null &&
+								dualPlayerStats?.player2_username === usernames?.p2Username
 									? dualPlayerStats?.player2_wins
-									: 0}
+									: dualPlayerStats?.player1_wins}
 							</p>
 						</div>
 					</div>

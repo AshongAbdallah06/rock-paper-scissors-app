@@ -99,20 +99,26 @@ io.on("connect", (socket) => {
 			usernames[roomId].p1Username = username;
 		} else if (!usernames[roomId].p2Username && username !== usernames[roomId].p1Username) {
 			usernames[roomId].p2Username = username;
-		}
+		} else if (usernames[roomId].p1Username && usernames[roomId].p2Username) {
+			try {
+				const response = await pool.query(
+					"SELECT * FROM DUAL_PLAYER_SCORES WHERE (PLAYER1_USERNAME = $1 AND PLAYER2_USERNAME = $2) OR (PLAYER1_USERNAME = $2 AND PLAYER2_USERNAME = $1)",
+					[usernames[roomId]?.p1Username, usernames[roomId]?.p2Username]
+				);
 
-		try {
-			const response = await pool.query(
-				"SELECT * FROM DUAL_PLAYER_SCORES WHERE (PLAYER1_USERNAME = $1 AND PLAYER2_USERNAME = $2) OR (PLAYER1_USERNAME = $2 AND PLAYER2_USERNAME = $1)",
-				[usernames[roomId]?.p1Username, usernames[roomId]?.p2Username]
-			);
-			const scores = response.rows;
+				if (response.rowCount < 1) {
+					await pool.query(
+						`INSERT INTO DUAL_PLAYER_SCORES VALUES('3',$1,0,0,$2,0,0,0,0,'01-01-2024')`,
+						[usernames[roomId]?.p1Username, usernames[roomId]?.p2Username]
+					);
 
-			io.to(roomId).emit("getDualPlayerStats", scores);
-		} catch (error) {
-			console.log("🚀 ~ getUserStats ~ error:", error);
+					io.to(roomId).emit("getDualPlayerStats", response.rows);
+				}
+			} catch (error) {
+				console.log("🚀 ~ getUserStats ~ error:", error);
 
-			return;
+				return;
+			}
 		}
 
 		io.to(roomId).emit("updateUsernames", usernames[roomId]);
@@ -274,19 +280,34 @@ io.on("connect", (socket) => {
 
 	socket.on("updateDualPlayerStats", async (data) => {
 		try {
-			await pool.query(`UPDATE DUAL_PLAYER_SCORES SET GAMES_PLAYED = $1, TIES = $2`, [
-				data.games_played,
-				data.ties,
-			]);
-
 			await pool.query(
-				`UPDATE DUAL_PLAYER_SCORES SET PLAYER1_WINS = $1, PLAYER1_LOSSES = $2 WHERE PLAYER1_USERNAME = $3`,
-				[data.player1_wins || 0, data.player1_losses || 0, data.player1_username || 0]
+				`UPDATE DUAL_PLAYER_SCORES SET GAMES_PLAYED = $1, TIES = $2 WHERE (PLAYER1_USERNAME = $3 AND PLAYER2_USERNAME = $4) OR (PLAYER1_USERNAME = $4 AND PLAYER2_USERNAME = $3)`,
+				[
+					data.games_played || 0,
+					data.ties || 0,
+					data.player1_username,
+					data.player2_username,
+				]
 			);
 
 			await pool.query(
-				`UPDATE DUAL_PLAYER_SCORES SET PLAYER2_WINS = $1, PLAYER2_LOSSES = $2 WHERE PLAYER2_USERNAME = $3`,
-				[data.player2_wins || 0, data.player2_losses || 0, data.player2_username || 0]
+				`UPDATE DUAL_PLAYER_SCORES SET PLAYER1_WINS = $1, PLAYER1_LOSSES = $2 WHERE (PLAYER1_USERNAME = $3 AND PLAYER2_USERNAME = $4) OR (PLAYER1_USERNAME = $4 AND PLAYER2_USERNAME = $3)`,
+				[
+					data.player1_wins || 0,
+					data.player1_losses || 0,
+					data.player1_username,
+					data.player2_username,
+				]
+			);
+
+			await pool.query(
+				`UPDATE DUAL_PLAYER_SCORES SET PLAYER2_WINS = $1, PLAYER2_LOSSES = $2 WHERE (PLAYER1_USERNAME = $3 AND PLAYER2_USERNAME = $4) OR (PLAYER1_USERNAME = $4 AND PLAYER2_USERNAME = $3)`,
+				[
+					data.player2_wins || 0,
+					data.player2_losses || 0,
+					data.player2_username,
+					data.player1_username,
+				]
 			);
 			const response = await pool.query("SELECT * FROM DUAL_PLAYER_SCORES");
 			const userStats = response.rows;

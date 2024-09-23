@@ -43,10 +43,6 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 		}
 	};
 
-	useEffect(() => {
-		console.log(img);
-	}, [img]);
-
 	return (
 		<div className="overlay">
 			<img
