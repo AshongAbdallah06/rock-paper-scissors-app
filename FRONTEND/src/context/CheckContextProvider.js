@@ -219,6 +219,10 @@ const CheckContextProvider = ({ children }) => {
 		} catch (error) {
 			console.error("🚀 ~ getUserStats ~ error:", error);
 
+			setTimeout(() => {
+				alert("Error occurred fetching player data. Try again later.");
+			}, 5000);
+
 			setErrorOccurred("Could not fetch user data.");
 		}
 	};

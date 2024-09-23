@@ -141,7 +141,10 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 					</div>
 				</>
 			) : (
-				<h1 className="stats-container no-display">Sorry...😒 Nothing to display here</h1>
+				<div className="stats-container no-display">
+					<h1>Sorry...😒 Nothing to display here.</h1>
+					<span>Match with another player to view stats.</span>
+				</div>
 			)}
 		</div>
 	);

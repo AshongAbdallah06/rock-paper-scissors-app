@@ -601,6 +601,12 @@ form .room input {
 	grid-template-columns: 1fr;
 	padding: 2rem;
 }
+.no-display span {
+	margin-top: 1rem;
+	font-weight: 200;
+	font-size: 1.1rem;
+	letter-spacing: 0.1rem;
+}
 .stats-container p,
 .bottom p,
 .stats-container .username {
