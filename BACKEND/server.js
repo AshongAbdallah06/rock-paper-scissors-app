@@ -122,7 +122,6 @@ io.on("connect", (socket) => {
 			} else if (username.p1Username === null && username.p2Username !== null) {
 				io.emit("active-rooms", gameRooms);
 			} else if (username.p1Username && username.p2Username) {
-				console.log("No rooms left: ", gameRooms);
 				io.emit("active-rooms");
 			}
 		});
