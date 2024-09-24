@@ -144,7 +144,7 @@ const CheckContextProvider = ({ children }) => {
 		setResult(!isOnePlayer && gameState.result);
 
 		!isOnePlayer && checkPlayersMoves(gameState, setPlayerMoveImage, setComputerMoveImage);
-	}, [isOnePlayer, gameState.p1 && gameState.p2]);
+	}, [isOnePlayer, gameState.p1, gameState.p2]);
 
 	const moveOnclick = (move) => {
 		if (!isOnePlayer) {
@@ -188,10 +188,6 @@ const CheckContextProvider = ({ children }) => {
 			setErrorOccurred("Could not fetch user data.");
 		}
 	};
-
-	useEffect(() => {
-		localStorage.setItem("selectedUser", JSON.stringify(selectedUserStats));
-	}, [selectedUserStats]);
 
 	useEffect(() => {
 		if (
@@ -290,7 +286,7 @@ const CheckContextProvider = ({ children }) => {
 	}, [gameState]);
 
 	const makeMove = (move) => {
-		socket.emit("move", move);
+		socket.emit("move", { username: user?.username, move });
 	};
 
 	const clearMoves = () => {

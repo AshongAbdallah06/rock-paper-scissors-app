@@ -10,6 +10,10 @@ const Profile = () => {
 	const [renderRoutes, setRenderRoutes] = useState(false);
 
 	useEffect(() => {
+		localStorage.setItem("selectedUser", JSON.stringify(selectedUserStats));
+	}, [selectedUserStats]);
+
+	useEffect(() => {
 		setRenderRoutes(false);
 		const timer = setTimeout(() => {
 			setRenderRoutes(true);
