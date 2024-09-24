@@ -115,6 +115,19 @@ io.on("connect", (socket) => {
 		}
 	});
 
+	socket.on("active-rooms", (room) => {
+		Object.values(usernames).forEach((username) => {
+			if (username.p1Username !== null && username.p2Username === null) {
+				io.emit("active-rooms", gameRooms);
+			} else if (username.p1Username === null && username.p2Username !== null) {
+				io.emit("active-rooms", gameRooms);
+			} else if (username.p1Username && username.p2Username) {
+				console.log("No rooms left: ", gameRooms);
+				io.emit("active-rooms");
+			}
+		});
+	});
+
 	socket.on("move-made", (username) => {
 		socket.broadcast.to(roomId).emit("move-made", { msg: username + " has made a move" });
 	});
