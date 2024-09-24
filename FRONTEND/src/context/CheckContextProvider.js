@@ -163,8 +163,8 @@ const CheckContextProvider = ({ children }) => {
 	const getUserStats = async (username) => {
 		try {
 			const res = await Axios.get(
-				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${username}`
-				`http://localhost:4001/api/user/stats/${username}`
+				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${username}`
+				// `http://localhost:4001/api/user/stats/${username}`
 			);
 			const data = res?.data[0] || {};
 
@@ -206,8 +206,8 @@ const CheckContextProvider = ({ children }) => {
 	const getPlayerStats = async (p1Username, p2Username) => {
 		try {
 			const res = await Axios.post(
-				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats`,
-				`http://localhost:4001/api/user/stats`,
+				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats`,
+				// `http://localhost:4001/api/user/stats`,
 				{
 					p1Username,
 					p2Username,
@@ -300,8 +300,8 @@ const CheckContextProvider = ({ children }) => {
 	const authorize = async () => {
 		try {
 			const res = await Axios.get(
-				// "https://rock-paper-scissors-app-iybf.onrender.com/api/user",
-				"http://localhost:4001/api/user",
+				"https://rock-paper-scissors-app-iybf.onrender.com/api/user",
+				// "http://localhost:4001/api/user",
 				{
 					headers: { Authorization: `Bearer ${user.token}` },
 				}
