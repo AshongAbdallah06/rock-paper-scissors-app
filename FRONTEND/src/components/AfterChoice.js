@@ -13,25 +13,11 @@ const AfterChoice = ({ bonusState }) => {
 		isOnePlayer,
 		gameState,
 		clearMoves,
+		p1Username,
+		p2Username,
 	} = useCheckContext();
 
 	// Get usernames
-	const usernames = JSON.parse(localStorage.getItem("usernames"));
-	const [p1Username, setP1Username] = useState("");
-	const [p2Username, setP2Username] = useState("");
-
-	useEffect(() => {
-		if (usernames) {
-			if (!usernames) {
-				alert("There are no usernames assigned for both users");
-
-				return;
-			}
-
-			setP1Username(usernames?.p1Username);
-			setP2Username(usernames?.p2Username);
-		}
-	}, []);
 
 	const user = JSON.parse(localStorage.getItem("user"));
 
