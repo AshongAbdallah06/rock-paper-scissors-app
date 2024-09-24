@@ -90,10 +90,7 @@ const Home = () => {
 
 					<ScoreBoard />
 
-					<GameBoard
-						bonusState={bonusState}
-						setBonusState={setBonusState}
-					/>
+					<GameBoard bonusState={bonusState} />
 
 					{!bonusState ? <Dialog /> : <BonusDialog />}
 					{chatIsShowing ? <Chat setChatIsShowing={setChatIsShowing} /> : ""}

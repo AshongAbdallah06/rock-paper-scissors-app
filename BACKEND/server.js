@@ -144,10 +144,12 @@ io.on("connect", (socket) => {
 			usernames[roomId]?.p1Username,
 			usernames[roomId]?.p2Username,
 		]);
-		if (response.rows[0].player1_username === username) {
-			game[roomId].p1 = move;
-		} else if (response.rows[0].player2_username === username) {
-			game[roomId].p2 = move;
+		if (response.rowCount === 1) {
+			if (response.rows[0]?.player1_username === username) {
+				game[roomId].p1 = move;
+			} else if (response?.rows[0].player2_username === username) {
+				game[roomId].p2 = move;
+			}
 		}
 
 		if (game[roomId].p1 && game[roomId].p2) {
