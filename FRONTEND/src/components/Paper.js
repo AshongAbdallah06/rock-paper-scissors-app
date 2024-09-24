@@ -4,12 +4,8 @@ import useCheckContext from "../hooks/useCheckContext";
 import useFunctions from "../hooks/useFunctions";
 
 const Paper = ({ bonusState }) => {
-	const { moveOnclick, socket, listenToMove } = useCheckContext();
+	const { moveOnclick, socket } = useCheckContext();
 	const { sendMoveAck } = useFunctions();
-
-	useEffect(() => {
-		listenToMove();
-	}, [socket]);
 
 	return (
 		<div
