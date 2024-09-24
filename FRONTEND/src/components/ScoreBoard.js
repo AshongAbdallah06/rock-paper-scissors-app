@@ -3,55 +3,28 @@ import logo from "../images/logo.svg";
 import useCheckContext from "../hooks/useCheckContext";
 
 const ScoreBoard = () => {
-	const {
-		roomID,
-		isOnePlayer,
-		socket,
-		getUserStats,
-		getPlayerStats,
-		currentUserStats,
-		dualPlayerStats,
-		result,
-	} = useCheckContext();
+	const { isOnePlayer, getUserStats, currentUserStats, dualPlayerStats, p1Username, p2Username } =
+		useCheckContext();
 
 	const user = JSON.parse(localStorage.getItem("user"));
-	const usernames = JSON.parse(localStorage.getItem("usernames")) || {};
-	const [p1Username, setP1Username] = useState("");
-	const [p2Username, setP2Username] = useState("");
+	const [showPlayer1Score, setShowPlayer1Score] = useState(null);
+	const [showPlayer2Score, setShowPlayer2Score] = useState(null);
 
 	useEffect(() => {
-		if (!isOnePlayer && user?.username) {
-			socket.emit("username", user.username);
+		if (p1Username && p2Username) {
+			setShowPlayer1Score(true);
+			setShowPlayer2Score(true);
+		} else {
+			setShowPlayer2Score(false);
+			setShowPlayer1Score(false);
 		}
+	}, [p1Username, p2Username]);
 
-		// Handle username updates
-		socket.on("updateUsernames", ({ p1Username, p2Username }) => {
-			if (p1Username && p2Username && p1Username !== p2Username) {
-				setP1Username(p1Username);
-				setP2Username(p2Username);
-
-				getPlayerStats(p1Username, p2Username);
-			}
-
-			// Save to localStorage only if they are unique
-			if (p1Username !== p2Username) {
-				localStorage.setItem("usernames", JSON.stringify({ p1Username, p2Username }));
-			}
-		});
-
+	useEffect(() => {
 		if (isOnePlayer) {
 			getUserStats(user?.username);
-		} else {
-			if (usernames?.p1Username && usernames?.p2Username) {
-				getPlayerStats(usernames.p1Username, usernames.p2Username);
-			}
 		}
-
-		// Cleanup on unmount
-		return () => {
-			socket.off("updateUsernames");
-		};
-	}, [isOnePlayer, user?.username, socket]);
+	}, [isOnePlayer, user?.username]);
 
 	return (
 		<>
@@ -65,42 +38,54 @@ const ScoreBoard = () => {
 				{isOnePlayer ? (
 					<div className="score">
 						<p>score</p>
-						<p>{currentUserStats.wins}</p>
+						<p>{currentUserStats?.wins || 0}</p>
 					</div>
 				) : (
 					<div className="p2">
 						<div className="score">
 							<p>
-								{usernames?.p1Username === user.username
-									? "You"
-									: usernames?.p1Username}
+								{p1Username === user?.username ? "You" : p1Username}
 
-								{usernames?.p1Username === null && "Unavailable"}
+								{p1Username === null && (
+									<span style={{ color: "gray" }}>Unavailable</span>
+								)}
 							</p>
 							<p>
-								{usernames?.p1Username !== null &&
-								usernames?.p2Username !== null &&
-								dualPlayerStats?.player1_username === usernames?.p1Username
-									? dualPlayerStats?.player1_wins
-									: dualPlayerStats?.player2_wins}
+								{showPlayer1Score ? (
+									p1Username !== null &&
+									p2Username !== null &&
+									dualPlayerStats?.player1_username === p1Username ? (
+										dualPlayerStats?.player1_wins
+									) : (
+										dualPlayerStats?.player2_wins
+									)
+								) : (
+									<span style={{ color: "gray" }}>0</span>
+								)}
 							</p>
 						</div>
 
 						<div className="score">
 							<p>
-								{usernames?.p2Username === user.username
-									? "You"
-									: usernames?.p2Username}
+								{p2Username === user?.username ? "You" : p2Username}
 
-								{usernames?.p2Username === null && "Unavailable"}
+								{p2Username === null && (
+									<span style={{ color: "gray" }}>Unavailable</span>
+								)}
 								{/* Create a warning left sign */}
 							</p>
 							<p>
-								{usernames?.p2Username !== null &&
-								usernames?.p1Username !== null &&
-								dualPlayerStats?.player2_username === usernames?.p2Username
-									? dualPlayerStats?.player2_wins
-									: dualPlayerStats?.player1_wins}
+								{showPlayer2Score ? (
+									p2Username !== null &&
+									p1Username !== null &&
+									dualPlayerStats?.player2_username === p2Username ? (
+										dualPlayerStats?.player2_wins
+									) : (
+										dualPlayerStats?.player1_wins
+									)
+								) : (
+									<span style={{ color: "gray" }}>0</span>
+								)}
 							</p>
 						</div>
 					</div>

@@ -58,6 +58,7 @@ const Footer = ({
 			}, 2000);
 		} catch (error) {
 			console.log("🚀 ~ copyInviteLink ~ error:", error);
+			alert("Error copying link. Check the console to see what occurred.");
 		}
 	};
 

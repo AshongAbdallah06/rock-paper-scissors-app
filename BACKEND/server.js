@@ -6,6 +6,7 @@ const userRoutes = require("./routes/userRoutes");
 const gameRoutes = require("./routes/gameRoutes");
 const socketIo = require("socket.io");
 const pool = require("./db");
+const { v4: uuid } = require("uuid");
 
 const app = express();
 const server = http.createServer(app);
@@ -46,7 +47,7 @@ app.get("/", (req, res) => {
 io.on("connect", (socket) => {
 	let roomId;
 
-	socket.on("join_room", (id) => {
+	socket.on("join-room", async ({ id, username }) => {
 		roomId = id;
 		socket.join(roomId);
 
@@ -54,8 +55,12 @@ io.on("connect", (socket) => {
 			gameRooms[roomId] = { p1_ID: null, p2_ID: null };
 		}
 
-		if (!usernames[roomId]) {
-			usernames[roomId] = { p1Username: null, p2Username: null };
+		if (!game[roomId]) {
+			game[roomId] = { p1: null, p2: null, result: null };
+		}
+
+		if (!gameRooms[roomId]) {
+			gameRooms[roomId] = { p1_ID: null, p2_ID: null };
 		}
 
 		if (!gameRooms[roomId].p1_ID) {
@@ -64,10 +69,37 @@ io.on("connect", (socket) => {
 			gameRooms[roomId].p2_ID = socket.id;
 		}
 
-		if (!game[roomId]) {
-			game[roomId] = { p1: null, p2: null, result: null };
+		if (!usernames[roomId]) {
+			usernames[roomId] = { p1Username: null, p2Username: null };
 		}
-		console.log("Joined: ", socket.id);
+
+		if (!usernames[roomId]?.p1Username) {
+			usernames[roomId].p1Username = username;
+		} else if (!usernames[roomId].p2Username && username !== usernames[roomId].p1Username) {
+			usernames[roomId].p2Username = username;
+
+			try {
+				const response = await pool.query(
+					"SELECT * FROM DUAL_PLAYER_SCORES WHERE (PLAYER1_USERNAME = $1 AND PLAYER2_USERNAME = $2) OR (PLAYER1_USERNAME = $2 AND PLAYER2_USERNAME = $1)",
+					[usernames[roomId]?.p1Username, usernames[roomId]?.p2Username]
+				);
+
+				if (response.rowCount === 0) {
+					const randomId = uuid();
+					await pool.query(
+						`INSERT INTO DUAL_PLAYER_SCORES VALUES($1,$2,0,0,$3,0,0,0,0)`,
+						[randomId, usernames[roomId]?.p1Username, usernames[roomId]?.p2Username]
+					);
+
+					io.to(roomId).emit("getDualPlayerStats", response.rows);
+				}
+			} catch (error) {
+				console.log("🚀 ~ getUserStats ~ error:", error);
+				io.to(roomId).emit("getDualPlayerStats");
+				return;
+			}
+		}
+		io.to(roomId).emit("updateUsernames", usernames[roomId]);
 	});
 
 	socket.on("move-made", (username) => {
@@ -85,43 +117,11 @@ io.on("connect", (socket) => {
 		// Clean up the room if it's empty
 		if (!usernames[roomId]?.p1Username && !usernames[roomId]?.p2Username) {
 			delete usernames[roomId];
-
-			io.to(roomId).emit("deleteUsernames");
 		}
 
 		// Emit the updated usernames list to the room
 		io.to(roomId).emit("updateUsernames", usernames[roomId]);
 		io.to(roomId).emit("leaveRoom", { msg: username + " has left the room" });
-	});
-
-	socket.on("username", async (username) => {
-		if (!usernames[roomId]?.p1Username) {
-			usernames[roomId].p1Username = username;
-		} else if (!usernames[roomId].p2Username && username !== usernames[roomId].p1Username) {
-			usernames[roomId].p2Username = username;
-		} else if (usernames[roomId].p1Username && usernames[roomId].p2Username) {
-			try {
-				const response = await pool.query(
-					"SELECT * FROM DUAL_PLAYER_SCORES WHERE (PLAYER1_USERNAME = $1 AND PLAYER2_USERNAME = $2) OR (PLAYER1_USERNAME = $2 AND PLAYER2_USERNAME = $1)",
-					[usernames[roomId]?.p1Username, usernames[roomId]?.p2Username]
-				);
-
-				if (response.rowCount < 1) {
-					await pool.query(
-						`INSERT INTO DUAL_PLAYER_SCORES VALUES('3',$1,0,0,$2,0,0,0,0,'01-01-2024')`,
-						[usernames[roomId]?.p1Username, usernames[roomId]?.p2Username]
-					);
-
-					io.to(roomId).emit("getDualPlayerStats", response.rows);
-				}
-			} catch (error) {
-				console.log("🚀 ~ getUserStats ~ error:", error);
-
-				return;
-			}
-		}
-
-		io.to(roomId).emit("updateUsernames", usernames[roomId]);
 	});
 
 	socket.on("move", (move) => {
@@ -339,7 +339,6 @@ io.on("connect", (socket) => {
 				delete gameRooms[room];
 				delete usernames[room];
 				delete game[room];
-				io.emit("deleteUsernames");
 			}
 		}
 	});

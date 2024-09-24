@@ -53,18 +53,12 @@ const Home = () => {
 			joinRoom(socket, user.username, setLeftRoom);
 		}
 
-		if (!isOnePlayer) {
-			socket.on("deleteUsernames", () => {
-				localStorage.removeItem("usernames");
-			});
-		}
-
 		if (!localStorage.getItem("bonus")) {
 			localStorage.setItem("bonus", JSON.stringify(false));
 		}
 
 		return () => {
-			socket.off("join_room");
+			socket.off("join-room");
 			clearTimeout(timer);
 		};
 	}, []);

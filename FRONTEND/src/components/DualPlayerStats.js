@@ -5,14 +5,13 @@ import useCheckContext from "../hooks/useCheckContext";
 import closeIcon from "../images/icon-close nav.svg";
 
 const DualPlayerStats = ({ setShowDualPlayerStats }) => {
-	const { getPlayerStats, dualPlayerStats } = useCheckContext();
+	const { getPlayerStats, dualPlayerStats, p1Username, p2Username } = useCheckContext();
 
-	const usernames = JSON.parse(localStorage.getItem("usernames"));
 	const user = JSON.parse(localStorage.getItem("user"));
 	const [twoUsersDetected, setTwoUsersDetected] = useState(null);
 	useEffect(() => {
-		if (usernames?.p1Username && usernames?.p2Username) {
-			getPlayerStats(usernames?.p1Username, usernames?.p2Username);
+		if (p1Username && p2Username) {
+			getPlayerStats(p1Username, p2Username);
 			setTwoUsersDetected(true);
 		} else {
 			setTwoUsersDetected(false);
@@ -142,7 +141,10 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 					</div>
 				</>
 			) : (
-				<h1 className="stats-container no-display">Sorry...😒 Nothing to display here</h1>
+				<div className="stats-container no-display">
+					<h1>Sorry...😒 Nothing to display here.</h1>
+					<span>Match with another player to view stats.</span>
+				</div>
 			)}
 		</div>
 	);
