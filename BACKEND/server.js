@@ -46,6 +46,7 @@ app.get("/", (req, res) => {
 
 io.on("connect", (socket) => {
 	let roomId;
+	const sqlQuery = `SELECT * FROM DUAL_PLAYER_SCORES WHERE (PLAYER1_USERNAME = $1 AND PLAYER2_USERNAME = $2) OR (PLAYER1_USERNAME = $2 AND PLAYER2_USERNAME = $1)`;
 
 	socket.on("join-room", async ({ id, username }) => {
 		roomId = id;
@@ -79,10 +80,10 @@ io.on("connect", (socket) => {
 			usernames[roomId].p2Username = username;
 
 			try {
-				const response = await pool.query(
-					"SELECT * FROM DUAL_PLAYER_SCORES WHERE (PLAYER1_USERNAME = $1 AND PLAYER2_USERNAME = $2) OR (PLAYER1_USERNAME = $2 AND PLAYER2_USERNAME = $1)",
-					[usernames[roomId]?.p1Username, usernames[roomId]?.p2Username]
-				);
+				const response = await pool.query(sqlQuery, [
+					usernames[roomId]?.p1Username,
+					usernames[roomId]?.p2Username,
+				]);
 
 				if (response.rowCount === 0) {
 					const randomId = uuid();
@@ -99,7 +100,31 @@ io.on("connect", (socket) => {
 				return;
 			}
 		}
-		io.to(roomId).emit("updateUsernames", usernames[roomId]);
+
+		const response = await pool.query(sqlQuery, [
+			usernames[roomId]?.p1Username,
+			usernames[roomId]?.p2Username,
+		]);
+		if (response.rowCount === 1) {
+			io.to(roomId).emit("updateUsernames", {
+				p1Username: response.rows[0].player1_username,
+				p2Username: response.rows[0].player2_username,
+			});
+		} else {
+			io.to(roomId).emit("updateUsernames", { p1Username: username });
+		}
+	});
+
+	socket.on("active-rooms", (room) => {
+		Object.values(usernames).forEach((username) => {
+			if (username.p1Username !== null && username.p2Username === null) {
+				io.emit("active-rooms", gameRooms);
+			} else if (username.p1Username === null && username.p2Username !== null) {
+				io.emit("active-rooms", gameRooms);
+			} else if (username.p1Username && username.p2Username) {
+				io.emit("active-rooms");
+			}
+		});
 	});
 
 	socket.on("move-made", (username) => {
@@ -124,13 +149,19 @@ io.on("connect", (socket) => {
 		io.to(roomId).emit("leaveRoom", { msg: username + " has left the room" });
 	});
 
-	socket.on("move", (move) => {
+	socket.on("move", async ({ username, move }) => {
 		if (!roomId || !game[roomId]) return;
 
-		if (!game[roomId].p1) {
-			game[roomId].p1 = move;
-		} else if (!game[roomId].p2) {
-			game[roomId].p2 = move;
+		const response = await pool.query(sqlQuery, [
+			usernames[roomId]?.p1Username,
+			usernames[roomId]?.p2Username,
+		]);
+		if (response.rowCount === 1) {
+			if (response.rows[0]?.player1_username === username) {
+				game[roomId].p1 = move;
+			} else if (response?.rows[0].player2_username === username) {
+				game[roomId].p2 = move;
+			}
 		}
 
 		if (game[roomId].p1 && game[roomId].p2) {

@@ -113,3 +113,26 @@
 	margin-left: 0.5rem;
 	font-size: 0.8rem;
 }
+
+.room-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: white;
+	background-color: hsl(237, 49%, 15%);
+	border-radius: 3px;
+	width: 15rem;
+	flex-direction: column;
+}
+.room-container div {
+	padding: 1rem;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-bottom: 1px solid #464646;
+}
+.room-container button {
+	padding: 0.4rem 1rem;
+	cursor: pointer;
+}

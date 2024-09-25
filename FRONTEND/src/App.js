@@ -28,6 +28,7 @@ import Help from "./pages/Help";
 import Axios from "axios";
 import ErrorOccurred from "./components/ErrorOccurred";
 import Contact from "./pages/Contact";
+import AvailableRooms from "./components/AvailableRooms";
 
 export const GameContext = createContext();
 
@@ -167,6 +168,17 @@ function App() {
 								<Logo />
 
 								<Room />
+							</PrivateRoute>
+						}
+					/>
+
+					<Route
+						path="/available-rooms"
+						element={
+							<PrivateRoute userExists={userExists}>
+								<Logo />
+
+								<AvailableRooms />
 							</PrivateRoute>
 						}
 					/>

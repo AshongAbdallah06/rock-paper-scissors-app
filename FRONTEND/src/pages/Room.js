@@ -4,19 +4,9 @@ import useCheckContext from "../hooks/useCheckContext";
 import useFunctions from "../hooks/useFunctions";
 
 const PlayerSelection = () => {
-	const {
-		roomID,
-		setRoomID,
-		setRoomIsSelected,
-		isOnePlayer,
-		setIsOnePlayer,
-		setLeftRoom,
-		socket,
-	} = useCheckContext();
+	const { roomID, setRoomID, setRoomIsSelected, setIsOnePlayer, setLeftRoom, socket } =
+		useCheckContext();
 	const { joinRoom } = useFunctions();
-	useEffect(() => {
-		localStorage.setItem("player-mode", JSON.stringify(isOnePlayer ? "single" : "dual"));
-	}, [isOnePlayer]);
 
 	/**todo: create remember id functionality 
 	 * const [rememberID, setRememberID] = useState(false);
@@ -35,7 +25,9 @@ const PlayerSelection = () => {
 		}
 	}, [roomID]);*/
 
-	// const savedID = JSON.parse(localStorage.getItem("room-id"));
+	useEffect(() => {
+		socket.emit("active-rooms");
+	}, []);
 	return (
 		<form
 			onSubmit={(e) => {
@@ -52,6 +44,7 @@ const PlayerSelection = () => {
 					onChange={(e) => setRoomID(e.target.value)}
 					className="room-input"
 					maxLength={20}
+					defaultValue={roomID}
 				/>
 			</div>
 
@@ -63,6 +56,7 @@ const PlayerSelection = () => {
 							joinRoom(socket, roomID, setLeftRoom);
 							setRoomIsSelected(true);
 							setIsOnePlayer(false);
+							socket.emit("active-rooms");
 						} else if (roomID === "") {
 							alert("Please enter an ID for the room");
 						}
@@ -96,6 +90,15 @@ const PlayerSelection = () => {
 					}}
 				>
 					Change Mode
+				</Link>
+				<Link
+					className="change-mode"
+					onClick={() => {
+						socket.emit("active-rooms");
+					}}
+					to="/available-rooms"
+				>
+					See Active Rooms
 				</Link>
 			</div>
 		</form>

@@ -71,7 +71,11 @@ const CheckContextProvider = ({ children }) => {
 	const [scores, setScores] = useState(null);
 	const [errorOccurred, setErrorOccurred] = useState(null);
 
-	const listenToMove = () => {
+	useEffect(() => {
+		socket.on("move", (newGameState) => {
+			setGameState(newGameState);
+		});
+
 		socket.on("move-made", (message) => {
 			setMoveAck(message);
 			setTimeout(() => {
@@ -79,21 +83,10 @@ const CheckContextProvider = ({ children }) => {
 			}, 3000);
 		});
 
-		return () => {
-			socket.off("move-made");
-		};
-	};
-
-	useEffect(() => {
-		listenToMove();
 		socket.emit("getDualPlayerStats");
 
 		socket.on("getDualPlayerStats", (data) => {
 			setDualPlayerStats(data[0]);
-		});
-
-		socket.on("move", (newGameState) => {
-			setGameState(newGameState);
 		});
 
 		socket.on("getDualPlayerStats", (data) => {
@@ -121,6 +114,8 @@ const CheckContextProvider = ({ children }) => {
 			socket.off("move");
 			socket.off("getDualPlayerStats");
 			socket.off("updateUsernames");
+
+			socket.off("move-made");
 		};
 	}, [socket]);
 
@@ -144,7 +139,11 @@ const CheckContextProvider = ({ children }) => {
 		setResult(!isOnePlayer && gameState.result);
 
 		!isOnePlayer && checkPlayersMoves(gameState, setPlayerMoveImage, setComputerMoveImage);
-	}, [isOnePlayer, gameState.p1 && gameState.p2]);
+	}, [isOnePlayer, gameState.p1, gameState.p2]);
+
+	const makeMove = (move) => {
+		socket.emit("move", { username: user?.username, move });
+	};
 
 	const moveOnclick = (move) => {
 		if (!isOnePlayer) {
@@ -153,11 +152,11 @@ const CheckContextProvider = ({ children }) => {
 			} else if (!computerMove) {
 				setComputerMove(move);
 			}
+			makeMove(move);
+		} else {
+			setPlayerMove(move);
+			generateComputerMove(setComputerMove);
 		}
-		setPlayerMove(move);
-		makeMove(move);
-		isOnePlayer && setPlayerMove(move);
-		isOnePlayer && generateComputerMove(setComputerMove);
 	};
 
 	const getUserStats = async (username) => {
@@ -188,10 +187,6 @@ const CheckContextProvider = ({ children }) => {
 			setErrorOccurred("Could not fetch user data.");
 		}
 	};
-
-	useEffect(() => {
-		localStorage.setItem("selectedUser", JSON.stringify(selectedUserStats));
-	}, [selectedUserStats]);
 
 	useEffect(() => {
 		if (
@@ -289,10 +284,6 @@ const CheckContextProvider = ({ children }) => {
 		};
 	}, [gameState]);
 
-	const makeMove = (move) => {
-		socket.emit("move", move);
-	};
-
 	const clearMoves = () => {
 		socket.emit("clearMoves");
 	};
@@ -301,7 +292,7 @@ const CheckContextProvider = ({ children }) => {
 		try {
 			const res = await Axios.get(
 				"https://rock-paper-scissors-app-iybf.onrender.com/api/user",
-				// "http://localhost:4001/api/user",
+				"http://localhost:4001/api/user",
 				{
 					headers: { Authorization: `Bearer ${user.token}` },
 				}
@@ -352,7 +343,6 @@ const CheckContextProvider = ({ children }) => {
 				moveOnclick,
 				moveAck,
 				setMoveAck,
-				listenToMove,
 				leftRoom,
 				setLeftRoom,
 				currentUserStats,

@@ -10,7 +10,7 @@ const Nav = ({ setSidebarIsShowing }) => {
 		socket.on("leaveRoom", ({ msg }) => {
 			setLeftRoom(msg);
 		});
-	}, [roomID]);
+	}, [roomID, socket]);
 
 	return (
 		<nav className="nav">
