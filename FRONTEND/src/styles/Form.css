@@ -56,7 +56,7 @@ form h1 {
 	font-size: 1.3rem;
 }
 form .room,
-form div {
+form .group {
 	display: flex;
 	flex-direction: column;
 	margin: 1rem 0;

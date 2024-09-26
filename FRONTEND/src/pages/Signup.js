@@ -4,6 +4,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Axios from "axios";
+import "../styles/Form.css";
 
 const Login = () => {
 	const Schema = yup.object().shape({
@@ -84,7 +85,7 @@ const Login = () => {
 			</Link>
 			<h1>Signup</h1>
 
-			<div>
+			<div className="group">
 				<label>Email</label>
 				<input
 					type="text"
@@ -93,7 +94,7 @@ const Login = () => {
 				<p>{errors?.email?.message || error?.email}</p>
 			</div>
 
-			<div>
+			<div className="group">
 				<label>Username</label>
 				<input
 					type="text"
@@ -102,7 +103,7 @@ const Login = () => {
 				<p>{errors?.username?.message || error?.username}</p>
 			</div>
 
-			<div>
+			<div className="group">
 				<label>Password</label>
 				<input
 					type="password"
@@ -111,7 +112,7 @@ const Login = () => {
 				<p>{errors?.password?.message}</p>
 			</div>
 
-			<div>
+			<div className="group">
 				<label>Confirm Password</label>
 				<input
 					type="password"
