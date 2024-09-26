@@ -585,18 +585,6 @@ form .room input {
 	top: 1rem;
 }
 
-.stats-container {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	justify-content: center;
-	align-items: center;
-	padding: 1rem 2rem;
-	border-radius: 3px;
-	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
-	background-color: hsl(237, 49%, 15%);
-	text-align: center;
-	color: white;
-}
 .no-display {
 	grid-template-columns: 1fr;
 	padding: 2rem;
@@ -606,48 +594,4 @@ form .room input {
 	font-weight: 200;
 	font-size: 1.1rem;
 	letter-spacing: 0.1rem;
-}
-.stats-container p,
-.bottom p,
-.stats-container .username {
-	color: white;
-	font-weight: bold;
-}
-.stats-container .username {
-	font-size: 2rem;
-}
-.bottom {
-	display: flex;
-	/* border: 1px solid #e1e1e1; */
-	justify-content: center;
-	align-items: center;
-	margin: 0 auto;
-	background-color: hsl(237, 49%, 15%);
-	padding: 1rem 2rem;
-	border-radius: 3px;
-	margin-top: 1rem;
-	/* border-top: 1px solid #e1e1e1; */
-	box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.2);
-}
-.player .profile-icon {
-	height: 5rem;
-	width: 5rem;
-}
-.stats-container .player {
-	padding: 1rem;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	text-align: center;
-}
-
-.stats-container .player:first-child {
-	border-right: 1px solid #c2c2c2;
-}
-
-.player .stats,
-.bottom .stats {
-	grid-template-columns: 1fr 1fr;
-	width: 100%;
 }

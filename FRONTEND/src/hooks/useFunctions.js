@@ -4,6 +4,7 @@ import rockIcon from "../images/icon-rock.svg";
 import lizardIcon from "../images/icon-lizard.svg";
 import spockIcon from "../images/icon-spock.svg";
 import { useState } from "react";
+import Axios from "axios";
 
 const useFunctions = () => {
 	const user = JSON.parse(localStorage.getItem("user"));
@@ -272,6 +273,48 @@ const useFunctions = () => {
 		window.location.href = "/login";
 	};
 
+	// For all stats of the current user in dual player mode
+	const [allGamesPlayed, setAllGamesPlayed] = useState(false);
+	const [allWins, setAllWins] = useState(false);
+	const [allLosses, setAllLosses] = useState(false);
+	const [allTies, setAllTies] = useState(false);
+
+	let totalGamesPlayed = 0;
+	let totalWins = 0;
+	let totalLosses = 0;
+	let totalTies = 0;
+
+	const getAllDualPlayerStats = async (username) => {
+		try {
+			const response = await Axios.get(
+				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/dual-player/${user?.username}`
+				`http://localhost:4001/api/user/stats/dual-player/${username}`
+			);
+
+			const data = response.data;
+
+			data.forEach((stat) => {
+				if (stat.player1_username === user?.username) {
+					totalWins += stat.player1_wins;
+					totalLosses += stat.player1_losses;
+				} else if (stat.player2_username === user?.username) {
+					totalWins += stat.player2_wins;
+					totalLosses += stat.player2_losses;
+				}
+				totalGamesPlayed += stat.games_played;
+				totalTies += stat.ties;
+
+				setAllGamesPlayed(totalGamesPlayed ? totalGamesPlayed : 0);
+				setAllWins(totalWins ? totalWins : 0);
+				setAllLosses(totalLosses ? totalLosses : 0);
+				setAllTies(totalTies ? totalTies : 0);
+			});
+			console.log(data);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	return {
 		generateComputerMove,
 		checkPlayersMoves,
@@ -285,6 +328,11 @@ const useFunctions = () => {
 		leaveRoom,
 		getAllScores,
 		logout,
+		allGamesPlayed,
+		allWins,
+		allLosses,
+		allTies,
+		getAllDualPlayerStats,
 	};
 };
 

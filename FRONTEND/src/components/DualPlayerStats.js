@@ -53,92 +53,95 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 
 			{twoUsersDetected ? (
 				<>
-					<div className="stats-container">
-						<div className="player">
-							<div className="profile">
-								<img
-									src={img1 || profileIcon}
-									className="profile-icon"
-									alt="profile-icon"
-								/>
-								<p className="username">
-									{(dualPlayerStats?.player1_username === user?.username &&
-										"You") ||
-										dualPlayerStats?.player1_username}
-								</p>
-							</div>
-
-							<div className="stats">
-								<div className="card">
-									<p>Wins</p>
-									<p className="number">{dualPlayerStats?.player1_wins || 0}</p>
-								</div>
-								<div className="card">
-									<p>Losses</p>
-									<p className="number">{dualPlayerStats?.player1_losses || 0}</p>
-								</div>
-							</div>
-
+					<div className="profile-container two-player">
+						<div className="top">
 							<div>
-								<input
-									type="file"
-									onChange={handleFileChange1}
-								/>
-							</div>
-						</div>
-
-						<div className="player">
-							<div className="profile">
-								<img
-									src={img || profileIcon}
-									className="profile-icon"
-									alt="profile-icon"
-								/>
-								<p className="username">
-									{(dualPlayerStats?.player2_username === user?.username &&
-										"You") ||
-										dualPlayerStats?.player2_username}
-								</p>
-							</div>
-
-							<div className="stats">
-								<div className="card">
-									<p>Wins</p>
-									<p className="number">{dualPlayerStats?.player2_wins || 0}</p>
-								</div>
-								<div className="card">
-									<p>Losses</p>
-									<p className="number">{dualPlayerStats?.player2_losses || 0}</p>
-								</div>
-							</div>
-
-							<div>
-								<input
-									type="file"
-									onChange={handleFileChange}
-								/>
-								{/* {img && (
+								<div className="profile-header">
 									<img
-										src={img}
-										style={{ width: "10rem", height: "10rem" }}
-										alt="Uploaded"
+										src={img || profileIcon}
+										alt="Profile"
+										className="profile-pic"
 									/>
-								)} */}
+									<h1 className="profile-name">
+										{(dualPlayerStats?.player1_username === user?.username &&
+											"You") ||
+											dualPlayerStats?.player1_username}
+										, <span className="age">39</span>
+									</h1>
+									<p className="profile-location">
+										{user?.location || "From Earth"}
+									</p>
+								</div>
+
+								<div className="profile-stats two-player">
+									<div>
+										<div className="stat-item two-player">
+											<div>
+												<h3>{dualPlayerStats?.player1_wins || 0}</h3>
+												<p>Wins</p>
+											</div>
+											<div>
+												<h3>{dualPlayerStats?.player1_losses || 0}</h3>
+												<p>Losses</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div className="divider"></div>
+
+							<div>
+								<div className="profile-header">
+									<img
+										src={img || profileIcon}
+										alt="Profile"
+										className="profile-pic"
+									/>
+									<h1 className="profile-name">
+										{(dualPlayerStats?.player2_username === user?.username &&
+											"You") ||
+											dualPlayerStats?.player2_username}
+										, <span className="age">39</span>
+									</h1>
+									<p className="profile-location">
+										{user?.location || "From Earth"}
+									</p>
+								</div>
+
+								<div className="profile-stats two-player">
+									<div>
+										<div className="stat-item two-player">
+											<div>
+												<h3>{dualPlayerStats?.player2_wins || 0}</h3>
+												<p>Wins</p>
+											</div>
+											<div>
+												<h3>{dualPlayerStats?.player2_losses || 0}</h3>
+												<p>Losses</p>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div className="bottom">
+							<div className="stat-item two-player">
+								<div>
+									<h3>{dualPlayerStats?.games_played || 0}</h3>
+									<p>Games Played</p>
+								</div>
+								<div>
+									<h3>{dualPlayerStats?.ties || 0}</h3>
+									<p>Ties</p>
+								</div>
 							</div>
 						</div>
 					</div>
-					<div className="bottom">
-						<div className="stats">
-							<div className="card">
-								<p>Ties</p>
-								<p className="number">{dualPlayerStats?.ties || 0}</p>
-							</div>
-							<div className="card">
-								<p>Games Played</p>
-								<p className="number">{dualPlayerStats?.games_played || 0}</p>
-							</div>
-						</div>
-					</div>
+					{/* <div className="profile-actions">
+						<button className="challenge-btn">Challenge Player</button>
+					</div> */}
 				</>
 			) : (
 				<div className="stats-container no-display">

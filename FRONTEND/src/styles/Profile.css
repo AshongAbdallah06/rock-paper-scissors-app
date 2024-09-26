@@ -55,6 +55,14 @@
 	font-family: "Heebo", sans-serif;
 }
 
+.stat-item.two-player {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 2rem;
+	margin-bottom: 0.5rem;
+}
+
 .stat-item h3 {
 	font-size: 22px;
 	margin: 0;
@@ -179,4 +187,33 @@ h1 {
 
 .save-btn:hover {
 	background-color: #2980b9;
+}
+
+/* Two Player */
+.profile-container.two-player {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 50%;
+	min-width: 30rem;
+	flex-direction: column;
+	/* min-width: 15rem; */
+}
+
+.profile-container.two-player .top {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	border-bottom: 1px solid #e1e1e1;
+	width: 100%;
+}
+
+.profile-container.two-player .bottom {
+	padding-top: 1rem;
+}
+
+.divider {
+	width: 1px;
+	height: 100%;
+	background-color: #e1e1e1;
 }
