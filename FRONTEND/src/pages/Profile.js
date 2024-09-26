@@ -55,7 +55,8 @@ const Profile = () => {
 	const getAllDualPlayerStats = async () => {
 		try {
 			const response = await Axios.get(
-				`http://localhost:4001/api/user/stats/dual-player/${user?.username}`
+				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/dual-player/${user?.username}`
+				// `http://localhost:4001/api/user/stats/dual-player/${user?.username}`
 			);
 
 			const data = response.data;
@@ -71,10 +72,10 @@ const Profile = () => {
 				totalGamesPlayed += stat.games_played;
 				totalTies += stat.ties;
 
-				setAllGamesPlayed(totalGamesPlayed || 0);
-				setAllWins(totalWins || 0);
-				setAllLosses(totalLosses || 0);
-				setAllTies(totalTies || 0);
+				setAllGamesPlayed(totalGamesPlayed ? totalGamesPlayed : 0);
+				setAllWins(totalWins ? totalWins : 0);
+				setAllLosses(totalLosses ? totalLosses : 0);
+				setAllTies(totalTies ? totalTies : 0);
 			});
 
 			setAllDualPlayerStats(data);
@@ -152,19 +153,19 @@ const Profile = () => {
 									<p>Dual</p>
 								</div>
 								<div className="stat-item">
-									<h3>{allGamesPlayed}</h3>
+									<h3>{allGamesPlayed ? allGamesPlayed : 0}</h3>
 									<p>Games Played</p>
 								</div>
 								<div className="stat-item">
-									<h3>{allWins}</h3>
+									<h3>{allWins ? allWins : 0}</h3>
 									<p>Wins</p>
 								</div>
 								<div className="stat-item">
-									<h3>{allLosses}</h3>
+									<h3>{allLosses ? allLosses : 0}</h3>
 									<p>Losses</p>
 								</div>
 								<div className="stat-item">
-									<h3>{allTies}</h3>
+									<h3>{allTies ? allTies : 0}</h3>
 									<p>Ties</p>
 								</div>
 							</div>
