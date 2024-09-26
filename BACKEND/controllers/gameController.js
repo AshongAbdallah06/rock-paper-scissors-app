@@ -49,4 +49,22 @@ const getPlayerStats = async (req, res) => {
 	}
 };
 
-module.exports = { getHome, getUserStats, getPlayerStats };
+const getUserDualPlayerStats = async (req, res) => {
+	const { username } = req.params;
+
+	try {
+		const response = await pool.query(
+			"SELECT * FROM DUAL_PLAYER_SCORES WHERE PLAYER1_USERNAME = $1 OR PLAYER2_USERNAME = $1",
+			[username]
+		);
+		const scores = response.rows;
+
+		res.status(201).json(scores);
+	} catch (error) {
+		console.log("🚀 ~ getUserStats ~ error:", error);
+
+		return;
+	}
+};
+
+module.exports = { getHome, getUserStats, getPlayerStats, getUserDualPlayerStats };
