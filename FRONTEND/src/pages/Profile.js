@@ -16,13 +16,6 @@ const Profile = () => {
 	const [renderRoutes, setRenderRoutes] = useState(false);
 	const { allGamesPlayed, allLosses, allTies, allWins, getAllDualPlayerStats } = useFunctions();
 
-	// For all stats of the current user in dual player mode
-	const [allDualPlayerStats, setAllDualPlayerStats] = useState(false);
-	const [allGamesPlayed, setAllGamesPlayed] = useState(false);
-	const [allWins, setAllWins] = useState(false);
-	const [allLosses, setAllLosses] = useState(false);
-	const [allTies, setAllTies] = useState(false);
-
 	useEffect(() => {
 		setRenderRoutes(false);
 		const timer = setTimeout(() => {
