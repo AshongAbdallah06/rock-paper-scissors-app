@@ -3,10 +3,13 @@ import profileIcon from "../images/person-circle-outline.svg";
 import logo from "../images/logo.svg";
 import { Link } from "react-router-dom";
 import useCheckContext from "../hooks/useCheckContext";
+import singleIcon from "../images/person-outline-black.svg";
+import dualIcon from "../images/people-outline-black.svg";
+import useFunctions from "../hooks/useFunctions";
 
 const Profile = () => {
 	const { selectedUserStats } = useCheckContext();
-
+	const { allGamesPlayed, allLosses, allTies, allWins, getAllDualPlayerStats } = useFunctions();
 	const [renderRoutes, setRenderRoutes] = useState(false);
 
 	useEffect(() => {
@@ -21,7 +24,12 @@ const Profile = () => {
 
 		return () => clearTimeout(timer);
 	}, []);
+	const [img, setImg] = useState(JSON.parse(localStorage.getItem("image")) || "");
+	const user = JSON.parse(localStorage.getItem("user"));
 
+	useEffect(() => {
+		getAllDualPlayerStats(selectedUserStats?.username);
+	}, []);
 	return (
 		<>
 			{renderRoutes && (
@@ -37,34 +45,77 @@ const Profile = () => {
 					</Link>
 
 					<div className="profile-container">
-						<div className="profile">
+						<p onClick={getAllDualPlayerStats}>Refetch</p>
+						<div className="profile-header">
 							<img
-								src={profileIcon}
-								className="profile-icon"
-								alt="profile-icon"
+								src={img || profileIcon}
+								alt="Profile"
+								className="profile-pic"
 							/>
-							<p className="name">
-								{selectedUserStats?.username} ({selectedUserStats?.wins})
+							<h1 className="profile-name">
+								{selectedUserStats?.username}, <span className="age">39</span>
+							</h1>
+							<p className="profile-location">{user?.location || "From Earth"}</p>
+							<p className="profile-bio">
+								{user?.bio ||
+									"I’m a mysterious individual who has yet to fill out my bio. One thing’s for certain: I love to play rock-paper-scissors!"}
 							</p>
 						</div>
 
-						<div className="stats">
-							<div className="card">
+						<div className="profile-stats">
+							<div className="stat-item">
+								<img
+									src={singleIcon}
+									alt=""
+								/>
+								<p>Single</p>
+							</div>
+							<div className="stat-item">
+								<h3>{selectedUserStats?.games_played || 0}</h3>
 								<p>Games Played</p>
-								<p className="number">{selectedUserStats?.games_played}</p>
 							</div>
-							<div className="card">
+							<div className="stat-item">
+								<h3>{selectedUserStats?.wins || 0}</h3>
 								<p>Wins</p>
-								<p className="number">{selectedUserStats?.wins}</p>
 							</div>
-							<div className="card">
-								<p>Ties</p>
-								<p className="number">{selectedUserStats?.ties}</p>
-							</div>
-							<div className="card">
+							<div className="stat-item">
+								<h3>{selectedUserStats?.loses || 0}</h3>
 								<p>Losses</p>
-								<p className="number">{selectedUserStats?.loses}</p>
 							</div>
+							<div className="stat-item">
+								<h3>{selectedUserStats?.ties || 0}</h3>
+								<p>Ties</p>
+							</div>
+						</div>
+
+						<div className="profile-stats">
+							<div className="stat-item">
+								<img
+									src={dualIcon}
+									alt=""
+								/>
+								<p>Dual</p>
+							</div>
+							<div className="stat-item">
+								<h3>{allGamesPlayed ? allGamesPlayed : 0}</h3>
+								<p>Games Played</p>
+							</div>
+							<div className="stat-item">
+								<h3>{allWins ? allWins : 0}</h3>
+								<p>Wins</p>
+							</div>
+							<div className="stat-item">
+								<h3>{allLosses ? allLosses : 0}</h3>
+								<p>Losses</p>
+							</div>
+							<div className="stat-item">
+								<h3>{allTies ? allTies : 0}</h3>
+								<p>Ties</p>
+							</div>
+						</div>
+
+						<div className="profile-actions">
+							<button className="challenge-btn">Challenge Player</button>
 						</div>
 					</div>
 				</>

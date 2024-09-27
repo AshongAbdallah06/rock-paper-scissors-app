@@ -21,9 +21,7 @@ const ScoreBoard = () => {
 	}, [p1Username, p2Username]);
 
 	useEffect(() => {
-		if (isOnePlayer) {
-			getUserStats(user?.username);
-		}
+		getUserStats(user?.username);
 	}, [isOnePlayer, user?.username]);
 
 	return (

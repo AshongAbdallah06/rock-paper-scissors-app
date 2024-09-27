@@ -1,5 +1,44 @@
 @import url("https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap");
 /* Profile page styles for the game */
+a {
+	text-decoration: none;
+}
+
+.image-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	position: relative;
+	/* width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 3px solid #f39c12;
+	margin-bottom: 15px; */
+}
+.selector {
+	background-color: gray;
+	opacity: 0.3;
+	width: 150px;
+	height: 150px;
+	position: absolute;
+	border-radius: 100%;
+	top: 0;
+	cursor: pointer;
+}
+input[type="file"] {
+	background-color: gray;
+	opacity: 0;
+	width: 150px;
+	height: 150px;
+	position: absolute;
+	border-radius: 100%;
+	top: 0;
+	cursor: pointer;
+	z-index: 1;
+}
+
 .profile-container {
 	width: 100%;
 	max-width: 800px;
@@ -29,6 +68,9 @@
 	margin: 0;
 	font-weight: normal;
 	font-family: "Heebo", sans-serif;
+	text-align: center;
+	margin-bottom: 20px;
+	color: #2c3e50;
 }
 
 .age {
@@ -53,6 +95,14 @@
 	display: flex;
 	justify-content: space-around;
 	font-family: "Heebo", sans-serif;
+}
+
+.stat-item.two-player {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 2rem;
+	margin-bottom: 0.5rem;
 }
 
 .stat-item h3 {
@@ -120,11 +170,6 @@
 	margin-bottom: 0;
 	color: #000;
 }
-h1 {
-	text-align: center;
-	margin-bottom: 20px;
-	color: #2c3e50;
-}
 
 .edit-profile-form {
 	display: flex;
@@ -179,4 +224,33 @@ h1 {
 
 .save-btn:hover {
 	background-color: #2980b9;
+}
+
+/* Two Player */
+.profile-container.two-player {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	width: 50%;
+	min-width: 30rem;
+	flex-direction: column;
+	/* min-width: 15rem; */
+}
+
+.profile-container.two-player .top {
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	border-bottom: 1px solid #e1e1e1;
+	width: 100%;
+}
+
+.profile-container.two-player .bottom {
+	padding-top: 1rem;
+}
+
+.divider {
+	width: 1px;
+	height: 100%;
+	background-color: #e1e1e1;
 }

@@ -7,19 +7,14 @@ import { Link } from "react-router-dom";
 
 import useCheckContext from "../hooks/useCheckContext";
 import EditProfile from "./EditProfile";
+import useFunctions from "../hooks/useFunctions";
 import Axios from "axios";
 
 const Profile = () => {
 	const user = JSON.parse(localStorage.getItem("user"));
 	const { currentUserStats } = useCheckContext();
 	const [renderRoutes, setRenderRoutes] = useState(false);
-
-	// For all stats of the current user in dual player mode
-	const [allDualPlayerStats, setAllDualPlayerStats] = useState(false);
-	const [allGamesPlayed, setAllGamesPlayed] = useState(false);
-	const [allWins, setAllWins] = useState(false);
-	const [allLosses, setAllLosses] = useState(false);
-	const [allTies, setAllTies] = useState(false);
+	const { allGamesPlayed, allLosses, allTies, allWins, getAllDualPlayerStats } = useFunctions();
 
 	useEffect(() => {
 		setRenderRoutes(false);
@@ -29,8 +24,8 @@ const Profile = () => {
 
 		return () => clearTimeout(timer);
 	}, []);
+  
 	const [img, setImg] = useState(JSON.parse(localStorage.getItem("image")) || "");
-	const [img1, setImg1] = useState("");
 	const handleFileChange = (e) => {
 		const file = e.target.files[0]; // Get the selected file
 		if (file) {
@@ -47,45 +42,8 @@ const Profile = () => {
 	}, [img]);
 	const [edit, setEdit] = useState(false);
 
-	let totalGamesPlayed = 0;
-	let totalWins = 0;
-	let totalLosses = 0;
-	let totalTies = 0;
-
-	const getAllDualPlayerStats = async () => {
-		try {
-			const response = await Axios.get(
-				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/dual-player/${user?.username}`
-				// `http://localhost:4001/api/user/stats/dual-player/${user?.username}`
-			);
-
-			const data = response.data;
-
-			data.forEach((stat) => {
-				if (stat.player1_username === user?.username) {
-					totalWins += stat.player1_wins;
-					totalLosses += stat.player1_losses;
-				} else if (stat.player2_username === user?.username) {
-					totalWins += stat.player2_wins;
-					totalLosses += stat.player2_losses;
-				}
-				totalGamesPlayed += stat.games_played;
-				totalTies += stat.ties;
-
-				setAllGamesPlayed(totalGamesPlayed ? totalGamesPlayed : 0);
-				setAllWins(totalWins ? totalWins : 0);
-				setAllLosses(totalLosses ? totalLosses : 0);
-				setAllTies(totalTies ? totalTies : 0);
-			});
-
-			setAllDualPlayerStats(data);
-		} catch (err) {
-			console.log(err);
-		}
-	};
-
 	useEffect(() => {
-		getAllDualPlayerStats();
+		getAllDualPlayerStats(user?.username);
 	}, []);
 	return (
 		<>
@@ -103,11 +61,19 @@ const Profile = () => {
 					{!edit ? (
 						<div className="profile-container">
 							<div className="profile-header">
-								<img
-									src={img || profileIcon}
-									alt="Profile"
-									className="profile-pic"
-								/>
+								<div className="image-container">
+									<img
+										src={img || profileIcon}
+										alt="Profile"
+										className="profile-pic"
+									/>
+									<input
+										type="file"
+										onChange={handleFileChange}
+									/>
+									{!img && <div className="selector"></div>}
+								</div>
+
 								<h1 className="profile-name">
 									{user?.username}, <span className="age">39</span>
 								</h1>

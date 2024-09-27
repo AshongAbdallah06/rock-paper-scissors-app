@@ -1,7 +1,6 @@
 import "./styles/Animation.css";
 import "./styles/Home.css";
 import "./styles/Leaderboard.css";
-import "./styles/Form.css";
 import "./styles/Profile.css";
 import "./styles/Help.css";
 import "./styles/Mobile.css";
@@ -29,6 +28,7 @@ import Axios from "axios";
 import ErrorOccurred from "./components/ErrorOccurred";
 import Contact from "./pages/Contact";
 import AvailableRooms from "./components/AvailableRooms";
+import EditProfile from "./pages/EditProfile";
 
 export const GameContext = createContext();
 
@@ -71,6 +71,7 @@ function App() {
 		setUserExists,
 		errorOccurred,
 		setErrorOccurred,
+		isOnePlayer,
 	} = useCheckContext();
 	const [isRendered, setIsRendered] = useState(false);
 
@@ -161,41 +162,47 @@ function App() {
 						}
 					/>
 
-					<Route
-						path="/select-room"
-						element={
-							<PrivateRoute userExists={userExists}>
-								<Logo />
+					{!isOnePlayer && (
+						<Route
+							path="/select-room"
+							element={
+								<PrivateRoute userExists={userExists}>
+									<Logo />
 
-								<Room />
-							</PrivateRoute>
-						}
-					/>
+									<Room />
+								</PrivateRoute>
+							}
+						/>
+					)}
 
-					<Route
-						path="/available-rooms"
-						element={
-							<PrivateRoute userExists={userExists}>
-								<Logo />
+					{!isOnePlayer && (
+						<Route
+							path="/available-rooms"
+							element={
+								<PrivateRoute userExists={userExists}>
+									<Logo />
 
-								<AvailableRooms />
-							</PrivateRoute>
-						}
-					/>
+									<AvailableRooms />
+								</PrivateRoute>
+							}
+						/>
+					)}
 
-					<Route
-						path="/leaderboard"
-						element={
-							<PrivateRoute userExists={userExists}>
-								<Loading
-									isRendered={isRendered}
-									setIsRendered={setIsRendered}
-								>
-									<Leaderboard />
-								</Loading>
-							</PrivateRoute>
-						}
-					/>
+					{isOnePlayer && (
+						<Route
+							path="/leaderboard"
+							element={
+								<PrivateRoute userExists={userExists}>
+									<Loading
+										isRendered={isRendered}
+										setIsRendered={setIsRendered}
+									>
+										<Leaderboard />
+									</Loading>
+								</PrivateRoute>
+							}
+						/>
+					)}
 
 					<Route
 						path={"/help"}
@@ -240,18 +247,34 @@ function App() {
 					/>
 
 					<Route
-						path="/p/:username"
+						path={`/edit/profile`}
 						element={
 							<PrivateRoute userExists={userExists}>
 								<Loading
 									isRendered={isRendered}
 									setIsRendered={setIsRendered}
 								>
-									<PlayerProfile />
+									<EditProfile />
 								</Loading>
 							</PrivateRoute>
 						}
 					/>
+
+					{isOnePlayer && (
+						<Route
+							path="/p/:username"
+							element={
+								<PrivateRoute userExists={userExists}>
+									<Loading
+										isRendered={isRendered}
+										setIsRendered={setIsRendered}
+									>
+										<PlayerProfile />
+									</Loading>
+								</PrivateRoute>
+							}
+						/>
+					)}
 
 					<Route
 						path="/login"
