@@ -10,10 +10,12 @@ import Nav from "../components/Nav";
 import useFunctions from "../hooks/useFunctions";
 import Footer from "../components/Footer";
 import DualPlayerStats from "../components/DualPlayerStats";
+import Axios from "axios";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
-	const { isOnePlayer, moveAck, leftRoom, setLeftRoom, socket } = useCheckContext();
+	const { isOnePlayer, moveAck, leftRoom, setLeftRoom, socket, user, dualPlayerStats } =
+		useCheckContext();
 	const { joinRoom } = useFunctions();
 
 	useEffect(() => {
@@ -33,24 +35,52 @@ const Home = () => {
 	}, [hasLeftRoom]);
 
 	const bonus = JSON.parse(localStorage.getItem("bonus"));
-	const user = JSON.parse(localStorage.getItem("user"));
 
 	const [renderRoutes, setRenderRoutes] = useState(false);
+
+	const [opponentProfile, setOpponentProfile] = useState(null);
+	const getUserProfiles = async () => {
+		try {
+			const res = await Axios.post(
+				// "http://localhost:4001/api/user/profiles",
+				"https://rock-paper-scissors-app-iybf.onrender.com/api/user/profiles",
+				{
+					p1Username:
+						dualPlayerStats?.player1_username !== user?.username
+							? dualPlayerStats?.player1_username
+							: dualPlayerStats?.player2_username,
+				}
+			);
+			const updatedUser = res.data;
+
+			if (updatedUser) {
+				setOpponentProfile(updatedUser[0]);
+			}
+		} catch (error) {
+			if (error?.response?.status === 413) {
+				alert("File too large");
+			}
+			console.log(error);
+		}
+	};
 	useEffect(() => {
 		setRenderRoutes(false);
 		const timer = setTimeout(() => {
 			setRenderRoutes(true);
 		}, 100);
 
-		if (isOnePlayer) {
-			socket.on("error-message", (msg) => {
-				if (msg.error.includes("fk_username")) {
-					localStorage.removeItem("user");
-					window.location.href = "/login";
-				}
-			});
+		socket.on("error-message", (msg) => {
+			if (msg.error.includes("fk_username")) {
+				localStorage.removeItem("user");
+				window.location.href = "/login";
+			}
+		});
 
+		if (isOnePlayer) {
 			joinRoom(socket, user.username, setLeftRoom);
+		} else {
+			if (dualPlayerStats?.player1_username && dualPlayerStats?.player2_username)
+				getUserProfiles();
 		}
 
 		if (!localStorage.getItem("bonus")) {
@@ -73,8 +103,9 @@ const Home = () => {
 				<>
 					{showDualPlayerStats && (
 						<DualPlayerStats
-							showDualPlayerStats={showDualPlayerStats}
 							setShowDualPlayerStats={setShowDualPlayerStats}
+							opponentProfile={opponentProfile}
+							getUserProfiles={getUserProfiles}
 						/>
 					)}
 					<Nav

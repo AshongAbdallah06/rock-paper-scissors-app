@@ -8,7 +8,7 @@ import dualIcon from "../images/people-outline-black.svg";
 import useFunctions from "../hooks/useFunctions";
 
 const Profile = () => {
-	const { selectedUserStats } = useCheckContext();
+	const { selectedUserStats, user } = useCheckContext();
 	const { allGamesPlayed, allLosses, allTies, allWins, getAllDualPlayerStats } = useFunctions();
 	const [renderRoutes, setRenderRoutes] = useState(false);
 
@@ -25,7 +25,6 @@ const Profile = () => {
 		return () => clearTimeout(timer);
 	}, []);
 	const [img, setImg] = useState(JSON.parse(localStorage.getItem("image")) || "");
-	const user = JSON.parse(localStorage.getItem("user"));
 
 	useEffect(() => {
 		getAllDualPlayerStats(selectedUserStats?.username);

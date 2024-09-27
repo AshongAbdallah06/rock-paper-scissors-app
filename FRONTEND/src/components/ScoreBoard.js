@@ -3,10 +3,16 @@ import logo from "../images/logo.svg";
 import useCheckContext from "../hooks/useCheckContext";
 
 const ScoreBoard = () => {
-	const { isOnePlayer, getUserStats, currentUserStats, dualPlayerStats, p1Username, p2Username } =
-		useCheckContext();
+	const {
+		isOnePlayer,
+		getUserStats,
+		currentUserStats,
+		dualPlayerStats,
+		p1Username,
+		p2Username,
+		user,
+	} = useCheckContext();
 
-	const user = JSON.parse(localStorage.getItem("user"));
 	const [showPlayer1Score, setShowPlayer1Score] = useState(null);
 	const [showPlayer2Score, setShowPlayer2Score] = useState(null);
 

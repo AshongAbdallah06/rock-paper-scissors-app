@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { React } from "react";
 import useCheckContext from "../hooks/useCheckContext";
 
 const AfterChoice = ({ bonusState }) => {
@@ -15,11 +15,10 @@ const AfterChoice = ({ bonusState }) => {
 		clearMoves,
 		p1Username,
 		p2Username,
+		user,
 	} = useCheckContext();
 
 	// Get usernames
-
-	const user = JSON.parse(localStorage.getItem("user"));
 
 	return (
 		<div className="Desktop-step2">
@@ -28,7 +27,7 @@ const AfterChoice = ({ bonusState }) => {
 				<h1>
 					{isOnePlayer
 						? "YOU PICKED"
-						: `${p1Username === user.username ? "You" : p1Username} Picked`}
+						: `${p1Username === user?.username ? "You" : p1Username} Picked`}
 				</h1>
 				<div
 					className={`picked ${
@@ -97,7 +96,7 @@ const AfterChoice = ({ bonusState }) => {
 				<h1>
 					{isOnePlayer
 						? "THE HOUSE PICKED"
-						: `${p2Username === user.username ? "You" : p2Username} Picked`}
+						: `${p2Username === user?.username ? "You" : p2Username} Picked`}
 				</h1>
 				<div
 					className={`hPicked ${

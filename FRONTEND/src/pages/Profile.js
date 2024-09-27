@@ -10,8 +10,7 @@ import EditProfile from "./EditProfile";
 import useFunctions from "../hooks/useFunctions";
 
 const Profile = () => {
-	const user = JSON.parse(localStorage.getItem("user"));
-	const { currentUserStats } = useCheckContext();
+	const { currentUserStats, user } = useCheckContext();
 	const [renderRoutes, setRenderRoutes] = useState(false);
 	const { allGamesPlayed, allLosses, allTies, allWins, getAllDualPlayerStats } = useFunctions();
 
@@ -23,26 +22,18 @@ const Profile = () => {
 
 		return () => clearTimeout(timer);
 	}, []);
-	const [img, setImg] = useState(JSON.parse(localStorage.getItem("image")) || "");
-	const handleFileChange = (e) => {
-		const file = e.target.files[0]; // Get the selected file
-		if (file) {
-			const reader = new FileReader();
-			reader.readAsDataURL(file); // Read file as data URL
-			reader.onloadend = () => {
-				setImg(reader.result); // Set image URL
-			};
-		}
-	};
+	const [img, setImg] = useState(user?.image || null);
 
-	useEffect(() => {
-		localStorage.setItem("image", JSON.stringify(img));
-	}, [img]);
 	const [edit, setEdit] = useState(false);
+	const [newLocation, setNewLocation] = useState(user?.location || "");
+	const [newAge, setNewAge] = useState(user?.age || "");
+	const [newBio, setNewBio] = useState(user?.bio || "");
 
 	useEffect(() => {
 		getAllDualPlayerStats(user?.username);
+		setImg(user?.image);
 	}, []);
+
 	return (
 		<>
 			{renderRoutes && (
@@ -65,18 +56,14 @@ const Profile = () => {
 										alt="Profile"
 										className="profile-pic"
 									/>
-									<input
-										type="file"
-										onChange={handleFileChange}
-									/>
-									{!img && <div className="selector"></div>}
 								</div>
 								<h1 className="profile-name">
-									{user?.username}, <span className="age">39</span>
+									{user?.username},{" "}
+									{newAge && <span className="age">{newAge}</span>}
 								</h1>
-								<p className="profile-location">{user?.location || "From Earth"}</p>
+								<p className="profile-location">{newLocation || "From Earth"}</p>
 								<p className="profile-bio">
-									{user?.bio ||
+									{newBio ||
 										"I’m a mysterious individual who has yet to fill out my bio. One thing’s for certain: I love to play rock-paper-scissors!"}
 								</p>
 							</div>
@@ -140,11 +127,22 @@ const Profile = () => {
 								>
 									Edit Profile
 								</button>
-								<button className="challenge-btn">Challenge Player</button>
+								<button className="challenge-btn">Refetch Stats</button>
 							</div>
 						</div>
 					) : (
-						<EditProfile setEdit={setEdit} />
+						<EditProfile
+							setEdit={setEdit}
+							img={img}
+							setImg={setImg}
+							user={user}
+							newLocation={newLocation}
+							newAge={newAge}
+							newBio={newBio}
+							setNewLocation={setNewLocation}
+							setNewAge={setNewAge}
+							setNewBio={setNewBio}
+						/>
 					)}
 				</>
 			)}
