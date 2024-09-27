@@ -8,12 +8,20 @@ import { Link } from "react-router-dom";
 import useCheckContext from "../hooks/useCheckContext";
 import EditProfile from "./EditProfile";
 import useFunctions from "../hooks/useFunctions";
+import Axios from "axios";
 
 const Profile = () => {
 	const user = JSON.parse(localStorage.getItem("user"));
 	const { currentUserStats } = useCheckContext();
 	const [renderRoutes, setRenderRoutes] = useState(false);
 	const { allGamesPlayed, allLosses, allTies, allWins, getAllDualPlayerStats } = useFunctions();
+
+	// For all stats of the current user in dual player mode
+	const [allDualPlayerStats, setAllDualPlayerStats] = useState(false);
+	const [allGamesPlayed, setAllGamesPlayed] = useState(false);
+	const [allWins, setAllWins] = useState(false);
+	const [allLosses, setAllLosses] = useState(false);
+	const [allTies, setAllTies] = useState(false);
 
 	useEffect(() => {
 		setRenderRoutes(false);
@@ -23,6 +31,7 @@ const Profile = () => {
 
 		return () => clearTimeout(timer);
 	}, []);
+  
 	const [img, setImg] = useState(JSON.parse(localStorage.getItem("image")) || "");
 	const handleFileChange = (e) => {
 		const file = e.target.files[0]; // Get the selected file
@@ -71,6 +80,7 @@ const Profile = () => {
 									/>
 									{!img && <div className="selector"></div>}
 								</div>
+
 								<h1 className="profile-name">
 									{user?.username}, <span className="age">39</span>
 								</h1>
