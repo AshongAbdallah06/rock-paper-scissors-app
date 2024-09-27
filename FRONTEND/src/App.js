@@ -28,6 +28,7 @@ import Axios from "axios";
 import ErrorOccurred from "./components/ErrorOccurred";
 import Contact from "./pages/Contact";
 import AvailableRooms from "./components/AvailableRooms";
+import EditProfile from "./pages/EditProfile";
 
 export const GameContext = createContext();
 
@@ -240,6 +241,20 @@ function App() {
 									setIsRendered={setIsRendered}
 								>
 									<Profile />
+								</Loading>
+							</PrivateRoute>
+						}
+					/>
+
+					<Route
+						path={`/edit/profile`}
+						element={
+							<PrivateRoute userExists={userExists}>
+								<Loading
+									isRendered={isRendered}
+									setIsRendered={setIsRendered}
+								>
+									<EditProfile />
 								</Loading>
 							</PrivateRoute>
 						}

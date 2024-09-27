@@ -1,5 +1,44 @@
 @import url("https://fonts.googleapis.com/css2?family=Heebo:wght@100..900&display=swap");
 /* Profile page styles for the game */
+a {
+	text-decoration: none;
+}
+
+.image-container {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	position: relative;
+	/* width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	object-fit: cover;
+	border: 3px solid #f39c12;
+	margin-bottom: 15px; */
+}
+.selector {
+	background-color: gray;
+	opacity: 0.3;
+	width: 150px;
+	height: 150px;
+	position: absolute;
+	border-radius: 100%;
+	top: 0;
+	cursor: pointer;
+}
+input[type="file"] {
+	background-color: gray;
+	opacity: 0;
+	width: 150px;
+	height: 150px;
+	position: absolute;
+	border-radius: 100%;
+	top: 0;
+	cursor: pointer;
+	z-index: 1;
+}
+
 .profile-container {
 	width: 100%;
 	max-width: 800px;
@@ -29,6 +68,9 @@
 	margin: 0;
 	font-weight: normal;
 	font-family: "Heebo", sans-serif;
+	text-align: center;
+	margin-bottom: 20px;
+	color: #2c3e50;
 }
 
 .age {
@@ -127,11 +169,6 @@
 .edit-profile-container h1 {
 	margin-bottom: 0;
 	color: #000;
-}
-h1 {
-	text-align: center;
-	margin-bottom: 20px;
-	color: #2c3e50;
 }
 
 .edit-profile-form {

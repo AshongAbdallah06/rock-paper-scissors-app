@@ -14,8 +14,6 @@ const AvailableRooms = () => {
 			} else {
 				setActiveRooms(null);
 			}
-
-			console.log("Activate");
 		});
 	}, [socket]);
 

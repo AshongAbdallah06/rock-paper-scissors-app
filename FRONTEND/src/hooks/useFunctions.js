@@ -309,7 +309,6 @@ const useFunctions = () => {
 				setAllLosses(totalLosses ? totalLosses : 0);
 				setAllTies(totalTies ? totalTies : 0);
 			});
-			console.log(data);
 		} catch (err) {
 			console.log(err);
 		}

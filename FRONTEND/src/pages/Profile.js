@@ -59,11 +59,18 @@ const Profile = () => {
 					{!edit ? (
 						<div className="profile-container">
 							<div className="profile-header">
-								<img
-									src={img || profileIcon}
-									alt="Profile"
-									className="profile-pic"
-								/>
+								<div className="image-container">
+									<img
+										src={img || profileIcon}
+										alt="Profile"
+										className="profile-pic"
+									/>
+									<input
+										type="file"
+										onChange={handleFileChange}
+									/>
+									{!img && <div className="selector"></div>}
+								</div>
 								<h1 className="profile-name">
 									{user?.username}, <span className="age">39</span>
 								</h1>
