@@ -8,6 +8,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import useCheckContext from "../hooks/useCheckContext";
 import EditProfile from "./EditProfile";
 import useFunctions from "../hooks/useFunctions";
+import Axios from "axios";
 
 const Profile = () => {
 	const { currentUserStats, user } = useCheckContext();
@@ -56,6 +57,7 @@ const Profile = () => {
 										className="profile-pic"
 									/>
 								</div>
+
 								<h1 className="profile-name">
 									{user?.username},{" "}
 									{newAge && <span className="age">{newAge}</span>}
