@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import useCheckContext from "../hooks/useCheckContext";
 
 const AvailableRooms = () => {
-	const { socket, p1Username, p2Username } = useCheckContext();
-	const user = JSON.parse(localStorage.getItem("user"));
+	const { socket } = useCheckContext();
 
 	const [activeRooms, setActiveRooms] = useState(null);
 

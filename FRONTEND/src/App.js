@@ -9,7 +9,7 @@ import "./styles/Sidebar.css";
 import "./styles/Room.css";
 import { createContext, useEffect, useState } from "react";
 import useCheckContext from "./hooks/useCheckContext";
-import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import PlayerSelection from "./pages/PlayerSelection";
@@ -17,7 +17,6 @@ import Room from "./pages/Room";
 import Home from "./pages/Home";
 import Leaderboard from "./pages/Leaderboard";
 import Audios from "./components/Audios";
-import GameType from "./pages/GameType";
 import Profile from "./pages/Profile";
 import PlayerProfile from "./pages/PlayerProfile";
 import NotFound from "./pages/NotFound";
@@ -63,23 +62,41 @@ function Loading({ isRendered, setIsRendered, children }) {
 	);
 }
 
+function LoadingApp({ isAppRendered, setIsAppRendered, children }) {
+	const location = useLocation();
+
+	useEffect(() => {
+		setIsAppRendered(false);
+
+		const timer = setTimeout(() => {
+			setIsAppRendered(true);
+		}, 2000);
+
+		return () => clearTimeout(timer);
+	}, []);
+
+	return isAppRendered ? (
+		children
+	) : (
+		<>
+			<Logo />
+			<Loader />
+		</>
+	);
+}
+
 function App() {
 	const {
 		playerIsChosen,
 		roomIsSelected,
 		userExists,
 		setUserExists,
-		errorOccurred,
-		setErrorOccurred,
 		isOnePlayer,
+		user,
+		authorize,
 	} = useCheckContext();
 	const [isRendered, setIsRendered] = useState(false);
-
-	const user = JSON.parse(localStorage.getItem("user"));
-
-	useEffect(() => {
-		setUserExists(!!user);
-	}, [setUserExists, user]);
+	const [isAppRendered, setIsAppRendered] = useState(false);
 
 	/**
 	 	All todo:
@@ -114,15 +131,19 @@ function App() {
 			alert("Error Occurred. Check the console to see what occurred.");
 		}
 	};
-	// useEffect(() => {
-	// 	startServer();
-	// }, []);
+	useEffect(() => {
+		// startServer();
+		authorize();
+	}, []);
 
 	return (
 		<>
 			{/* {errorOccurred && <ErrorOccurred />} */}
-			<Audios />
-			<Router>
+			<LoadingApp
+				isAppRendered={isAppRendered}
+				setIsAppRendered={setIsAppRendered}
+			>
+				<Audios />
 				<Routes>
 					<Route
 						path="/"
@@ -306,7 +327,7 @@ function App() {
 						}
 					/>
 				</Routes>
-			</Router>
+			</LoadingApp>
 		</>
 	);
 }

@@ -4,9 +4,7 @@ import useCheckContext from "../hooks/useCheckContext";
 import trashCan from "../images/trash-outline.svg";
 
 const Chat = ({ setChatIsShowing }) => {
-	const user = JSON.parse(localStorage.getItem("user"));
-
-	const { socket, roomID } = useCheckContext();
+	const { socket, roomID, user } = useCheckContext();
 
 	const [textMessage, setTextMessage] = useState("");
 	const [messages, setMessages] = useState(

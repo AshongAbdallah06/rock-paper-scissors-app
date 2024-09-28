@@ -13,7 +13,8 @@ import DualPlayerStats from "../components/DualPlayerStats";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
-	const { isOnePlayer, moveAck, leftRoom, setLeftRoom, socket } = useCheckContext();
+	const { isOnePlayer, moveAck, leftRoom, setLeftRoom, socket, user, dualPlayerStats } =
+		useCheckContext();
 	const { joinRoom } = useFunctions();
 
 	useEffect(() => {
@@ -33,23 +34,23 @@ const Home = () => {
 	}, [hasLeftRoom]);
 
 	const bonus = JSON.parse(localStorage.getItem("bonus"));
-	const user = JSON.parse(localStorage.getItem("user"));
 
 	const [renderRoutes, setRenderRoutes] = useState(false);
+
 	useEffect(() => {
 		setRenderRoutes(false);
 		const timer = setTimeout(() => {
 			setRenderRoutes(true);
 		}, 100);
 
-		if (isOnePlayer) {
-			socket.on("error-message", (msg) => {
-				if (msg.error.includes("fk_username")) {
-					localStorage.removeItem("user");
-					window.location.href = "/login";
-				}
-			});
+		socket.on("error-message", (msg) => {
+			if (msg.error.includes("fk_username")) {
+				localStorage.removeItem("user");
+				window.location.href = "/login";
+			}
+		});
 
+		if (isOnePlayer) {
 			joinRoom(socket, user.username, setLeftRoom);
 		}
 
@@ -72,10 +73,7 @@ const Home = () => {
 			{renderRoutes && (
 				<>
 					{showDualPlayerStats && (
-						<DualPlayerStats
-							showDualPlayerStats={showDualPlayerStats}
-							setShowDualPlayerStats={setShowDualPlayerStats}
-						/>
+						<DualPlayerStats setShowDualPlayerStats={setShowDualPlayerStats} />
 					)}
 					<Nav
 						sidebarIsShowing={sidebarIsShowing}

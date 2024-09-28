@@ -50,15 +50,63 @@ const signup = async (req, res) => {
 				[username, 0, 0, 0, 0]
 			);
 		}
+		const userResult = await pool.query(
+			`SELECT ID, USERNAME, PASSWORD, EMAIL, AGE, LOCATION, BIO, IMAGE FROM USERS WHERE LOWER(EMAIL) = $1`,
+			[lowercasedEmail]
+		);
+		const user = userResult.rows[0];
 
 		const token = createToken(id);
 
-		res.status(201).json({ email: lowercasedEmail, username, token });
+		res.status(201).json({
+			email: user.email,
+			username: user.username,
+			token,
+			location: user.location,
+			bio: user.bio,
+			image: user.image,
+			age: user.age,
+		});
 	} catch (err) {
 		const error = handleErrors(err);
 
 		console.log(err);
 		res.status(401).json({ error });
+	}
+};
+
+const editProfile = async (req, res) => {
+	const { img, location, age, bio } = req.body;
+	const { username } = req.params;
+
+	try {
+		await pool.query(
+			`UPDATE USERS SET IMAGE = $1, LOCATION = $2, AGE = $3, BIO =$4 WHERE USERNAME = $5`,
+			[img, location, age, bio, username]
+		);
+
+		const userResult = await pool.query(`SELECT * FROM USERS WHERE username = $1`, [username]);
+
+		if (userResult.rowCount === 1) {
+			res.status(200).json(userResult.rows[0]);
+		}
+	} catch (err) {
+		const error = handleErrors(err);
+		console.log(err);
+		return res.status(401).json(error);
+	}
+};
+
+const getUserProfiles = async (req, res) => {
+	const { username } = req.body;
+	try {
+		const userProfiles = await pool.query(
+			`SELECT USERNAME, EMAIL, AGE, LOCATION, BIO, IMAGE FROM USERS WHERE USERNAME = $1`,
+			[username]
+		);
+		res.status(200).json(userProfiles.rows);
+	} catch (error) {
+		console.log("🚀 ~ getUserProfiles ~ error:", error);
 	}
 };
 
@@ -70,7 +118,7 @@ const login = async (req, res) => {
 		const lowercasedEmail = email.trim().toLowerCase();
 
 		const userResult = await pool.query(
-			`SELECT ID, EMAIL, PASSWORD, USERNAME FROM USERS WHERE LOWER(EMAIL) = $1`,
+			`SELECT ID, USERNAME, PASSWORD, EMAIL, AGE, LOCATION, BIO, IMAGE FROM USERS WHERE LOWER(EMAIL) = $1`,
 			[lowercasedEmail]
 		);
 
@@ -88,12 +136,20 @@ const login = async (req, res) => {
 
 		const token = createToken(user.id);
 
-		return res.status(200).json({ email: user.email, username: user.username, token });
+		return res.status(200).json({
+			email: user.email,
+			username: user.username,
+			token,
+			location: user.location,
+			bio: user.bio,
+			image: user.image,
+			age: user.age,
+		});
 	} catch (err) {
 		const error = handleErrors(err);
-		console.error("Login error: ", err.message);
+		console.error("Login error: ", err);
 		return res.status(401).json({ error });
 	}
 };
 
-module.exports = { signup, login };
+module.exports = { signup, login, editProfile, getUserProfiles };

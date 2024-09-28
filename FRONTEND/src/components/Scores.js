@@ -3,8 +3,7 @@ import useCheckContext from "../hooks/useCheckContext";
 import { Link, useSearchParams } from "react-router-dom";
 
 const Scores = ({ optChanges }) => {
-	const { scores, getUserStats, setScores, socket } = useCheckContext();
-	const user = JSON.parse(localStorage.getItem("user"));
+	const { scores, getUserStats, setScores, socket, user } = useCheckContext();
 
 	const [searchParams, setSearchParams] = useSearchParams();
 
@@ -87,7 +86,7 @@ const Scores = ({ optChanges }) => {
 								fontWeight: user?.username === score?.username ? "bold" : "normal",
 							}}
 						>
-							{score?.username}
+							{score?.username === user?.username ? "You" : score?.username}
 						</p>
 						<span style={{ color: "orange" }}>
 							{optChanges === "wins" && score?.wins}

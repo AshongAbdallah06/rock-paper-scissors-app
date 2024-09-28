@@ -298,13 +298,10 @@ const CheckContextProvider = ({ children }) => {
 				}
 			);
 
-			if (window.location.pathname === "/signup" || window.location.pathname === "/login") {
-				window.location.href = "/";
-			}
+			setUserExists(true);
 		} catch (error) {
-			if (window.location.pathname !== "/signup") {
-				window.location.href = "/login";
-			}
+			setUserExists(false);
+			console.log(error);
 		}
 	};
 
@@ -357,6 +354,7 @@ const CheckContextProvider = ({ children }) => {
 				setErrorOccurred,
 				p1Username,
 				p2Username,
+				user,
 			}}
 		>
 			{children}

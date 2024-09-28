@@ -9,10 +9,9 @@ import Scores from "../components/Scores";
 import FilterDropdown from "../components/FilterDropdown";
 
 const Leaderboard = () => {
-	const { setScores, socket } = useCheckContext();
+	const { setScores, socket, user } = useCheckContext();
 	const { getAllScores } = useFunctions();
 
-	const user = JSON.parse(localStorage.getItem("user"));
 	const [optChanges, setOptChanges] = useState(null);
 
 	const [renderRoutes, setRenderRoutes] = useState(false);

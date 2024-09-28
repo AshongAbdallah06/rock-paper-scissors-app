@@ -6,9 +6,10 @@ import useCheckContext from "../hooks/useCheckContext";
 import singleIcon from "../images/person-outline-black.svg";
 import dualIcon from "../images/people-outline-black.svg";
 import useFunctions from "../hooks/useFunctions";
+import Axios from "axios";
 
 const Profile = () => {
-	const { selectedUserStats } = useCheckContext();
+	const { selectedUserStats, user } = useCheckContext();
 	const { allGamesPlayed, allLosses, allTies, allWins, getAllDualPlayerStats } = useFunctions();
 	const [renderRoutes, setRenderRoutes] = useState(false);
 
@@ -16,20 +17,40 @@ const Profile = () => {
 		localStorage.setItem("selectedUser", JSON.stringify(selectedUserStats));
 	}, [selectedUserStats]);
 
+	const [opponentProfile, setOpponentProfile] = useState(null);
+	const getUserProfiles = async (username) => {
+		try {
+			const res = await Axios.post(
+				"http://localhost:4001/api/user/profiles",
+				// "https://rock-paper-scissors-app-iybf.onrender.com/api/user/profiles",
+				{ username }
+			);
+			const updatedUser = res.data;
+
+			setOpponentProfile(updatedUser[0]);
+			if (updatedUser) {
+				console.log("opponentProfile: ", opponentProfile);
+			}
+		} catch (error) {
+			if (error?.response?.status === 413) {
+				alert("File too large");
+			}
+			console.log(error);
+		}
+	};
+
 	useEffect(() => {
 		setRenderRoutes(false);
 		const timer = setTimeout(() => {
 			setRenderRoutes(true);
 		}, 100);
 
+		getUserProfiles(selectedUserStats?.username);
+		getAllDualPlayerStats(selectedUserStats?.username);
 		return () => clearTimeout(timer);
 	}, []);
 	const [img, setImg] = useState(JSON.parse(localStorage.getItem("image")) || "");
-	const user = JSON.parse(localStorage.getItem("user"));
 
-	useEffect(() => {
-		getAllDualPlayerStats(selectedUserStats?.username);
-	}, []);
 	return (
 		<>
 			{renderRoutes && (
@@ -48,16 +69,19 @@ const Profile = () => {
 						<p onClick={getAllDualPlayerStats}>Refetch</p>
 						<div className="profile-header">
 							<img
-								src={img || profileIcon}
+								src={opponentProfile?.image || profileIcon}
 								alt="Profile"
 								className="profile-pic"
 							/>
 							<h1 className="profile-name">
-								{selectedUserStats?.username}, <span className="age">39</span>
+								{selectedUserStats?.username},{" "}
+								<span className="age">{opponentProfile?.age}</span>
 							</h1>
-							<p className="profile-location">{user?.location || "From Earth"}</p>
+							<p className="profile-location">
+								{opponentProfile?.location || "From Earth"}
+							</p>
 							<p className="profile-bio">
-								{user?.bio ||
+								{opponentProfile?.bio ||
 									"I’m a mysterious individual who has yet to fill out my bio. One thing’s for certain: I love to play rock-paper-scissors!"}
 							</p>
 						</div>
