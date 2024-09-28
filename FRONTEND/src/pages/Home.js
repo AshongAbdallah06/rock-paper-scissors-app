@@ -10,7 +10,6 @@ import Nav from "../components/Nav";
 import useFunctions from "../hooks/useFunctions";
 import Footer from "../components/Footer";
 import DualPlayerStats from "../components/DualPlayerStats";
-import Axios from "axios";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
@@ -38,31 +37,6 @@ const Home = () => {
 
 	const [renderRoutes, setRenderRoutes] = useState(false);
 
-	const [opponentProfile, setOpponentProfile] = useState(null);
-	const getUserProfiles = async () => {
-		try {
-			const res = await Axios.post(
-				// "http://localhost:4001/api/user/profiles",
-				"https://rock-paper-scissors-app-iybf.onrender.com/api/user/profiles",
-				{
-					p1Username:
-						dualPlayerStats?.player1_username !== user?.username
-							? dualPlayerStats?.player1_username
-							: dualPlayerStats?.player2_username,
-				}
-			);
-			const updatedUser = res.data;
-
-			if (updatedUser) {
-				setOpponentProfile(updatedUser[0]);
-			}
-		} catch (error) {
-			if (error?.response?.status === 413) {
-				alert("File too large");
-			}
-			console.log(error);
-		}
-	};
 	useEffect(() => {
 		setRenderRoutes(false);
 		const timer = setTimeout(() => {
@@ -78,9 +52,6 @@ const Home = () => {
 
 		if (isOnePlayer) {
 			joinRoom(socket, user.username, setLeftRoom);
-		} else {
-			if (dualPlayerStats?.player1_username && dualPlayerStats?.player2_username)
-				getUserProfiles();
 		}
 
 		if (!localStorage.getItem("bonus")) {
@@ -102,11 +73,7 @@ const Home = () => {
 			{renderRoutes && (
 				<>
 					{showDualPlayerStats && (
-						<DualPlayerStats
-							setShowDualPlayerStats={setShowDualPlayerStats}
-							opponentProfile={opponentProfile}
-							getUserProfiles={getUserProfiles}
-						/>
+						<DualPlayerStats setShowDualPlayerStats={setShowDualPlayerStats} />
 					)}
 					<Nav
 						sidebarIsShowing={sidebarIsShowing}

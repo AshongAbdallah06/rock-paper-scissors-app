@@ -256,3 +256,30 @@ input[type="file"] {
 	height: 100%;
 	background-color: #e1e1e1;
 }
+
+.image-overlay {
+	position: absolute;
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	background-color: rgba(0, 0, 0, 0.5);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	font-size: 18px;
+	font-weight: bold;
+	opacity: 0;
+	transition: opacity 0.3s ease;
+	cursor: pointer;
+	flex-direction: column;
+	top: 0;
+}
+
+.image-container:hover .image-overlay {
+	opacity: 1;
+}
+.image-icon {
+	height: 2.5rem;
+	width: 2.5rem;
+}

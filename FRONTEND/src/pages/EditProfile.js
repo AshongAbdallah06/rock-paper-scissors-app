@@ -2,8 +2,11 @@ import React, { useEffect, useState } from "react";
 import profileIcon from "../images/person-circle-outline.svg";
 import Axios from "axios";
 import useCheckContext from "../hooks/useCheckContext";
+import { useSearchParams } from "react-router-dom";
+import imageIcon from "../images/image-outline.svg";
 
 const EditProfile = ({
+	edit,
 	setEdit,
 	setImg,
 	img,
@@ -30,8 +33,8 @@ const EditProfile = ({
 	const updateProfile = async () => {
 		try {
 			const res = await Axios.patch(
-				// `http://localhost:4001/api/user/edit/profile/${user?.username}`,
-				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/edit/profile/${user?.username}`,
+				`http://localhost:4001/api/user/edit/profile/${user?.username}`,
+				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/edit/profile/${user?.username}`,
 				{
 					img,
 					location: newLocation.trim(),
@@ -57,10 +60,20 @@ const EditProfile = ({
 		}
 	};
 
+	const [searchParams, setSearchParams] = useSearchParams("");
+
 	return (
 		<>
 			<div className="profile-header edit">
 				<div className="image-container">
+					<div className="image-overlay">
+						<img
+							src={imageIcon}
+							alt="Profile"
+							className="image-icon"
+						/>
+						Select a photo
+					</div>
 					<img
 						src={img || profileIcon}
 						alt="Profile"
@@ -69,7 +82,7 @@ const EditProfile = ({
 					<input
 						type="file"
 						onChange={handleFileChange}
-						title="profile-pic"
+						title="Select a photo"
 					/>
 				</div>
 			</div>
@@ -140,6 +153,9 @@ const EditProfile = ({
 							className="back-btn "
 							onClick={() => {
 								setEdit(false);
+								setSearchParams((params) => ({
+									...params,
+								}));
 							}}
 						>
 							Back

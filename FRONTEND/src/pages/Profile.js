@@ -3,7 +3,7 @@ import profileIcon from "../images/person-circle-outline.svg";
 import singleIcon from "../images/person-outline-black.svg";
 import dualIcon from "../images/people-outline-black.svg";
 import logo from "../images/logo.svg";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 import useCheckContext from "../hooks/useCheckContext";
 import EditProfile from "./EditProfile";
@@ -20,6 +20,8 @@ const Profile = () => {
 			setRenderRoutes(true);
 		}, 100);
 
+		getAllDualPlayerStats(user?.username);
+		setImg(user?.image);
 		return () => clearTimeout(timer);
 	}, []);
 	const [img, setImg] = useState(user?.image || null);
@@ -29,10 +31,7 @@ const Profile = () => {
 	const [newAge, setNewAge] = useState(user?.age || "");
 	const [newBio, setNewBio] = useState(user?.bio || "");
 
-	useEffect(() => {
-		getAllDualPlayerStats(user?.username);
-		setImg(user?.image);
-	}, []);
+	const [searchParams, setSearchParams] = useSearchParams("");
 
 	return (
 		<>
@@ -123,7 +122,13 @@ const Profile = () => {
 							<div className="profile-actions">
 								<button
 									className="edit-btn"
-									onClick={() => setEdit(true)}
+									onClick={() => {
+										setEdit(true);
+										setSearchParams((params) => ({
+											...params,
+											edit: edit ? false : true,
+										}));
+									}}
 								>
 									Edit Profile
 								</button>
@@ -132,6 +137,7 @@ const Profile = () => {
 						</div>
 					) : (
 						<EditProfile
+							edit={edit}
 							setEdit={setEdit}
 							img={img}
 							setImg={setImg}

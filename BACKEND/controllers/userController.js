@@ -98,11 +98,11 @@ const editProfile = async (req, res) => {
 };
 
 const getUserProfiles = async (req, res) => {
-	const { p1Username } = req.body;
+	const { username } = req.body;
 	try {
 		const userProfiles = await pool.query(
 			`SELECT USERNAME, EMAIL, AGE, LOCATION, BIO, IMAGE FROM USERS WHERE USERNAME = $1`,
-			[p1Username]
+			[username]
 		);
 		res.status(200).json(userProfiles.rows);
 	} catch (error) {

@@ -2,12 +2,39 @@ import React, { useEffect, useState } from "react";
 import profileIcon from "../images/person-circle-outline.svg";
 import logo from "../images/logo.svg";
 import useCheckContext from "../hooks/useCheckContext";
+import Axios from "axios";
 import closeIcon from "../images/icon-close nav.svg";
 
-const DualPlayerStats = ({ setShowDualPlayerStats, opponentProfile, getUserProfiles }) => {
+const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 	const { getPlayerStats, dualPlayerStats, p1Username, p2Username, user } = useCheckContext();
 
 	const [twoUsersDetected, setTwoUsersDetected] = useState(null);
+
+	const [opponentProfile, setOpponentProfile] = useState(null);
+	const getUserProfiles = async () => {
+		try {
+			const res = await Axios.post(
+				// "http://localhost:4001/api/user/profiles",
+				"https://rock-paper-scissors-app-iybf.onrender.com/api/user/profiles",
+				{
+					p1Username:
+						dualPlayerStats?.player1_username !== user?.username
+							? dualPlayerStats?.player1_username
+							: dualPlayerStats?.player2_username,
+				}
+			);
+			const updatedUser = res.data;
+
+			if (updatedUser) {
+				setOpponentProfile(updatedUser[0]);
+			}
+		} catch (error) {
+			if (error?.response?.status === 413) {
+				alert("File too large");
+			}
+			console.log(error);
+		}
+	};
 
 	useEffect(() => {
 		if (p1Username && p2Username) {
