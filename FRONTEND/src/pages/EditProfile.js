@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import profileIcon from "../images/person-circle-outline.svg";
 import Axios from "axios";
 import useCheckContext from "../hooks/useCheckContext";
@@ -6,7 +6,6 @@ import { useSearchParams } from "react-router-dom";
 import imageIcon from "../images/image-outline.svg";
 
 const EditProfile = ({
-	edit,
 	setEdit,
 	setImg,
 	img,

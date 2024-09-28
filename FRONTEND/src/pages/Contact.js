@@ -1,5 +1,4 @@
 import React from "react";
-import arrowBack from "../images/arrow-back-outline.svg";
 import Logo from "../components/Logo";
 
 const Contact = ({ setPage, setFeature }) => {
