@@ -166,15 +166,13 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 						</Link>{" "}
 						to know more about this mode. Click here to{" "}
 						<Link
+							to="/select-player-mode"
 							onClick={() => {
-								localStorage.setItem("player-mode", JSON.stringify("single"));
+								localStorage.removeItem("player-mode");
 								localStorage.removeItem("usernames");
-								window.location.href = "/";
 							}}
-							to="/"
 							className="here"
 						>
-							{" "}
 							Play Now
 						</Link>
 						.
@@ -225,11 +223,11 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 						<p>
 							Share the code with your opponent to play against them.{" "}
 							<Link
+								to="/select-player-mode"
 								onClick={() => {
-									localStorage.setItem("player-mode", JSON.stringify("dual"));
-									window.location.href = "/";
+									localStorage.removeItem("player-mode");
+									localStorage.removeItem("usernames");
 								}}
-								to="/"
 								className="here"
 							>
 								Play Now
@@ -242,13 +240,12 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 					</li>
 					<p>
 						<b>Normal</b>: In this mode, you are challenged by a smart computer who
-						tries to counter your moves wisely. Click
+						tries to counter your moves wisely. Click{" "}
 						<Link
 							to="/help?page=introduction"
 							className="here"
 							onClick={() => setPage("introduction")}
 						>
-							{" "}
 							here
 						</Link>{" "}
 						to know more about this mode. Click here to{" "}

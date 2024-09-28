@@ -149,7 +149,7 @@ const EditProfile = ({
 					<div>
 						<button
 							type="submit"
-							className="back-btn "
+							className="btn back-btn"
 							onClick={() => {
 								setEdit(false);
 								setSearchParams((params) => ({
@@ -157,7 +157,7 @@ const EditProfile = ({
 								}));
 							}}
 						>
-							Back
+							Cancel
 						</button>
 						{(img !== user?.image ||
 							newLocation.trim() !== user?.location ||
@@ -165,7 +165,7 @@ const EditProfile = ({
 							newBio.trim() !== user?.bio) && (
 							<button
 								type="submit"
-								className="save-btn"
+								className="btn save-btn"
 								onClick={() => updateProfile()}
 							>
 								Save Changes

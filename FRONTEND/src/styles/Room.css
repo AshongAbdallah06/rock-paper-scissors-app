@@ -7,22 +7,52 @@
 	text-align: center;
 }
 .room {
-	margin-top: 1rem;
+	display: flex;
+	flex-direction: column;
+	margin: 1rem 0;
 }
 .selection h1 {
 	font-size: 0.9rem;
 }
+.input-cont {
+	display: flex;
+	justify-content: center;
+	margin-bottom: 1rem;
+	transition: width 1s, height 1s 0.6s;
+	cursor: auto;
+	border-bottom: 1px solid gray;
+	flex-direction: column;
+	text-align: center;
+}
+.input-cont p {
+	margin-top: 1rem;
+}
+.room-input::placeholder {
+	margin-bottom: 10rem;
+}
 .room-input {
-	width: 12rem;
+	width: 3rem;
 	border: none;
 	outline: none;
-	border-bottom: 2px solid white;
 	background-color: transparent;
 	color: white;
 	font-size: 1rem;
-	padding: 0.3rem;
 	text-align: center;
+	transition: border-bottom 1s;
+	outline: none;
+	height: 0;
+	transition: width 0.2s, height 0.2s 0.1s;
+	width: 100%;
 }
+
+.input-cont:hover .room-input {
+	width: 100%;
+	height: 2.4rem;
+	border-left: 1px solid white;
+	border-right: 1px solid white;
+	border-top: 1px solid white;
+}
+
 .remember {
 	margin-top: 1rem;
 	display: flex;
@@ -35,8 +65,7 @@
 	margin-top: 2rem;
 }
 
-.mode-links a,
-.join-room {
+.mode-links a {
 	display: inline-block;
 	text-align: center;
 	text-decoration: none;
@@ -58,18 +87,20 @@
 	color: white;
 	text-decoration: underline;
 }
-.mode-links a:hover,
-.join-room:hover {
+.mode-links a:hover {
 	background-color: hsl(39, 89%, 49%);
 	color: white;
 	padding: 0.7rem;
+}
+.join {
+	background-color: #3498db;
 }
 .or {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin-top: 1.5rem;
-	width: 90%;
+	width: 100%;
 	color: rgb(211, 211, 211);
 }
 
@@ -91,20 +122,19 @@
 
 .change-mode {
 	color: white;
-	text-decoration: underline;
 	font-weight: bold;
-	padding: 0.5rem;
+	margin: 0.5rem;
 	border: none;
 	font-size: 1rem;
 	cursor: pointer;
 	text-align: center;
 	display: inline-block;
+	transition: all 0.15s;
 }
 .change-mode:hover {
 	color: hsl(40, 84%, 53%);
 }
 
-/* remember */
 .remember {
 	margin-top: 1rem;
 	display: flex;

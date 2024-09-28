@@ -49,6 +49,7 @@ const Login = () => {
 			if (user) {
 				setError({ email: "", password: "" });
 				localStorage.setItem("user", JSON.stringify(user));
+				localStorage.setItem("token", JSON.stringify(user.token));
 			}
 			window.location.href = "/";
 		} catch (err) {
@@ -75,7 +76,7 @@ const Login = () => {
 			</Link>
 			<h1>Login</h1>
 
-			<div className="group">
+			<div className="form-group">
 				<label>Email</label>
 				<input
 					type="text"
@@ -84,7 +85,7 @@ const Login = () => {
 				<p>{errors?.email?.message || error?.email}</p>
 			</div>
 
-			<div className="group">
+			<div className="form-group">
 				<label>Password</label>
 				<input
 					type="password"
@@ -93,7 +94,7 @@ const Login = () => {
 				<p>{errors?.password?.message || error?.password}</p>
 			</div>
 
-			<button>Login</button>
+			<button className="login-btn">Login</button>
 		</form>
 	);
 };

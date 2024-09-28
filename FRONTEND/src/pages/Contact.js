@@ -7,32 +7,43 @@ const Contact = ({ setPage, setFeature }) => {
 		<div className="contact">
 			<Logo />
 
-			<form className="feedback-form">
-				<h1 className="contact-header">Leave a message</h1>
-				<div>
+			<form>
+				<h1>Leave a message</h1>
+				<div className="form-group">
 					<label htmlFor="title">Title</label>
-					<input type="text" />
+					<input
+						type="text"
+						placeholder="Enter title here"
+					/>
 				</div>
-				<div>
+				<div className="form-group">
 					<label htmlFor="title">Message</label>
-					<textarea className="feedback" />
+					<textarea
+						className="feedback"
+						placeholder="Enter feedback here"
+					/>
 				</div>
 
-				<button>Submit</button>
-			</form>
+				<div>
+					<button
+						type="submit"
+						className="btn back-btn"
+						onClick={() => {
+							setPage("features");
+							setFeature("leaderboard");
+						}}
+					>
+						Back
+					</button>
 
-			<div className="buttons">
-				<button
-					className="next-btn"
-					onClick={() => {
-						setPage("features");
-						setFeature("leaderboard");
-					}}
-				>
-					<img src={arrowBack} />
-					Go Back
-				</button>
-			</div>
+					<button
+						type="submit"
+						className="btn submit"
+					>
+						Submit
+					</button>
+				</div>
+			</form>
 		</div>
 	);
 };

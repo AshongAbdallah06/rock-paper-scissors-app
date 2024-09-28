@@ -18,7 +18,7 @@ const Login = () => {
 		username: yup
 			.string()
 			.required("This field is required")
-			.matches(/^\w{3,20}$/, "Invalid username format"),
+			.matches(/^\w{3,}$/, "Invalid username format"),
 		password: yup
 			.string()
 			.required("This field is required")
@@ -58,6 +58,7 @@ const Login = () => {
 			if (user) {
 				setError({ email: "", username: "", password: "" });
 				localStorage.setItem("user", JSON.stringify(user));
+				localStorage.setItem("token", JSON.stringify(user.token));
 			}
 			window.location.href = "/";
 		} catch (err) {
@@ -84,25 +85,27 @@ const Login = () => {
 			</Link>
 			<h1>Signup</h1>
 
-			<div className="group">
+			<div className="form-group">
 				<label>Email</label>
 				<input
 					type="text"
 					{...register("email")}
+					maxLength={100}
 				/>
 				<p>{errors?.email?.message || error?.email}</p>
 			</div>
 
-			<div className="group">
+			<div className="form-group">
 				<label>Username</label>
 				<input
 					type="text"
 					{...register("username")}
+					maxLength={30}
 				/>
 				<p>{errors?.username?.message || error?.username}</p>
 			</div>
 
-			<div className="group">
+			<div className="form-group">
 				<label>Password</label>
 				<input
 					type="password"
@@ -111,7 +114,7 @@ const Login = () => {
 				<p>{errors?.password?.message}</p>
 			</div>
 
-			<div className="group">
+			<div className="form-group">
 				<label>Confirm Password</label>
 				<input
 					type="password"
@@ -120,7 +123,7 @@ const Login = () => {
 				<p>{errors?.confirmPassword?.message}</p>
 			</div>
 
-			<button>Signup</button>
+			<button className="signup-btn">Signup</button>
 		</form>
 	);
 };

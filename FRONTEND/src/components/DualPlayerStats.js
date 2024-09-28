@@ -88,16 +88,14 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 								</div>
 
 								<div className="profile-stats two-player">
-									<div>
-										<div className="stat-item two-player">
-											<div>
-												<h3>{dualPlayerStats?.player1_wins || 0}</h3>
-												<p>Wins</p>
-											</div>
-											<div>
-												<h3>{dualPlayerStats?.player1_losses || 0}</h3>
-												<p>Losses</p>
-											</div>
+									<div className="stat-item two-player">
+										<div>
+											<h3>{dualPlayerStats?.player1_wins || 0}</h3>
+											<p>Wins</p>
+										</div>
+										<div>
+											<h3>{dualPlayerStats?.player1_losses || 0}</h3>
+											<p>Losses</p>
 										</div>
 									</div>
 								</div>
@@ -135,16 +133,14 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 								</div>
 
 								<div className="profile-stats two-player">
-									<div>
-										<div className="stat-item two-player">
-											<div>
-												<h3>{dualPlayerStats?.player2_wins || 0}</h3>
-												<p>Wins</p>
-											</div>
-											<div>
-												<h3>{dualPlayerStats?.player2_losses || 0}</h3>
-												<p>Losses</p>
-											</div>
+									<div className="stat-item two-player">
+										<div>
+											<h3>{dualPlayerStats?.player2_wins || 0}</h3>
+											<p>Wins</p>
+										</div>
+										<div>
+											<h3>{dualPlayerStats?.player2_losses || 0}</h3>
+											<p>Losses</p>
 										</div>
 									</div>
 								</div>
