@@ -289,6 +289,7 @@ const useFunctions = () => {
 			const response = await Axios.get(
 				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/dual-player/${user?.username}`
 				// `http://localhost:4001/api/user/stats/dual-player/${username}`
+
 			);
 
 			const data = response.data;
