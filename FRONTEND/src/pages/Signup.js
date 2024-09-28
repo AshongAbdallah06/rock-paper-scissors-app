@@ -46,7 +46,6 @@ const Login = () => {
 		try {
 			const response = await Axios.post(
 				"https://rock-paper-scissors-app-iybf.onrender.com/api/user/signup",
-				// "http://localhost:4001/api/user/signup",
 				{
 					email: data?.email,
 					username: data?.username,

@@ -14,10 +14,9 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 	const getUserProfiles = async () => {
 		try {
 			const res = await Axios.post(
-				// "http://localhost:4001/api/user/profiles",
 				"https://rock-paper-scissors-app-iybf.onrender.com/api/user/profiles",
 				{
-					p1Username:
+					username:
 						dualPlayerStats?.player1_username !== user?.username
 							? dualPlayerStats?.player1_username
 							: dualPlayerStats?.player2_username,

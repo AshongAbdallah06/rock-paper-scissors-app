@@ -33,7 +33,6 @@ const EditProfile = ({
 	const updateProfile = async () => {
 		try {
 			const res = await Axios.patch(
-				// `http://localhost:4001/api/user/edit/profile/${user?.username}`,
 				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/edit/profile/${user?.username}`,
 				{
 					img,
