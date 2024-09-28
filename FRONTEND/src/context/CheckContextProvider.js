@@ -290,9 +290,9 @@ const CheckContextProvider = ({ children }) => {
 
 	const authorize = async () => {
 		try {
-			const res = await Axios.get(
+			await Axios.get(
 				"https://rock-paper-scissors-app-iybf.onrender.com/api/user",
-				// "http://localhost:4001/api/user",
+				// `http://localhost:4001/api/user/${user?.username}`,
 				{
 					headers: { Authorization: `Bearer ${user.token}` },
 				}
