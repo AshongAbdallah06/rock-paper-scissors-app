@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import useCheckContext from "../hooks/useCheckContext";
 import useFunctions from "../hooks/useFunctions";
@@ -25,9 +25,12 @@ const PlayerSelection = () => {
 		}
 	}, [roomID]);*/
 
+	const inputRef = useRef();
 	useEffect(() => {
 		socket.emit("active-rooms");
+		inputRef.current.focus();
 	}, []);
+
 	return (
 		<form
 			onSubmit={(e) => {
@@ -36,21 +39,27 @@ const PlayerSelection = () => {
 				roomID && setRoomIsSelected(true);
 			}}
 		>
-			<h1 style={{ textAlign: "center" }}>{roomID ? `ID: ${roomID}` : "Enter room ID: "}</h1>
-
 			<div className="room">
-				<input
-					type="text"
-					onChange={(e) => setRoomID(e.target.value)}
-					className="room-input"
-					maxLength={20}
-					defaultValue={roomID}
-				/>
-			</div>
+				<div
+					className="input-cont"
+					onClick={() => {
+						inputRef.current.focus();
+					}}
+				>
+					<input
+						ref={inputRef}
+						type="text"
+						onChange={(e) => setRoomID(e.target.value)}
+						className="room-input"
+						maxLength={10}
+						defaultValue={roomID}
+						placeholder="Type in here"
+					/>
+					<p> {roomID ? `ID: ${roomID} ` : "Hover to enter ID"}</p>
+				</div>
 
-			<div>
 				<Link
-					className="join-room"
+					className="btn join"
 					onClick={() => {
 						if (roomID) {
 							joinRoom(socket, roomID, setLeftRoom);
@@ -79,27 +88,29 @@ const PlayerSelection = () => {
 					<h3>Do you want to save </h3>
 				</div> */}
 
-				<span className="or">OR</span>
+				{/* <span className="or">OR</span> */}
 
-				<Link
-					className="change-mode"
-					style={{ marginTop: "1rem" }}
-					onClick={() => {
-						localStorage.removeItem("player-mode");
-						window.location.href = "/";
-					}}
-				>
-					Change Mode
-				</Link>
-				<Link
-					className="change-mode"
-					onClick={() => {
-						socket.emit("active-rooms");
-					}}
-					to="/available-rooms"
-				>
-					See Active Rooms
-				</Link>
+				<div className="links">
+					<Link
+						to="/select-player-mode"
+						className="change-mode"
+						style={{ marginTop: "1rem" }}
+						onClick={() => {
+							localStorage.removeItem("player-mode");
+						}}
+					>
+						Change Mode
+					</Link>
+					<Link
+						className="change-mode"
+						onClick={() => {
+							socket.emit("active-rooms");
+						}}
+						to="/available-rooms"
+					>
+						See Active Rooms
+					</Link>
+				</div>
 			</div>
 		</form>
 	);

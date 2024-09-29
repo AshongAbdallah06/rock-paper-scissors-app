@@ -25,9 +25,10 @@ const Profile = () => {
 				{ username }
 			);
 			const updatedUser = res.data;
+			const opponentData = res.data;
 
-			setOpponentProfile(updatedUser[0]);
-			if (updatedUser) {
+			if (opponentData) {
+				setOpponentProfile(opponentData[0]);
 				console.log("opponentProfile: ", opponentProfile);
 			}
 		} catch (error) {

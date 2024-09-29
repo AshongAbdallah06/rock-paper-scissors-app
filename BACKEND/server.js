@@ -340,10 +340,6 @@ io.on("connect", (socket) => {
 					data.player1_username,
 				]
 			);
-			const response = await pool.query("SELECT * FROM DUAL_PLAYER_SCORES");
-			const userStats = response.rows;
-
-			io.to(roomId).emit("updateDualPlayerStats", userStats);
 		} catch (error) {
 			console.log("🚀 ~ socket.on ~ error:", error);
 		}

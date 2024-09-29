@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import profileIcon from "../images/person-circle-outline.svg";
 import Axios from "axios";
 import useCheckContext from "../hooks/useCheckContext";
@@ -6,7 +6,6 @@ import { useSearchParams } from "react-router-dom";
 import imageIcon from "../images/image-outline.svg";
 
 const EditProfile = ({
-	edit,
 	setEdit,
 	setImg,
 	img,
@@ -149,7 +148,7 @@ const EditProfile = ({
 					<div>
 						<button
 							type="submit"
-							className="back-btn "
+							className="btn back-btn"
 							onClick={() => {
 								setEdit(false);
 								setSearchParams((params) => ({
@@ -157,7 +156,7 @@ const EditProfile = ({
 								}));
 							}}
 						>
-							Back
+							Cancel
 						</button>
 						{(img !== user?.image ||
 							newLocation.trim() !== user?.location ||
@@ -165,7 +164,7 @@ const EditProfile = ({
 							newBio.trim() !== user?.bio) && (
 							<button
 								type="submit"
-								className="save-btn"
+								className="btn save-btn"
 								onClick={() => updateProfile()}
 							>
 								Save Changes

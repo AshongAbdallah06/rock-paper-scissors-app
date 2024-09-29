@@ -19,6 +19,7 @@ const CheckContextProvider = ({ children }) => {
 	} = useFunctions();
 
 	const user = JSON.parse(localStorage.getItem("user"));
+	const token = JSON.parse(localStorage.getItem("token"));
 	//Check if it's a one player game
 	// When a player joins a room
 	const playerMode = JSON.parse(localStorage.getItem("player-mode"));
@@ -290,7 +291,7 @@ const CheckContextProvider = ({ children }) => {
 			await Axios.get(
 				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/${user?.username}`,
 				{
-					headers: { Authorization: `Bearer ${user.token}` },
+					headers: { Authorization: `Bearer ${user.token ? user.token : token}` },
 				}
 			);
 

@@ -4,6 +4,7 @@ import logo from "../images/logo.svg";
 import useCheckContext from "../hooks/useCheckContext";
 import Axios from "axios";
 import closeIcon from "../images/icon-close nav.svg";
+import { Link } from "react-router-dom";
 
 const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 	const { getPlayerStats, dualPlayerStats, p1Username, p2Username, user } = useCheckContext();
@@ -22,10 +23,10 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 							: dualPlayerStats?.player2_username,
 				}
 			);
-			const updatedUser = res.data;
+			const userData = res.data;
 
-			if (updatedUser) {
-				setOpponentProfile(updatedUser[0]);
+			if (userData) {
+				setOpponentProfile(userData[0]);
 			}
 		} catch (error) {
 			if (error?.response?.status === 413) {
@@ -69,7 +70,10 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 										alt="Profile"
 										className="profile-pic"
 									/>
-									<h1 className="profile-name">
+									<Link
+										className="profile-name"
+										to={`/p/${dualPlayerStats?.player1_username}`}
+									>
 										{(dualPlayerStats?.player1_username === user?.username &&
 											"You") ||
 											dualPlayerStats?.player1_username}
@@ -79,7 +83,7 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 												? user?.age
 												: opponentProfile?.age}
 										</span>
-									</h1>
+									</Link>
 									<p className="profile-location">
 										{user?.username === dualPlayerStats?.player1_username
 											? user?.location
@@ -88,16 +92,14 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 								</div>
 
 								<div className="profile-stats two-player">
-									<div>
-										<div className="stat-item two-player">
-											<div>
-												<h3>{dualPlayerStats?.player1_wins || 0}</h3>
-												<p>Wins</p>
-											</div>
-											<div>
-												<h3>{dualPlayerStats?.player1_losses || 0}</h3>
-												<p>Losses</p>
-											</div>
+									<div className="stat-item two-player">
+										<div>
+											<h3>{dualPlayerStats?.player1_wins || 0}</h3>
+											<p>Wins</p>
+										</div>
+										<div>
+											<h3>{dualPlayerStats?.player1_losses || 0}</h3>
+											<p>Losses</p>
 										</div>
 									</div>
 								</div>
@@ -116,7 +118,10 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 										alt="Profile"
 										className="profile-pic"
 									/>
-									<h1 className="profile-name">
+									<Link
+										to={`/p/${dualPlayerStats?.player2_username}`}
+										className="profile-name"
+									>
 										{(dualPlayerStats?.player2_username === user?.username &&
 											"You") ||
 											dualPlayerStats?.player2_username}
@@ -126,7 +131,7 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 												? user?.age
 												: opponentProfile?.age}
 										</span>
-									</h1>
+									</Link>
 									<p className="profile-location">
 										{user?.username === dualPlayerStats?.player2_username
 											? user?.location
@@ -135,16 +140,14 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 								</div>
 
 								<div className="profile-stats two-player">
-									<div>
-										<div className="stat-item two-player">
-											<div>
-												<h3>{dualPlayerStats?.player2_wins || 0}</h3>
-												<p>Wins</p>
-											</div>
-											<div>
-												<h3>{dualPlayerStats?.player2_losses || 0}</h3>
-												<p>Losses</p>
-											</div>
+									<div className="stat-item two-player">
+										<div>
+											<h3>{dualPlayerStats?.player2_wins || 0}</h3>
+											<p>Wins</p>
+										</div>
+										<div>
+											<h3>{dualPlayerStats?.player2_losses || 0}</h3>
+											<p>Losses</p>
 										</div>
 									</div>
 								</div>

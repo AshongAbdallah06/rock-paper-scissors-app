@@ -64,12 +64,10 @@ const Introduction = ({ setPage, setSearchParams, feature }) => {
 				</p>
 
 				<div className="outcome-images">
-					<div>
-						<img
-							src={rulesNormal}
-							alt=""
-						/>
-					</div>
+					<img
+						src={rulesNormal}
+						alt="Image display of rules for normal game mode"
+					/>
 				</div>
 			</section>
 

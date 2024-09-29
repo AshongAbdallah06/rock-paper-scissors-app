@@ -134,7 +134,7 @@ const Profile = () => {
 								>
 									Edit Profile
 								</button>
-								<button className="challenge-btn">Refetch Stats</button>
+								<button className="challenge-btn">Logout</button>
 							</div>
 						</div>
 					) : (

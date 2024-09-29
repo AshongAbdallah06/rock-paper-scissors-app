@@ -46,6 +46,10 @@
 .help .content section {
 	padding: 1rem;
 	border-bottom: 1px solid #585454;
+	display: flex;
+	justify-content: center;
+	flex-direction: column;
+	align-items: center;
 }
 .help .content section:first-child {
 	margin-top: 0;
@@ -115,6 +119,7 @@ video {
 	text-align: center;
 	margin-bottom: 0.3rem;
 	cursor: pointer;
+	padding: 0 1rem;
 	border: 1px solid #255ff4;
 }
 .buttons div:hover {
@@ -143,4 +148,18 @@ video {
 }
 .next-btn:hover {
 	background-color: hsl(39, 100%, 67%);
+}
+
+.contact {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: auto;
+}
+
+.submit {
+	background-color: #3498db;
+	text-align: right;
+	width: 100%;
 }

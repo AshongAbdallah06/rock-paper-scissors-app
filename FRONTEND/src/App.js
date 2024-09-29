@@ -24,7 +24,6 @@ import Loader from "./components/Loader";
 import Logo from "./components/Logo";
 import Help from "./pages/Help";
 import Axios from "axios";
-import ErrorOccurred from "./components/ErrorOccurred";
 import Contact from "./pages/Contact";
 import AvailableRooms from "./components/AvailableRooms";
 import EditProfile from "./pages/EditProfile";
@@ -63,8 +62,6 @@ function Loading({ isRendered, setIsRendered, children }) {
 }
 
 function LoadingApp({ isAppRendered, setIsAppRendered, children }) {
-	const location = useLocation();
-
 	useEffect(() => {
 		setIsAppRendered(false);
 
@@ -86,15 +83,8 @@ function LoadingApp({ isAppRendered, setIsAppRendered, children }) {
 }
 
 function App() {
-	const {
-		playerIsChosen,
-		roomIsSelected,
-		userExists,
-		setUserExists,
-		isOnePlayer,
-		user,
-		authorize,
-	} = useCheckContext();
+	const { playerIsChosen, roomIsSelected, userExists, isOnePlayer, user, authorize } =
+		useCheckContext();
 	const [isRendered, setIsRendered] = useState(false);
 	const [isAppRendered, setIsAppRendered] = useState(false);
 
@@ -110,8 +100,6 @@ function App() {
 				- Cant view profile, leaderboard
 				- Cant play bonus or dual mode
 	 */
-
-	/**fixme: refactor CSS */
 
 	const [isServerOk, setIsServerOk] = useState(true);
 	const startServer = async () => {
@@ -137,7 +125,6 @@ function App() {
 
 	return (
 		<>
-			{/* {errorOccurred && <ErrorOccurred />} */}
 			<LoadingApp
 				isAppRendered={isAppRendered}
 				setIsAppRendered={setIsAppRendered}
@@ -182,47 +169,41 @@ function App() {
 						}
 					/>
 
-					{!isOnePlayer && (
-						<Route
-							path="/select-room"
-							element={
-								<PrivateRoute userExists={userExists}>
-									<Logo />
+					<Route
+						path="/select-room"
+						element={
+							<PrivateRoute userExists={userExists}>
+								<Logo />
 
-									<Room />
-								</PrivateRoute>
-							}
-						/>
-					)}
+								{!isOnePlayer ? <Room /> : <Navigate to="/" />}
+							</PrivateRoute>
+						}
+					/>
 
-					{!isOnePlayer && (
-						<Route
-							path="/available-rooms"
-							element={
-								<PrivateRoute userExists={userExists}>
-									<Logo />
+					<Route
+						path="/available-rooms"
+						element={
+							<PrivateRoute userExists={userExists}>
+								<Logo />
 
-									<AvailableRooms />
-								</PrivateRoute>
-							}
-						/>
-					)}
+								<AvailableRooms />
+							</PrivateRoute>
+						}
+					/>
 
-					{isOnePlayer && (
-						<Route
-							path="/leaderboard"
-							element={
-								<PrivateRoute userExists={userExists}>
-									<Loading
-										isRendered={isRendered}
-										setIsRendered={setIsRendered}
-									>
-										<Leaderboard />
-									</Loading>
-								</PrivateRoute>
-							}
-						/>
-					)}
+					<Route
+						path="/leaderboard"
+						element={
+							<PrivateRoute userExists={userExists}>
+								<Loading
+									isRendered={isRendered}
+									setIsRendered={setIsRendered}
+								>
+									{isOnePlayer ? <Leaderboard /> : <Navigate to="/" />}
+								</Loading>
+							</PrivateRoute>
+						}
+					/>
 
 					<Route
 						path={"/help"}
