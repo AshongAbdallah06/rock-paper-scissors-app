@@ -199,7 +199,7 @@ function App() {
 									isRendered={isRendered}
 									setIsRendered={setIsRendered}
 								>
-									<Leaderboard />
+									{isOnePlayer ? <Leaderboard /> : <Navigate to="/" />}
 								</Loading>
 							</PrivateRoute>
 						}
