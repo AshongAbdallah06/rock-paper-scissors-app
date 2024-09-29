@@ -93,7 +93,7 @@ const PlayerSelection = () => {
 				<div className="links">
 					<Link
 						to="/select-player-mode"
-						className="change-mode"
+						className="link-item"
 						style={{ marginTop: "1rem" }}
 						onClick={() => {
 							localStorage.removeItem("player-mode");
@@ -102,7 +102,7 @@ const PlayerSelection = () => {
 						Change Mode
 					</Link>
 					<Link
-						className="change-mode"
+						className="link-item"
 						onClick={() => {
 							socket.emit("active-rooms");
 						}}

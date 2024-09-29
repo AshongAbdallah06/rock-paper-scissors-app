@@ -70,7 +70,7 @@ const Login = () => {
 		>
 			<Link
 				to="/signup"
-				className="links"
+				className="link-item links"
 			>
 				Signup
 			</Link>

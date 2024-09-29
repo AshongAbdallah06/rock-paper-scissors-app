@@ -79,7 +79,7 @@ const Login = () => {
 		>
 			<Link
 				to="/login"
-				className="links"
+				className="link-item links"
 			>
 				Login
 			</Link>

@@ -31,8 +31,8 @@ form .links {
 	font-weight: 700;
 	font-size: 1.3rem;
 }
-form .links:hover {
-	text-decoration: underline;
+form .links a:first-child {
+	margin-right: 1rem;
 }
 
 .login-btn,
