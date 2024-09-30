@@ -61,7 +61,7 @@ const EditProfile = ({
 	const [searchParams, setSearchParams] = useSearchParams("");
 
 	return (
-		<>
+		<div className="edit-container">
 			<div className="profile-header edit">
 				<div className="image-container">
 					<div className="image-overlay">
@@ -145,7 +145,7 @@ const EditProfile = ({
 						/>
 					</div>
 
-					<div>
+					<div className="buttons">
 						<button
 							type="submit"
 							className="btn back-btn"
@@ -173,7 +173,7 @@ const EditProfile = ({
 					</div>
 				</form>
 			</div>
-		</>
+		</div>
 	);
 };
 

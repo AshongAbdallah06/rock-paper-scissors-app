@@ -166,6 +166,11 @@
 		/* margin: auto; */
 		margin-top: 8rem;
 	}
+	.profile-container {
+		margin-top: 8rem;
+		border-radius: 0;
+	}
+
 	.selection,
 	.loader {
 		display: flex;
@@ -178,6 +183,21 @@
 		justify-content: center;
 		align-items: center;
 		margin-top: 10rem;
+	}
+	.edit-container {
+		margin-top: 8rem;
+	}
+	.edit-profile-form {
+		margin-top: 0;
+	}
+	form .room {
+		margin-top: 10rem;
+	}
+	.help .sidebar {
+		display: none;
+	}
+	.help .content {
+		padding: 2rem;
 	}
 }
 
@@ -328,9 +348,35 @@
 	.p2 {
 		right: -200px;
 	}
+	.edit-container {
+		margin-top: 8rem;
+	}
+	.profile-container {
+		border-radius: 0;
+		margin-top: 5rem;
+	}
+	.help .sidebar {
+		display: none;
+	}
+	.help .content {
+		padding: 2rem;
+	}
+	.help .content h1 {
+		text-align: center;
+	}
 }
 
 @media (min-height: 1000px) {
+	.profile-container {
+		border-radius: 0;
+		margin-top: -13rem;
+	}
+	form .room {
+		margin-top: -15rem;
+	}
+	.help .content {
+		padding: 2rem;
+	}
 	.scoreBoard {
 		margin-top: -20rem;
 	}
@@ -363,6 +409,12 @@
 	.leaderboard {
 		margin-top: -25rem;
 	}
+	.edit-container {
+		margin-top: 0;
+	}
+	form .room {
+		margin-top: -25rem;
+	}
 }
 @media (min-width: 1200px) and (min-height: 500px) {
 	.scoreBoard {
@@ -383,6 +435,12 @@
 	.leaderboard {
 		margin-top: -33rem;
 	}
+	.edit-container {
+		margin-top: -10rem;
+	}
+	form .room {
+		margin-top: -30rem;
+	}
 }
 /* Ipad Pro and Surface Pro 7 */
 @media (min-height: 1300px) {
@@ -391,5 +449,11 @@
 	}
 	.leaderboard {
 		margin-top: -40rem;
+	}
+	.edit-container {
+		margin-top: -10rem;
+	}
+	form .room {
+		margin-top: -35rem;
 	}
 }

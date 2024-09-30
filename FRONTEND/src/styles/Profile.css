@@ -174,6 +174,7 @@ input[type="file"] {
 .form-group {
 	margin-bottom: 20px;
 	margin-top: 0;
+	width: 100%;
 }
 .form-group.shared {
 	display: grid;
@@ -215,7 +216,10 @@ input[type="file"] {
 	outline: none;
 	border-color: #3498db;
 }
-
+.edit-profile-container .buttons {
+	width: 100%;
+	flex-direction: column;
+}
 .save-btn {
 	background-color: #3498db;
 }

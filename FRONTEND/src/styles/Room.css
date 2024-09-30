@@ -6,11 +6,6 @@
 	color: white;
 	text-align: center;
 }
-.room {
-	display: flex;
-	flex-direction: column;
-	margin: 1rem 0;
-}
 .selection h1 {
 	font-size: 0.9rem;
 }
@@ -40,6 +35,11 @@
 }
 .input-cont p {
 	margin-top: 1rem;
+}
+form .room {
+	display: flex;
+	flex-direction: column;
+	width: 100%;
 }
 .room-input::placeholder {
 	margin-bottom: 10rem;
