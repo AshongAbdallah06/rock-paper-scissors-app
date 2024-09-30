@@ -15,14 +15,13 @@ form {
 form h1 {
 	margin-bottom: 2rem;
 }
-form .room,
+
 form .group {
 	display: flex;
 	flex-direction: column;
 	margin: 1rem 0;
 	width: 100%;
 }
-
 form .links {
 	position: absolute;
 	top: 1rem;
@@ -30,6 +29,10 @@ form .links {
 	color: white;
 	font-weight: 700;
 	font-size: 1.3rem;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
 }
 form .links a:first-child {
 	margin-right: 1rem;

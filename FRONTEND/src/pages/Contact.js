@@ -23,7 +23,7 @@ const Contact = ({ setPage, setFeature }) => {
 					/>
 				</div>
 
-				<div>
+				<div className="buttons">
 					<button
 						type="submit"
 						className="btn back-btn"

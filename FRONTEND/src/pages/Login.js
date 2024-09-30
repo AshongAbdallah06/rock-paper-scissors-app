@@ -4,7 +4,6 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Axios from "axios";
-import "../styles/Form.css";
 
 const Login = () => {
 	const Schema = yup.object().shape({

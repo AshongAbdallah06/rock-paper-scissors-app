@@ -3,7 +3,7 @@ import video from "../../images/outcomes/Leaderboard.mp4";
 import arrowForward from "../../images/arrow-forward-outline.svg";
 import arrowBack from "../../images/arrow-back-outline.svg";
 import bonusRules from "../../images/image-rules-bonus.svg";
-import viewProfileVideo from "../../images/outcomes/view-profile.mp4";
+import profileView from "../../images/profile.png";
 import demo1 from "../../images/select-change-mode.png";
 import demo2 from "../../images/select-dual.png";
 import demo3 from "../../images/room-id.png";
@@ -113,12 +113,10 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 					</li>
 				</p>
 
-				<video
-					src={viewProfileVideo}
+				<img
+					src={profileView}
 					className="outcomes"
-					controls={false}
-					autoPlay={true}
-					muted={true}
+					alt=""
 				/>
 			</section>
 

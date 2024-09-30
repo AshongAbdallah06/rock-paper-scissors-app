@@ -7,6 +7,7 @@ import "./styles/Mobile.css";
 import "./styles/Chat.css";
 import "./styles/Sidebar.css";
 import "./styles/Room.css";
+import "./styles/Form.css";
 import { createContext, useEffect, useState } from "react";
 import useCheckContext from "./hooks/useCheckContext";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
