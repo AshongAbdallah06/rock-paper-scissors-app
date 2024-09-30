@@ -2,14 +2,9 @@ import React, { useEffect, useRef, useState } from "react";
 import video from "../../images/outcomes/Leaderboard.mp4";
 import arrowForward from "../../images/arrow-forward-outline.svg";
 import arrowBack from "../../images/arrow-back-outline.svg";
-import chatIcon from "../../images/chatbubbles-outline.svg";
 import bonusRules from "../../images/image-rules-bonus.svg";
 import viewProfileVideo from "../../images/outcomes/view-profile.mp4";
 import demo1 from "../../images/select-change-mode.png";
-import statsIcon from "../../images/stats-chart-outline.svg";
-import modeIcon from "../../images/game-controller-outline.svg";
-import profileIcon from "../../images/person-circle-outline.svg";
-
 import demo2 from "../../images/select-dual.png";
 import demo3 from "../../images/room-id.png";
 import demo4Normal from "../../images/dual-play-home-bonus.png";
@@ -57,11 +52,6 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 			<div ref={docsContentRef} />
 			<section ref={leaderboardRef}>
 				<div className="feature-header">
-					<img
-						src={statsIcon}
-						className="icons"
-						alt="chatIcon"
-					/>
 					<h1>View Live Leaderboard</h1>
 				</div>
 				<p>
@@ -89,11 +79,6 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 
 			<section ref={profileRef}>
 				<div className="feature-header">
-					<img
-						src={profileIcon}
-						className="icons"
-						alt="chatIcon"
-					/>
 					<h1>View Your Profile</h1>
 				</div>
 				<p>
@@ -139,11 +124,6 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 
 			<section ref={modesRef}>
 				<div className="feature-header">
-					<img
-						src={modeIcon}
-						className="icons"
-						alt="chatIcon"
-					/>
 					<h1>Game & Player Modes</h1>
 				</div>
 				<p>
@@ -330,11 +310,6 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 
 			<section ref={liveChatRef}>
 				<div className="feature-header">
-					<img
-						src={chatIcon}
-						className="icons"
-						alt="chatIcon"
-					/>
 					<h1>Live Chat</h1>
 				</div>
 				<p>

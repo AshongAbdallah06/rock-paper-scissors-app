@@ -1,10 +1,14 @@
 import React, { useState } from "react";
 import Logo from "../components/Logo";
 import statsIcon from "../images/stats-chart-outline.svg";
+import upIcon from "../images/chevron-up-outline.svg";
 import downIcon from "../images/chevron-down-outline.svg";
 import chatIcon from "../images/chatbubbles-outline.svg";
 import modeIcon from "../images/game-controller-outline.svg";
+import rulesIcon from "../images/book-outline.svg";
 import profileIcon from "../images/person-circle-outline.svg";
+import overviewIcon from "../images/document-text-outline.svg";
+import playIcon from "../images/play-outline.svg";
 import { Link } from "react-router-dom";
 
 const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
@@ -36,7 +40,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 					/>
 				) : (
 					<img
-						src={statsIcon}
+						src={upIcon}
 						alt="copyIcon"
 						className="down-icon"
 						title="copy"
@@ -60,7 +64,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 						}}
 					>
 						<img
-							src={statsIcon}
+							src={overviewIcon}
 							alt="copyIcon"
 							className="down-icon"
 							title="copy"
@@ -77,7 +81,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 						}}
 					>
 						<img
-							src={statsIcon}
+							src={rulesIcon}
 							alt="copyIcon"
 							className="down-icon"
 							title="copy"
@@ -94,7 +98,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 						}}
 					>
 						<img
-							src={statsIcon}
+							src={playIcon}
 							alt="copyIcon"
 							className="down-icon"
 							title="copy"
@@ -126,7 +130,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 					/>
 				) : (
 					<img
-						src={statsIcon}
+						src={upIcon}
 						alt="down-icon"
 						className="down-icon"
 						title="Fold"
