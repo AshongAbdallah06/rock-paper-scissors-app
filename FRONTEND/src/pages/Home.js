@@ -13,7 +13,7 @@ import DualPlayerStats from "../components/DualPlayerStats";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
-	const { isOnePlayer, moveAck, leftRoom, setLeftRoom, socket, user, dualPlayerStats } =
+	const { isOnePlayer, moveAck, leftRoom, setLeftRoom, socket, user, setIsRulesModalShow } =
 		useCheckContext();
 	const { joinRoom } = useFunctions();
 
@@ -80,7 +80,6 @@ const Home = () => {
 						setSidebarIsShowing={setSidebarIsShowing}
 					/>
 
-					{!isOnePlayer && showCopiedAlert && <CopiedAlert />}
 					{!isOnePlayer && moveAck && <p className="copied-alert">{moveAck.msg}</p>}
 					{!isOnePlayer && leftRoom && showWhoLeft && (
 						<p className="copied-alert">{leftRoom}</p>
@@ -95,7 +94,6 @@ const Home = () => {
 
 					{sidebarIsShowing && (
 						<Footer
-							setShowCopiedAlert={setShowCopiedAlert}
 							user={user}
 							setSidebarIsShowing={setSidebarIsShowing}
 							setChatIsShowing={setChatIsShowing}
@@ -105,6 +103,13 @@ const Home = () => {
 							setShowDualPlayerStats={setShowDualPlayerStats}
 						/>
 					)}
+
+					<button
+						className="rules-btn"
+						onClick={() => setIsRulesModalShow(true)}
+					>
+						RULES
+					</button>
 				</>
 			)}
 		</>

@@ -16,7 +16,6 @@ import PlayerSelection from "./pages/PlayerSelection";
 import Room from "./pages/Room";
 import Home from "./pages/Home";
 import Leaderboard from "./pages/Leaderboard";
-import Audios from "./components/Audios";
 import Profile from "./pages/Profile";
 import PlayerProfile from "./pages/PlayerProfile";
 import NotFound from "./pages/NotFound";
@@ -129,7 +128,6 @@ function App() {
 				isAppRendered={isAppRendered}
 				setIsAppRendered={setIsAppRendered}
 			>
-				<Audios />
 				<Routes>
 					<Route
 						path="/"

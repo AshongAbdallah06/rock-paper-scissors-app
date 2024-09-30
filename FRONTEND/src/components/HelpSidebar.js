@@ -27,7 +27,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 					<img
 						src={downIcon}
 						alt="copyIcon"
-						className="copy-icon"
+						className="down-icon"
 						title="copy"
 						onClick={() => {
 							setShowFeaturesDropdown(false);
@@ -38,7 +38,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 					<img
 						src={statsIcon}
 						alt="copyIcon"
-						className="copy-icon"
+						className="down-icon"
 						title="copy"
 						onClick={() => {
 							setShowFeaturesDropdown(false);
@@ -62,7 +62,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 						<img
 							src={statsIcon}
 							alt="copyIcon"
-							className="copy-icon"
+							className="down-icon"
 							title="copy"
 						/>
 						Overview
@@ -79,7 +79,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 						<img
 							src={statsIcon}
 							alt="copyIcon"
-							className="copy-icon"
+							className="down-icon"
 							title="copy"
 						/>
 						Rules
@@ -96,7 +96,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 						<img
 							src={statsIcon}
 							alt="copyIcon"
-							className="copy-icon"
+							className="down-icon"
 							title="copy"
 						/>
 						How To Play
@@ -116,7 +116,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 					<img
 						src={downIcon}
 						alt="down-icon"
-						className="copy-icon"
+						className="down-icon"
 						title="Collapse"
 						onClick={() => {
 							setShowIntroDropdown(false);
@@ -128,7 +128,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 					<img
 						src={statsIcon}
 						alt="down-icon"
-						className="copy-icon"
+						className="down-icon"
 						title="Fold"
 						onClick={() => {
 							setShowIntroDropdown(false);

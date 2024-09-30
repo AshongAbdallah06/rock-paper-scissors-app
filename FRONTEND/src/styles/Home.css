@@ -356,6 +356,23 @@ img[alt="scissors"] {
 	bottom: 0;
 	left: 0;
 }
+.rules-btn {
+	position: absolute;
+	color: white;
+	border: 1px solid rgb(99, 99, 99);
+	padding: 0.5rem 1rem;
+	border-radius: 4px;
+	bottom: 1rem;
+	right: 1rem;
+	cursor: pointer;
+	transition: all 0.15s;
+	background-color: transparent;
+	font-weight: bold;
+}
+.rules-btn:hover {
+	background-color: rgba(0, 0, 0, 0.1);
+	transform: scale(1.01);
+}
 .rules-modal {
 	position: absolute;
 	top: 50%;
@@ -478,27 +495,10 @@ img[alt="scissors"] {
 	height: 1rem;
 }
 
-.copy-icon {
+.down-icon {
 	height: 1rem;
 	width: 1rem;
 	transition: all 0.15s;
-}
-.room-name {
-	display: flex;
-	align-items: center;
-	cursor: pointer;
-}
-.room-name:hover .copy-icon {
-	height: 1.2rem;
-	width: 1.2rem;
-}
-
-.room-name p {
-	margin-right: 0.5rem;
-}
-
-.audio {
-	display: none;
 }
 
 /* Loading Animation */

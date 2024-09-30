@@ -29,7 +29,6 @@ const Footer = ({
 	const {
 		roomID,
 		isOnePlayer,
-		setIsRulesModalShow,
 		socket,
 		setLeftRoom,
 		setRoomIsSelected,
@@ -38,10 +37,6 @@ const Footer = ({
 		setPlayerIsChosen,
 	} = useCheckContext();
 	const { leaveRoom, logout } = useFunctions();
-
-	const showModal = () => {
-		setIsRulesModalShow(true);
-	};
 
 	const copyInviteLink = async () => {
 		try {
@@ -97,44 +92,16 @@ const Footer = ({
 			{!isOnePlayer && (
 				<Link
 					className="link"
-					onClick={copyInviteLink}
-				>
-					<img
-						src={copyIcon}
-						alt="copyIcon"
-						className="copy-icon"
-						title="copy"
-					/>
-					Copy Invite Link
-				</Link>
-			)}
-
-			{!isOnePlayer && (
-				<Link
-					className="link"
 					onClick={() => setShowDualPlayerStats(true)}
 				>
 					<img
-						src={"copyIcon"}
-						alt="copyIcon"
-						className="copy-icon"
-						title="copy"
+						src={statsIcon}
+						alt="View Game Stats Icon"
+						title="Game Stats"
 					/>
 					View Game Stats
 				</Link>
 			)}
-
-			<Link
-				className="link"
-				onClick={showModal}
-			>
-				<img
-					src={rulesIcon}
-					alt="messages"
-					title="Leaderboard"
-				/>
-				Rules
-			</Link>
 
 			{!isOnePlayer && (
 				<Link
@@ -153,123 +120,91 @@ const Footer = ({
 				</Link>
 			)}
 
-			<Link
-				className="link"
-				onClick={() => {
-					setChangeMode(!changeMode);
-				}}
-			>
-				<img
-					src={modeIcon}
-					alt="messages"
-					title="Leaderboard"
-				/>
-				Change Mode
-			</Link>
+			<>
+				{!isOnePlayer && (
+					<div
+						onClick={() => {
+							setIsOnePlayer(true);
+							setPlayerIsChosen(true);
+							setRoomIsSelected(true);
+							setSidebarIsShowing(false);
 
-			{changeMode && (
-				<>
-					{!isOnePlayer && (
-						<div
-							onClick={() => {
-								setIsOnePlayer(true);
-								setPlayerIsChosen(true);
-								setRoomIsSelected(true);
-								setSidebarIsShowing(false);
+							window.location.reload();
+						}}
+						className="link"
+					>
+						<img
+							src={singleIcon}
+							alt="messages"
+							title="Leaderboard"
+						/>
+						Play Single
+					</div>
+				)}
 
-								window.location.reload();
-							}}
-							className="link sub-link"
-						>
-							<img
-								src={singleIcon}
-								alt="messages"
-								title="Leaderboard"
-							/>
-							Single
-						</div>
-					)}
+				{isOnePlayer && (
+					<Link
+						to="/select-room"
+						className="link"
+						onClick={() => {
+							setIsOnePlayer(false);
+							setPlayerIsChosen(true);
+							setSidebarIsShowing(false);
+						}}
+					>
+						<img
+							src={dualIcon}
+							alt="messages"
+							title="Leaderboard"
+						/>
+						Play Dual
+					</Link>
+				)}
+			</>
 
-					{isOnePlayer && (
-						<Link
-							to="/select-room"
-							className="link sub-link"
-							onClick={() => {
-								setIsOnePlayer(false);
-								setPlayerIsChosen(true);
-								setSidebarIsShowing(false);
-							}}
-						>
-							<img
-								src={dualIcon}
-								alt="messages"
-								title="Leaderboard"
-							/>
-							Dual
-						</Link>
-					)}
-				</>
-			)}
+			<>
+				{bonusState && (
+					<Link
+						onClick={() => {
+							localStorage.setItem("bonus", JSON.stringify(false));
+							setBonusState("setting");
+							setTimeout(() => {
+								setBonusState(JSON.parse(localStorage.getItem("bonus")));
+							}, 2000);
+							setSidebarIsShowing(false);
+						}}
+						className="link"
+					>
+						<img
+							src={normalIcon}
+							alt="messages"
+							title="Leaderboard"
+						/>
+						Normal
+					</Link>
+				)}
 
-			<Link
-				className="link"
-				onClick={() => {
-					setChangeGameType(!changeGameType);
-				}}
-			>
-				<img
-					src={appsIcon}
-					alt="messages"
-					title="Leaderboard"
-				/>
-				Select Game Type
-			</Link>
-
-			{changeGameType && (
-				<>
-					{bonusState && (
-						<Link
-							onClick={() => {
-								localStorage.setItem("bonus", JSON.stringify(false));
-								setBonusState("setting");
-								setTimeout(() => {
-									setBonusState(JSON.parse(localStorage.getItem("bonus")));
-								}, 2000);
-								setSidebarIsShowing(false);
-							}}
-							className="link sub-link"
-						>
-							<img
-								src={normalIcon}
-								alt="messages"
-								title="Leaderboard"
-							/>
-							Normal
-						</Link>
-					)}
-
-					{!bonusState && (
-						<Link
-							className="link sub-link"
-							onClick={() => {
-								localStorage.setItem("bonus", JSON.stringify(true));
-								setBonusState("setting");
-								setTimeout(() => {
-									setBonusState(JSON.parse(localStorage.getItem("bonus")));
-								}, 2000);
-								setSidebarIsShowing(false);
-							}}
-						>
-							<img
-								src={bonusIcon}
-								alt="messages"
-								title="Leaderboard"
-							/>
-							Bonus
-						</Link>
-					)}
-				</>
-			)}
+				{!bonusState && (
+					<Link
+						className="link"
+						onClick={() => {
+							localStorage.setItem("bonus", JSON.stringify(true));
+							setBonusState("setting");
+							setTimeout(() => {
+								setBonusState(JSON.parse(localStorage.getItem("bonus")));
+							}, 2000);
+							setSidebarIsShowing(false);
+						}}
+					>
+						<img
+							src={bonusIcon}
+							alt="messages"
+							title="Leaderboard"
+						/>
+						Bonus
+					</Link>
+				)}
+			</>
 
 			<Link
 				to={`/p/${user?.username}`}

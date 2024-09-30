@@ -23,6 +23,20 @@
 	border-bottom: 1px solid gray;
 	flex-direction: column;
 	text-align: center;
+	position: relative;
+}
+.copy-icon {
+	height: 1.2rem;
+	width: 1.2rem;
+	transition: all 0.15s;
+	position: absolute;
+	bottom: 5px;
+	cursor: pointer;
+	right: 0rem;
+}
+.copy-icon:hover {
+	height: 1.2rem;
+	width: 1.2rem;
 }
 .input-cont p {
 	margin-top: 1rem;
