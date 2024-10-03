@@ -65,7 +65,7 @@ const CheckContextProvider = ({ children }) => {
 	);
 	const [p1Username, setP1Username] = useState("");
 	const [p2Username, setP2Username] = useState("");
-	const [userExists, setUserExists] = useState(null);
+	const [userExists, setUserExists] = useState(JSON.parse(localStorage.getItem("user")) || null);
 	// Score on leaderboard
 	const [scores, setScores] = useState(null);
 	const [errorOccurred, setErrorOccurred] = useState(null);
