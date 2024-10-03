@@ -90,7 +90,7 @@ const Scores = ({ optChanges }) => {
 						</p>
 						<span style={{ color: "orange" }}>
 							{optChanges === "wins" && score?.wins}
-							{optChanges === "losses" && score?.loses}
+							{optChanges === "losses" && score?.losses}
 							{optChanges === "ties" && score?.ties}
 							{optChanges === "games_played" && score?.games_played}
 						</span>
@@ -108,8 +108,8 @@ const Scores = ({ optChanges }) => {
 						{/* LossesPercentage */}
 						{optChanges === "losses" && (
 							<span style={{ color: "orange" }}>
-								{score?.loses !== 0 && score?.games_played !== 0
-									? ((score?.loses / score?.games_played) * 100).toFixed(2)
+								{score?.losses !== 0 && score?.games_played !== 0
+									? ((score?.losses / score?.games_played) * 100).toFixed(2)
 									: 0}
 								%
 							</span>

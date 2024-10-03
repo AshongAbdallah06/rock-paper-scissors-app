@@ -232,7 +232,7 @@ const Footer = ({
 				<button
 					className="Btn logout-btn"
 					onClick={() => {
-						leaveRoom(socket, setLeftRoom);
+						leaveRoom(socket);
 						setRoomID(null);
 						setRoomIsSelected(false);
 					}}

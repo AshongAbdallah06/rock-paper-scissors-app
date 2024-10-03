@@ -46,7 +46,7 @@ const signup = async (req, res) => {
 		const userExist = await pool.query(`SELECT * FROM SCORES WHERE USERNAME = $1`, [username]);
 		if (userExist.rowCount < 1) {
 			await pool.query(
-				`INSERT INTO SCORES(username, wins, loses, ties, games_played) VALUES ($1, $2, $3, $4, $5)`,
+				`INSERT INTO SCORES(username, wins, losses, ties, games_played) VALUES ($1, $2, $3, $4, $5)`,
 				[username, 0, 0, 0, 0]
 			);
 		}

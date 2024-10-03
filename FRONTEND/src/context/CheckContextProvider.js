@@ -32,7 +32,7 @@ const CheckContextProvider = ({ children }) => {
 		playerMode && playerMode === "single" && true
 	);
 	// When a player leaves a room
-	const [leftRoom, setLeftRoom] = useState(false);
+	const [leftRoom, setLeftRoom] = useState("");
 	const [gameState, setGameState] = useState({ p1: null, p2: null, result: null });
 	const [isRulesModalShow, setIsRulesModalShow] = useState(false);
 	// PlayerMove and ComputerMove are used as Player1 and Player2 in dual-mode respectively
@@ -44,11 +44,10 @@ const CheckContextProvider = ({ children }) => {
 	const usernames = JSON.parse(localStorage.getItem("usernames"));
 
 	const [currentUserStats, setCurrentUserStats] = useState({
-		score: 0,
 		username: user?.username,
 		gamesPlayed: 0,
 		wins: 0,
-		loses: 0,
+		losses: 0,
 		ties: 0,
 	});
 	const [dualPlayerStats, setDualPlayerStats] = useState({
@@ -141,10 +140,6 @@ const CheckContextProvider = ({ children }) => {
 		!isOnePlayer && checkPlayersMoves(gameState, setPlayerMoveImage, setComputerMoveImage);
 	}, [isOnePlayer, gameState.p1, gameState.p2]);
 
-	const makeMove = (move) => {
-		socket.emit("move", { username: user?.username, move });
-	};
-
 	const moveOnclick = (move) => {
 		if (!isOnePlayer) {
 			if (!playerMove) {
@@ -152,7 +147,7 @@ const CheckContextProvider = ({ children }) => {
 			} else if (!computerMove) {
 				setComputerMove(move);
 			}
-			makeMove(move);
+			socket.emit("move", { username: user?.username, move });
 		} else {
 			setPlayerMove(move);
 			generateComputerMove(setComputerMove);
@@ -169,10 +164,9 @@ const CheckContextProvider = ({ children }) => {
 			if (username === user?.username) {
 				setCurrentUserStats({
 					...currentUserStats,
-					score: data.score || 0,
 					gamesPlayed: data.games_played || 0,
 					lastPlayed: data.last_played,
-					loses: data.loses || 0,
+					losses: data.losses || 0,
 					ties: data.ties || 0,
 					wins: data.wins || 0,
 					username: user?.username,
@@ -230,11 +224,13 @@ const CheckContextProvider = ({ children }) => {
 				} else if (result === "Player wins") {
 					updatedStats.wins = (updatedStats.wins || 0) + 1;
 				} else if (result === "Computer wins") {
-					updatedStats.loses = (updatedStats.loses || 0) + 1;
+					updatedStats.losses = (updatedStats.losses || 0) + 1;
 				}
 
 				updatedStats.gamesPlayed =
-					(updatedStats.wins || 0) + (updatedStats.loses || 0) + (updatedStats.ties || 0);
+					(updatedStats.wins || 0) +
+					(updatedStats.losses || 0) +
+					(updatedStats.ties || 0);
 
 				return updatedStats;
 			});
@@ -318,7 +314,6 @@ const CheckContextProvider = ({ children }) => {
 				playerMoveImage,
 				computerMoveImage,
 				socket,
-				makeMove,
 				gameState,
 				isOnePlayer,
 				setIsOnePlayer,

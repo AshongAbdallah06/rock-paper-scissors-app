@@ -103,7 +103,7 @@ const Profile = () => {
 								<p>Wins</p>
 							</div>
 							<div className="stat-item">
-								<h3>{selectedUserStats?.loses || 0}</h3>
+								<h3>{selectedUserStats?.losses || 0}</h3>
 								<p>Losses</p>
 							</div>
 							<div className="stat-item">

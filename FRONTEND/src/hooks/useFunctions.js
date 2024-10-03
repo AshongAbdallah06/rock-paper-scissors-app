@@ -237,21 +237,17 @@ const useFunctions = () => {
 			username: user?.username,
 		});
 
-		setLeftRoom(false);
-
 		socket.emit("clearMoves");
 	};
 
 	// Leave Room
-	const leaveRoom = (socket, setLeftRoom, roomID) => {
+	const leaveRoom = (socket) => {
 		try {
 			socket.emit("leaveRoom", user.username);
 		} catch (error) {
 			alert("Error Occurred. Check the console to see what occurred.");
 			console.log("🚀 ~ leaveRoom ~ error:", error);
 		}
-
-		setLeftRoom(true);
 	};
 
 	const getAllScores = (socket, setScores) => {
