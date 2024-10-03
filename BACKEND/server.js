@@ -262,7 +262,7 @@ io.on("connect", (socket) => {
 
 	socket.on("getScoresByLosses", async () => {
 		try {
-			const response = await pool.query("SELECT * FROM SCORES ORDER BY LOSES DESC");
+			const response = await pool.query("SELECT * FROM SCORES ORDER BY LOSSES DESC");
 			const scores = response.rows;
 
 			io.emit("getScoresByLosses", scores);
@@ -293,11 +293,11 @@ io.on("connect", (socket) => {
 		}
 	});
 
-	socket.on("updateStats", async ({ gamesPlayed, wins, loses, ties, username }) => {
+	socket.on("updateStats", async ({ gamesPlayed, wins, losses, ties, username }) => {
 		try {
 			await pool.query(
-				`UPDATE SCORES SET GAMES_PLAYED = $1, WINS = $2, LOSES = $3, TIES = $4 WHERE USERNAME = $5`,
-				[gamesPlayed, wins, loses, ties, username]
+				`UPDATE SCORES SET GAMES_PLAYED = $1, WINS = $2, LOSSES = $3, TIES = $4 WHERE USERNAME = $5`,
+				[gamesPlayed, wins, losses, ties, username]
 			);
 			const response = await pool.query("SELECT * FROM SCORES WHERE USERNAME = $1", [
 				username,
