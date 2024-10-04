@@ -88,10 +88,6 @@ const CheckContextProvider = ({ children }) => {
 			setDualPlayerStats(data[0]);
 		});
 
-		socket.on("getDualPlayerStats", (data) => {
-			setDualPlayerStats(data[0]);
-		});
-
 		// Handle username updates
 		socket.on("updateUsernames", (data) => {
 			!data?.p1Username && setP1Username(null);
