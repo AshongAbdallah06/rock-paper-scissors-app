@@ -17,7 +17,7 @@ const io = socketIo(server, {
 	},
 });
 
-const allowedOrigins = ["http://localhost:3000", "https://rock-paper-scissors-app-nine.vercel.app"];
+const allowedOrigins = ["http://localhost:3000", https://rock-paper-scissors-app-git-f-2d75bc-ashongabdallah06s-projects.vercel.app, "https://rock-paper-scissors-app-nine.vercel.app"];
 
 const corsOptions = {
 	origin: function (origin, callback) {
