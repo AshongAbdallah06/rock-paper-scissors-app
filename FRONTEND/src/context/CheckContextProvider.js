@@ -85,10 +85,7 @@ const CheckContextProvider = ({ children }) => {
 		socket.emit("getDualPlayerStats");
 
 		socket.on("getDualPlayerStats", (data) => {
-			setDualPlayerStats(data[0]);
-		});
-
-		socket.on("getDualPlayerStats", (data) => {
+			if (!data) return;
 			setDualPlayerStats(data[0]);
 		});
 
