@@ -3,7 +3,8 @@ import io from "socket.io-client";
 import Axios from "axios";
 import useFunctions from "../hooks/useFunctions";
 
-const socket = io("https://rock-paper-scissors-app-iybf.onrender.com");
+// const socket = io("https://rock-paper-scissors-app-iybf.onrender.com");
+const socket = io("http://localhost:4001");
 export const CheckContext = createContext();
 
 const CheckContextProvider = ({ children }) => {
@@ -82,9 +83,8 @@ const CheckContextProvider = ({ children }) => {
 			}, 3000);
 		});
 
-		socket.emit("getDualPlayerStats");
-
 		socket.on("getDualPlayerStats", (data) => {
+			if (!data) return;
 			setDualPlayerStats(data[0]);
 		});
 
@@ -153,7 +153,8 @@ const CheckContextProvider = ({ children }) => {
 	const getUserStats = async (username) => {
 		try {
 			const res = await Axios.get(
-				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${username}`
+				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${username}`
+				`http://localhost:4001/api/user/stats/${username}`
 			);
 			const data = res?.data[0] || {};
 
@@ -190,7 +191,8 @@ const CheckContextProvider = ({ children }) => {
 	const getPlayerStats = async (p1Username, p2Username) => {
 		try {
 			const res = await Axios.post(
-				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats`,
+				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats`,
+				`http://localhost:4001/api/user/stats`,
 				{
 					p1Username,
 					p2Username,
@@ -281,7 +283,8 @@ const CheckContextProvider = ({ children }) => {
 	const authorize = async () => {
 		try {
 			await Axios.get(
-				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/${user?.username}`,
+				// `https://rock-paper-scissors-app-iybf.onrender.com/api/user/${user?.username}`,
+				`http://localhost:4001/api/user/${user?.username}`,
 				{
 					headers: { Authorization: `Bearer ${user.token ? user.token : token}` },
 				}
