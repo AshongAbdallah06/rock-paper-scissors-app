@@ -83,6 +83,8 @@ const CheckContextProvider = ({ children }) => {
 			}, 3000);
 		});
 
+		socket.emit("getDualPlayerStats");
+
 		socket.on("getDualPlayerStats", (data) => {
 			if (!data) return;
 			setDualPlayerStats(data[0]);
