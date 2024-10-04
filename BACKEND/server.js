@@ -88,7 +88,7 @@ io.on("connect", (socket) => {
 				if (response.rowCount === 0) {
 					const randomId = uuid();
 					await pool.query(
-						`INSERT INTO DUAL_PLAYER_SCORES(game_id, player1_username, player1_wins, player1_losses, player2_username, player2_wins, player2_losses, games_played, ties, last_played)
+						`INSERT INTO DUAL_PLAYER_SCORES(game_id, player1_username, player1_wins, player1_losses, player2_username, player2_wins, player2_losses, games_played, ties)
  VALUES($1,$2,0,0,$3,0,0,0,0)`,
 						[randomId, usernames[roomId]?.p1Username, usernames[roomId]?.p2Username]
 					);
