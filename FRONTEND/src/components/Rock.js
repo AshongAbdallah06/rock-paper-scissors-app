@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import rockIcon from "../images/icon-rock.svg";
-import useCheckContext from "../hooks/useCheckContext";
+import useCheckContext from "../hooks/useContextProvider";
 import useFunctions from "../hooks/useFunctions";
 
 const Rock = ({ bonusState }) => {

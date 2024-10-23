@@ -8,13 +8,12 @@ import Axios from "axios";
 
 const useFunctions = () => {
 	const user = JSON.parse(localStorage.getItem("user"));
-	const bonus = JSON.parse(localStorage.getItem("bonus"));
 
 	// Generate the computer's move
-	const generateComputerMove = (setComputerMove) => {
-		const randomNumber = Math.floor(Math.random() * (bonus ? 5 : 3));
+	const generateComputerMove = (setComputerMove, bonusState) => {
+		const randomNumber = Math.floor(Math.random() * (bonusState ? 5 : 3));
 
-		if (!bonus) {
+		if (!bonusState) {
 			if (randomNumber === 0) {
 				setComputerMove("r");
 			} else if (randomNumber === 1) {
@@ -22,7 +21,7 @@ const useFunctions = () => {
 			} else {
 				setComputerMove("s");
 			}
-		} else if (bonus) {
+		} else if (bonusState) {
 			if (randomNumber === 0) {
 				setComputerMove("r");
 			} else if (randomNumber === 1) {
@@ -48,9 +47,10 @@ const useFunctions = () => {
 		setPlayerMoveImage,
 		setComputerMoveImage,
 		result,
-		setResult
+		setResult,
+		bonusState
 	) => {
-		if (!bonus) {
+		if (!bonusState) {
 			switch (playerMove) {
 				case "r":
 					setPlayerMoveImage(rockIcon);
@@ -95,7 +95,7 @@ const useFunctions = () => {
 					setResult(result);
 					break;
 			}
-		} else if (bonus) {
+		} else if (bonusState) {
 			switch (playerMove) {
 				case "r":
 					setPlayerMoveImage(rockIcon);
@@ -231,9 +231,9 @@ const useFunctions = () => {
 	};
 
 	// Join room
-	const joinRoom = (socket, roomID, setLeftRoom) => {
+	const joinRoom = (socket, roomID, bonusState) => {
 		socket.emit("join-room", {
-			id: `${roomID}-${bonus ? "bonus" : "normal"}`,
+			id: `${roomID}-${bonusState ? "bonus" : "normal"}`,
 			username: user?.username,
 		});
 
@@ -243,7 +243,7 @@ const useFunctions = () => {
 	// Leave Room
 	const leaveRoom = (socket) => {
 		try {
-			socket.emit("leaveRoom", user.username);
+			socket.emit("leave-room", user.username);
 		} catch (error) {
 			alert("Error Occurred. Check the console to see what occurred.");
 			console.log("🚀 ~ leaveRoom ~ error:", error);
@@ -265,15 +265,16 @@ const useFunctions = () => {
 		localStorage.removeItem("user");
 		localStorage.removeItem("usernames");
 		localStorage.removeItem("selectedUser");
+		localStorage.removeItem("token");
 
 		window.location.href = "/login";
 	};
 
 	// For all stats of the current user in dual player mode
-	const [allGamesPlayed, setAllGamesPlayed] = useState(false);
-	const [allWins, setAllWins] = useState(false);
-	const [allLosses, setAllLosses] = useState(false);
-	const [allTies, setAllTies] = useState(false);
+	const [allGamesPlayed, setAllGamesPlayed] = useState(0);
+	const [allWins, setAllWins] = useState(0);
+	const [allLosses, setAllLosses] = useState(0);
+	const [allTies, setAllTies] = useState(0);
 
 	let totalGamesPlayed = 0;
 	let totalWins = 0;
@@ -284,6 +285,7 @@ const useFunctions = () => {
 		try {
 			const response = await Axios.get(
 				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/dual-player/${username}`
+				// `http://localhost:4001/api/user/stats/dual-player/${username}`
 			);
 
 			const data = response.data;
@@ -309,6 +311,16 @@ const useFunctions = () => {
 		}
 	};
 
+	const getStorageItem = (itemName, returnItem) => {
+		const storedItem = localStorage.getItem(itemName);
+		try {
+			return storedItem ? JSON.parse(storedItem) : returnItem;
+		} catch (error) {
+			console.error("Error parsing opt changes from localStorage:", error);
+			return null; // Return null if parsing fails
+		}
+	};
+
 	return {
 		generateComputerMove,
 		checkPlayersMoves,
@@ -327,6 +339,7 @@ const useFunctions = () => {
 		allLosses,
 		allTies,
 		getAllDualPlayerStats,
+		getStorageItem,
 	};
 };
 

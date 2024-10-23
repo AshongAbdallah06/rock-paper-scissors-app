@@ -5,7 +5,7 @@ aside {
 	right: 0;
 	bottom: 10px;
 	color: white;
-	border: 1px solid white;
+	border: 3px solid hsl(238, 24%, 43%);
 	border-right: none;
 	width: 300px;
 	padding: 1rem;
@@ -52,7 +52,7 @@ aside header .close-icon {
 	margin-bottom: 1rem;
 }
 
-.input-container textarea {
+.input-container input {
 	width: 70%;
 	max-width: 70%;
 	padding: 0.5rem;
@@ -60,13 +60,24 @@ aside header .close-icon {
 	max-height: 40px;
 	outline: none;
 	resize: none;
-	border-radius: 0.5rem;
+	border-radius: 0.2rem;
 	margin-right: 0.5rem;
+	border: none;
 }
-
-/* Hide scrollbar for Chrome, Safari, and Opera */
-.input-container textarea::-webkit-scrollbar {
-	display: none;
+.input-container input::placeholder {
+	font-size: 0.8rem;
+	letter-spacing: 0.05rem;
+}
+.deleted {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-weight: normal;
+	font-size: 13px;
+	margin-bottom: 5px;
+}
+.deleted .username {
+	margin-right: 3px;
 }
 
 /* Hide scrollbar for IE, Edge, and Firefox */
@@ -89,24 +100,42 @@ textarea {
 .person {
 	word-wrap: break-word;
 	margin-bottom: 5px;
+	padding-left: 1rem;
+}
+
+.you {
+	border-left: 3px solid hsl(349, 71%, 52%);
+}
+
+.other {
+	border-left: 3px solid hsl(39, 89%, 49%);
 }
 
 .messages {
-	margin: 1rem;
+	margin: 1rem 0;
 	max-height: 480px;
 	overflow-y: scroll;
+}
+.messages.left {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 100%;
+	border: 2px solid white;
+	border-radius: 10px;
+	background-color: hsl(237, 45%, 17%);
 }
 .messages::-webkit-scrollbar {
 	display: none;
 }
-.messages .name {
+.person .username {
 	font-size: 0.9rem;
 	color: hsl(39, 89%, 49%);
+	font-weight: normal;
 }
 
-.messages .message {
+.person .message {
 	text-wrap: wrap;
-	width: 80%;
 	font-weight: bold;
 	white-space: pre-wrap;
 }

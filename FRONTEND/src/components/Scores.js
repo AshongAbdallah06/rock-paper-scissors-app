@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
-import useCheckContext from "../hooks/useCheckContext";
+import useContextProvider from "../hooks/useContextProvider";
 import { Link, useSearchParams } from "react-router-dom";
 
-const Scores = ({ optChanges }) => {
-	const { scores, getUserStats, setScores, socket, user } = useCheckContext();
+const ScoresDisplay = ({ optChanges }) => {
+	const { scores, getUserStats, setScores, socket, user } = useContextProvider();
 
 	const [searchParams, setSearchParams] = useSearchParams();
 
 	const optChangesFunc = (socketName, query) => {
 		socket.emit(socketName);
 		setSearchParams((params) => ({ ...params, filter_query: query }));
+		setScoresIsFetched(false);
 	};
 
 	const [scoresIsFetched, setScoresIsFetched] = useState(false);
@@ -24,7 +25,6 @@ const Scores = ({ optChanges }) => {
 			optChangesFunc("getScoresByGamesPlayed", "games_played");
 		}
 
-		setScoresIsFetched(false);
 		setTimeout(() => {
 			setScoresIsFetched(true);
 		}, 2000);
@@ -75,7 +75,7 @@ const Scores = ({ optChanges }) => {
 								user?.username === score?.username && "hsl(349, 70%, 56%)",
 							color: user?.username === score?.username && "black",
 						}}
-						className="user"
+						className={`user ${optChanges === "games_played" && "two-grid"}`}
 						key={score?.username}
 						onClick={() => {
 							getUserStats(score?.username);
@@ -124,20 +124,10 @@ const Scores = ({ optChanges }) => {
 								%
 							</span>
 						)}
-
-						{/* GamesPlayedPercentage */}
-						{optChanges === "games_played" && (
-							<span style={{ color: "orange" }}>
-								{score?.games_played !== 0 && score?.games_played !== 0
-									? ((score?.games_played / score?.games_played) * 100).toFixed(2)
-									: 0}
-								%
-							</span>
-						)}
 					</Link>
 				))}
 		</ul>
 	);
 };
 
-export default Scores;
+export default ScoresDisplay;

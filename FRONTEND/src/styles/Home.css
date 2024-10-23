@@ -6,7 +6,7 @@
 	padding: 0;
 	margin: 0;
 	box-sizing: border-box;
-	font-family: "Nunito";
+	font-family: "Nunito", "Arial";
 }
 html {
 	scroll-behavior: smooth;
@@ -42,20 +42,26 @@ ul {
 	animation-delay: 1s;
 }
 
-.copied-alert {
+.alert,
+.message-alert {
+	cursor: pointer;
 	color: white;
-	background: hsl(237, 49%, 15%);
+	font-weight: bold;
 	text-align: center;
 	position: absolute;
-	padding: 0.5rem;
+	padding: 1rem;
 	z-index: 1200;
 	top: 1rem;
 	left: 1rem;
-	border: 1px solid hsl(39, 89%, 49%);
+	border: 3px solid hsl(238, 24%, 43%);
 	border-radius: 0.3rem;
+	user-select: none;
 	animation: slideIn 0.7s ease;
+	background-color: hsl(237, 49%, 15%);
 }
-
+.message-alert:hover {
+	background-color: hsl(214, 47%, 23%);
+}
 body,
 #root {
 	position: relative;
@@ -384,6 +390,41 @@ img[alt="scissors"] {
 	border-radius: 0.625rem;
 	z-index: 100;
 }
+.change-mode-modal {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	text-align: center;
+}
+.change-mode-modal h2 {
+	text-align: center;
+}
+.change-mode-modal .buttons {
+	margin-top: 2rem;
+	gap: 1rem;
+	width: 15rem;
+}
+.change-mode-modal .buttons .cancel {
+	/* background-color: red; */
+	background-color: rgb(255, 93, 93);
+	transition: all 0.15s;
+}
+.change-mode-modal .buttons .cancel:hover {
+	transform: scale(1.1);
+	background-color: rgb(255, 42, 42);
+}
+
+.change-mode-modal .buttons .yes {
+	transition: all 0.15s;
+	/* background-color: red; */
+	background-color: #3498db;
+}
+.change-mode-modal .buttons .yes:hover {
+	transform: scale(1.1);
+	background-color: #169cf6;
+}
+
 .rules {
 	border-radius: 0.3125rem;
 	padding: 0.625rem 1.875rem;
@@ -588,10 +629,27 @@ img[alt="scissors"] {
 .no-display {
 	grid-template-columns: 1fr;
 	padding: 2rem;
+	color: white;
+	text-align: center;
 }
 .no-display span {
 	margin-top: 1rem;
 	font-weight: 200;
 	font-size: 1.1rem;
 	letter-spacing: 0.1rem;
+}
+
+.not-found {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	color: white;
+	text-align: center;
+}
+
+.not-found-btn {
+	background-color: hsl(189, 87%, 29%);
+	margin-top: 1rem;
+	font-weight: bold;
 }

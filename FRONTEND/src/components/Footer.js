@@ -1,13 +1,9 @@
-import React, { useState } from "react";
-import useCheckContext from "../hooks/useCheckContext";
-import copyIcon from "../images/copy-regular.svg";
+import { FC } from "react";
+import useContextProvider from "../hooks/useContextProvider";
 import { Link } from "react-router-dom";
 import profile from "../images/person-circle-outline.svg";
 import closeIcon from "../images/icon-close nav.svg";
 import statsIcon from "../images/stats-chart-outline.svg";
-import appsIcon from "../images/apps-outline.svg";
-import modeIcon from "../images/game-controller-outline.svg";
-import rulesIcon from "../images/book-outline.svg";
 import chatIcon from "../images/chatbubbles-outline.svg";
 import singleIcon from "../images/person-outline.svg";
 import dualIcon from "../images/people-outline.svg";
@@ -17,48 +13,25 @@ import helpIcon from "../images/help-circle-outline.svg";
 import useFunctions from "../hooks/useFunctions";
 
 const Footer = ({
-	setShowCopiedAlert,
 	user,
 	setSidebarIsShowing,
 	chatIsShowing,
 	setChatIsShowing,
-	bonusState,
-	setBonusState,
 	setShowDualPlayerStats,
+	setShowChangeModePopup,
 }) => {
 	const {
-		roomID,
 		isOnePlayer,
 		socket,
-		setLeftRoom,
 		setRoomIsSelected,
 		setRoomID,
 		setIsOnePlayer,
 		setPlayerIsChosen,
-	} = useCheckContext();
+		bonusState,
+		setBonusState,
+	} = useContextProvider();
 	const { leaveRoom, logout } = useFunctions();
 
-	const copyInviteLink = async () => {
-		try {
-			await navigator.clipboard.writeText(
-				`Your friend ${user?.username}, is inviting you to a game of rock-paper-scissors. Click on the link below to play against each other. \n \n https://rock-paper-scissors-app-iybf.onrender.com\n \n1. Click on Dual to enable 2-player mode.\n2. Enter the code '${roomID}' and click on Join Room to play against each other`
-			);
-
-			await navigator.clipboard.readText();
-
-			setShowCopiedAlert(true);
-
-			setTimeout(() => {
-				setShowCopiedAlert(false);
-			}, 2000);
-		} catch (error) {
-			console.log("🚀 ~ copyInviteLink ~ error:", error);
-			alert("Error copying link. Check the console to see what occurred.");
-		}
-	};
-
-	const [changeMode, setChangeMode] = useState(false);
-	const [changeGameType, setChangeGameType] = useState(false);
 	return (
 		<footer className="footer-sidebar">
 			<h1>Menu</h1>
@@ -91,6 +64,7 @@ const Footer = ({
 
 			{!isOnePlayer && (
 				<Link
+					to="/"
 					className="link"
 					onClick={() => setShowDualPlayerStats(true)}
 				>
@@ -105,6 +79,7 @@ const Footer = ({
 
 			{!isOnePlayer && (
 				<Link
+					to="/"
 					className="link"
 					onClick={() => {
 						setChatIsShowing(!chatIsShowing);
@@ -124,14 +99,10 @@ const Footer = ({
 				{!isOnePlayer && (
 					<div
 						onClick={() => {
-							setIsOnePlayer(true);
-							setPlayerIsChosen(true);
-							setRoomIsSelected(true);
-							setSidebarIsShowing(false);
-
-							window.location.reload();
+							setShowChangeModePopup(true);
 						}}
 						className="link"
+						title="Play against computer."
 					>
 						<img
 							src={singleIcon}
@@ -151,6 +122,7 @@ const Footer = ({
 							setPlayerIsChosen(true);
 							setSidebarIsShowing(false);
 						}}
+						title="Play against a friend"
 					>
 						<img
 							src={dualIcon}
@@ -163,13 +135,14 @@ const Footer = ({
 			</>
 
 			<>
-				{bonusState && (
+				{bonusState && isOnePlayer && (
 					<Link
+						to="/"
 						onClick={() => {
 							localStorage.setItem("bonus", JSON.stringify(false));
 							setBonusState("setting");
 							setTimeout(() => {
-								setBonusState(JSON.parse(localStorage.getItem("bonus")));
+								setBonusState(false);
 							}, 2000);
 							setSidebarIsShowing(false);
 						}}
@@ -184,14 +157,15 @@ const Footer = ({
 					</Link>
 				)}
 
-				{!bonusState && (
+				{!bonusState && isOnePlayer && (
 					<Link
+						to="/"
 						className="link"
 						onClick={() => {
 							localStorage.setItem("bonus", JSON.stringify(true));
 							setBonusState("setting");
 							setTimeout(() => {
-								setBonusState(JSON.parse(localStorage.getItem("bonus")));
+								setBonusState(true);
 							}, 2000);
 							setSidebarIsShowing(false);
 						}}
@@ -209,6 +183,7 @@ const Footer = ({
 			<Link
 				to={`/p/${user?.username}`}
 				className="link"
+				title="View your profile"
 			>
 				<img
 					src={profile}
@@ -220,6 +195,7 @@ const Footer = ({
 			<Link
 				to="/help"
 				className="link"
+				title="Get help"
 			>
 				<img
 					src={helpIcon}

@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import spockIcon from "../../images/icon-spock.svg";
-import useCheckContext from "../../hooks/useCheckContext";
+import useContextProvider from "../../hooks/useContextProvider";
 import useFunctions from "../../hooks/useFunctions";
 
 const Spock = ({ bonusState }) => {
-	const { moveOnclick, socket } = useCheckContext();
+	const { moveOnclick, socket } = useContextProvider();
 	const { sendMoveAck } = useFunctions();
 
 	return (

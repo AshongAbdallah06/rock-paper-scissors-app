@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logo from "../images/logo.svg";
-import useCheckContext from "../hooks/useCheckContext";
+import useContextProvider from "../hooks/useContextProvider";
 
 const ScoreBoard = () => {
 	const {
@@ -11,7 +11,7 @@ const ScoreBoard = () => {
 		p1Username,
 		p2Username,
 		user,
-	} = useCheckContext();
+	} = useContextProvider();
 
 	const [showPlayer1Score, setShowPlayer1Score] = useState(null);
 	const [showPlayer2Score, setShowPlayer2Score] = useState(null);
@@ -27,6 +27,7 @@ const ScoreBoard = () => {
 	}, [p1Username, p2Username]);
 
 	useEffect(() => {
+		if (!user) return;
 		getUserStats(user?.username);
 	}, [isOnePlayer, user?.username]);
 

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import useCheckContext from "../hooks/useCheckContext";
+import useContextProvider from "../hooks/useContextProvider";
 
 const PlayerSelection = () => {
-	const { setIsOnePlayer, setPlayerIsChosen, setRoomIsSelected } = useCheckContext();
+	const { setIsOnePlayer, setPlayerIsChosen, setRoomIsSelected } = useContextProvider();
 
 	const [renderRoutes, setRenderRoutes] = useState(false);
 

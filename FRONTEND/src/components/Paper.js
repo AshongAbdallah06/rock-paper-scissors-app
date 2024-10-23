@@ -1,10 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import paperIcon from "../images/icon-paper.svg";
-import useCheckContext from "../hooks/useCheckContext";
+import useContextProvider from "../hooks/useContextProvider";
 import useFunctions from "../hooks/useFunctions";
 
 const Paper = ({ bonusState }) => {
-	const { moveOnclick, socket } = useCheckContext();
+	const { moveOnclick, socket } = useContextProvider();
 	const { sendMoveAck } = useFunctions();
 
 	return (

@@ -1,44 +1,27 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import useCheckContext from "../hooks/useCheckContext";
+import useContextProvider from "../hooks/useContextProvider";
 import useFunctions from "../hooks/useFunctions";
 import copyIcon from "../images/copy-regular.svg";
-import CopiedAlert from "../components/CopiedAlert";
 
 const PlayerSelection = () => {
 	const {
 		roomID,
 		setRoomID,
 		setRoomIsSelected,
-		setIsOnePlayer,
 		isOnePlayer,
-		setLeftRoom,
+		setIsOnePlayer,
+		bonusState,
 		socket,
 		user,
-	} = useCheckContext();
+	} = useContextProvider();
 	const { joinRoom } = useFunctions();
 
-	/**todo: create remember id functionality 
-	 * const [rememberID, setRememberID] = useState(false);
-
+	const inputRef = useRef(null);
 	useEffect(() => {
-		if (rememberID) {
-			localStorage.setItem("room-id", JSON.stringify(roomID));
-		} else {
-			localStorage.removeItem("room-id");
+		if (inputRef.current) {
+			inputRef.current.focus();
 		}
-	}, [rememberID]);
-
-	useEffect(() => {
-		if (rememberID) {
-			localStorage.setItem("room-id", JSON.stringify(roomID));
-		}
-	}, [roomID]);*/
-
-	const inputRef = useRef();
-	useEffect(() => {
-		socket.emit("active-rooms");
-		inputRef.current.focus();
 	}, []);
 	const [showCopiedAlert, setShowCopiedAlert] = useState(false);
 
@@ -64,7 +47,7 @@ const PlayerSelection = () => {
 		<form
 			onSubmit={(e) => {
 				e.preventDefault();
-				roomID && joinRoom(socket, roomID, setLeftRoom);
+				roomID && !isOnePlayer && joinRoom(socket, roomID, bonusState);
 				roomID && setRoomIsSelected(true);
 			}}
 		>
@@ -72,7 +55,7 @@ const PlayerSelection = () => {
 				<div
 					className="input-cont"
 					onClick={() => {
-						inputRef.current.focus();
+						inputRef.current && inputRef.current.focus();
 					}}
 				>
 					<input
@@ -81,7 +64,7 @@ const PlayerSelection = () => {
 						onChange={(e) => setRoomID(e.target.value)}
 						className="room-input"
 						maxLength={10}
-						defaultValue={roomID}
+						defaultValue={roomID || ""}
 						placeholder="Type in here"
 					/>
 					<p> {roomID ? `ID: ${roomID} ` : "Hover to enter ID"}</p>
@@ -95,21 +78,19 @@ const PlayerSelection = () => {
 						/>
 					</div>
 				</div>
-				{!isOnePlayer && showCopiedAlert && <CopiedAlert />}
 
 				<Link
 					className="btn join"
 					onClick={() => {
 						if (roomID) {
-							joinRoom(socket, roomID, setLeftRoom);
+							!isOnePlayer && joinRoom(socket, roomID, bonusState);
 							setRoomIsSelected(true);
 							setIsOnePlayer(false);
-							socket.emit("active-rooms");
 						} else if (roomID === "") {
 							alert("Please enter an ID for the room");
 						}
 					}}
-					to={roomID && "/"}
+					to={roomID ? "/" : ""}
 				>
 					JOIN ROOM
 				</Link>
@@ -139,15 +120,6 @@ const PlayerSelection = () => {
 						}}
 					>
 						Change Mode
-					</Link>
-					<Link
-						className="link-item"
-						onClick={() => {
-							socket.emit("active-rooms");
-						}}
-						to="/available-rooms"
-					>
-						See Active Rooms
 					</Link>
 				</div>
 			</div>

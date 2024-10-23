@@ -5,9 +5,10 @@ import useFunctions from "../hooks/useFunctions";
 
 const socket = io("https://rock-paper-scissors-app-iybf.onrender.com");
 // const socket = io("http://localhost:4001");
-export const CheckContext = createContext();
 
-const CheckContextProvider = ({ children }) => {
+export const ContextProvider = createContext();
+
+const Context = ({ children }) => {
 	const {
 		checkPlayersMoves,
 		checkOptions,
@@ -17,39 +18,44 @@ const CheckContextProvider = ({ children }) => {
 		setComputerMoveImage,
 		generateComputerMove,
 		getAllScores,
+		getStorageItem,
 	} = useFunctions();
 
-	const user = JSON.parse(localStorage.getItem("user"));
-	const token = JSON.parse(localStorage.getItem("token"));
-	//Check if it's a one player game
-	// When a player joins a room
-	const playerMode = JSON.parse(localStorage.getItem("player-mode"));
+	const user = getStorageItem("user", null);
+	const token = getStorageItem("token", null);
+	const playerMode = getStorageItem("player-mode", null);
+
 	const [isOnePlayer, setIsOnePlayer] = useState(
 		playerMode && playerMode === "dual" ? false : true
 	);
-	const [playerIsChosen, setPlayerIsChosen] = useState(playerMode && true);
+	const [playerIsChosen, setPlayerIsChosen] = useState(playerMode ? true : false);
 	// When a player join a room
 	const [roomIsSelected, setRoomIsSelected] = useState(
-		playerMode && playerMode === "single" && true
+		playerMode && playerMode === "single" ? true : false
 	);
+
 	// When a player leaves a room
-	const [leftRoom, setLeftRoom] = useState("");
+	const [leftRoom, setLeftRoom] = useState(null);
 	const [gameState, setGameState] = useState({ p1: null, p2: null, result: null });
 	const [isRulesModalShow, setIsRulesModalShow] = useState(false);
 	// PlayerMove and ComputerMove are used as Player1 and Player2 in dual-mode respectively
 	const [playerMove, setPlayerMove] = useState(null);
 	const [computerMove, setComputerMove] = useState(null);
-	const [result, setResult] = useState("");
-	const [moveAck, setMoveAck] = useState(false);
-	const [roomID, setRoomID] = useState(JSON.parse(localStorage.getItem("room-id")) || null);
-	const usernames = JSON.parse(localStorage.getItem("usernames"));
+	const [result, setResult] = useState(null);
+	const [moveAck, setMoveAck] = useState(null);
+	const [roomID, setRoomID] = useState(null);
+	const [alertCounter, setAlertCounter] = useState(getStorageItem("alertCounter", 0));
+
+	const usernames = getStorageItem("usernames", null);
 
 	const [currentUserStats, setCurrentUserStats] = useState({
+		score: 0,
 		username: user?.username,
 		gamesPlayed: 0,
 		wins: 0,
 		losses: 0,
 		ties: 0,
+		lastPlayed: null,
 	});
 	const [dualPlayerStats, setDualPlayerStats] = useState({
 		player1_username: usernames?.p1Username,
@@ -62,11 +68,12 @@ const CheckContextProvider = ({ children }) => {
 		games_played: 0,
 	});
 	const [selectedUserStats, setSelectedUserStats] = useState(
-		JSON.parse(localStorage.getItem("selectedUser")) || null
+		getStorageItem("selectedUser", null)
 	);
 	const [p1Username, setP1Username] = useState("");
 	const [p2Username, setP2Username] = useState("");
-	const [userExists, setUserExists] = useState(JSON.parse(localStorage.getItem("user")) || null);
+	const [userExists, setUserExists] = useState(undefined);
+
 	// Score on leaderboard
 	const [scores, setScores] = useState(null);
 	const [errorOccurred, setErrorOccurred] = useState(null);
@@ -76,8 +83,8 @@ const CheckContextProvider = ({ children }) => {
 			setGameState(newGameState);
 		});
 
-		socket.on("move-made", (message) => {
-			setMoveAck(message);
+		socket.on("move-made", ({ msg }) => {
+			setMoveAck(msg);
 			setTimeout(() => {
 				setMoveAck("");
 			}, 3000);
@@ -86,7 +93,6 @@ const CheckContextProvider = ({ children }) => {
 		socket.emit("getDualPlayerStats");
 
 		socket.on("getDualPlayerStats", (data) => {
-			if (!data) return;
 			setDualPlayerStats(data[0]);
 		});
 
@@ -116,6 +122,8 @@ const CheckContextProvider = ({ children }) => {
 		};
 	}, [socket]);
 
+	const [bonusState, setBonusState] = useState(getStorageItem("bonus", false));
+
 	useEffect(() => {
 		if (isOnePlayer) {
 			checkOptions(
@@ -125,15 +133,15 @@ const CheckContextProvider = ({ children }) => {
 				setComputerMoveImage,
 				result,
 				setResult,
-				socket
+				bonusState
 			);
 		}
 	}, [playerMove, computerMove, isOnePlayer, result]);
 
 	useEffect(() => {
-		setPlayerMove(!isOnePlayer && gameState.p1);
-		setComputerMove(!isOnePlayer && gameState.p2);
-		setResult(!isOnePlayer && gameState.result);
+		setPlayerMove(!isOnePlayer ? gameState.p1 : "");
+		setComputerMove(!isOnePlayer ? gameState.p2 : "");
+		setResult(!isOnePlayer ? gameState.result : "");
 
 		!isOnePlayer && checkPlayersMoves(gameState, setPlayerMoveImage, setComputerMoveImage);
 	}, [isOnePlayer, gameState.p1, gameState.p2]);
@@ -148,7 +156,7 @@ const CheckContextProvider = ({ children }) => {
 			socket.emit("move", { username: user?.username, move });
 		} else {
 			setPlayerMove(move);
-			generateComputerMove(setComputerMove);
+			generateComputerMove(setComputerMove, bonusState);
 		}
 	};
 
@@ -158,11 +166,13 @@ const CheckContextProvider = ({ children }) => {
 				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/stats/${username}`
 				// `http://localhost:4001/api/user/stats/${username}`
 			);
+
 			const data = res?.data[0] || {};
 
 			if (username === user?.username) {
 				setCurrentUserStats({
 					...currentUserStats,
+					score: data.score || 0,
 					gamesPlayed: data.games_played || 0,
 					lastPlayed: data.last_played,
 					losses: data.losses || 0,
@@ -181,6 +191,10 @@ const CheckContextProvider = ({ children }) => {
 	};
 
 	useEffect(() => {
+		if (!currentUserStats) {
+			alert("No user present");
+			return;
+		}
 		if (
 			isOnePlayer &&
 			currentUserStats.username === user?.username &&
@@ -217,7 +231,16 @@ const CheckContextProvider = ({ children }) => {
 	useEffect(() => {
 		if (isOnePlayer) {
 			setCurrentUserStats((prevStats) => {
-				let updatedStats = { ...prevStats };
+				// let updatedStats = { ...prevStats };
+				let updatedStats = {
+					score: prevStats?.score || 0,
+					username: user?.username || "",
+					gamesPlayed: prevStats?.gamesPlayed || 0,
+					wins: prevStats?.wins || 0,
+					losses: prevStats?.losses || 0,
+					ties: prevStats?.ties || 0,
+					lastPlayed: prevStats?.lastPlayed || "",
+				};
 
 				if (result === "Tie") {
 					updatedStats.ties = (updatedStats.ties || 0) + 1;
@@ -236,8 +259,16 @@ const CheckContextProvider = ({ children }) => {
 			});
 		} else {
 			setDualPlayerStats((prevStats) => {
-				let updatedDualPlayerStats = { ...prevStats };
-
+				let updatedDualPlayerStats = {
+					player1_username: prevStats?.player1_username || "",
+					player1_wins: prevStats?.player1_wins || 0,
+					player1_losses: prevStats?.player1_losses || 0,
+					player2_username: prevStats?.player2_username || "",
+					player2_wins: prevStats?.player2_wins || 0,
+					player2_losses: prevStats?.player2_losses || 0,
+					ties: prevStats?.ties || 0,
+					games_played: prevStats?.games_played || 0,
+				};
 				if (result === "Tie") {
 					updatedDualPlayerStats.ties = (updatedDualPlayerStats.ties || 0) + 1;
 				} else if (result === "Player1 wins") {
@@ -263,6 +294,8 @@ const CheckContextProvider = ({ children }) => {
 	}, [result, isOnePlayer]);
 
 	useEffect(() => {
+		if (!dualPlayerStats) return;
+
 		if (dualPlayerStats?.games_played > 0) {
 			socket.emit("updateDualPlayerStats", dualPlayerStats);
 		}
@@ -288,7 +321,11 @@ const CheckContextProvider = ({ children }) => {
 				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/${user?.username}`,
 				// `http://localhost:4001/api/user/${user?.username}`,
 				{
-					headers: { Authorization: `Bearer ${user.token ? user.token : token}` },
+					headers: {
+						Authorization: `Bearer ${
+							user.token ? user.token : user.username && user.email && token
+						}`,
+					},
 				}
 			);
 
@@ -304,7 +341,7 @@ const CheckContextProvider = ({ children }) => {
 	}, [socket, result, playerMove]);
 
 	return (
-		<CheckContext.Provider
+		<ContextProvider.Provider
 			value={{
 				playerMove,
 				computerMove,
@@ -348,11 +385,15 @@ const CheckContextProvider = ({ children }) => {
 				p1Username,
 				p2Username,
 				user,
+				bonusState,
+				setBonusState,
+				alertCounter,
+				setAlertCounter,
 			}}
 		>
 			{children}
-		</CheckContext.Provider>
+		</ContextProvider.Provider>
 	);
 };
 
-export default CheckContextProvider;
+export default Context;

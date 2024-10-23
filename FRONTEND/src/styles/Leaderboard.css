@@ -15,17 +15,23 @@
 	grid-template-columns: repeat(3, 1fr);
 	text-align: center;
 }
+.header-labels.two-grid,
+.leaderboard-container .scores-display .user.two-grid {
+	grid-template-columns: repeat(2, 1fr);
+}
 .header-labels p {
 	font-size: 18px;
 	color: hsl(349, 70%, 56%);
 }
-
+.leaderboard {
+	width: 50%;
+}
 .leaderboard-container {
-	border: 1px solid white;
-	width: 25rem;
-	height: 30rem;
+	border: 3px solid hsl(238, 24%, 43%);
+	width: 100%;
 	padding: 1rem;
 	color: white;
+	border-radius: 10px;
 }
 .leaderboard-container a {
 	color: white;

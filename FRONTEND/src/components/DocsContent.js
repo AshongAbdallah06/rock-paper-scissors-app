@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC, RefObject } from "react";
 import Introduction from "./Docs/Introduction";
 import Other from "./Docs/Other";
 import Contact from "../pages/Contact";
@@ -9,7 +9,6 @@ const DocsContent = ({ page, setPage, docsContentRef, feature, setFeature, setSe
 			{page === "introduction" && (
 				<Introduction
 					setPage={setPage}
-					docsContentRef={docsContentRef}
 					feature={feature}
 					setSearchParams={setSearchParams}
 				/>

@@ -4,7 +4,7 @@ import Scissors from "./components/Scissors";
 import Rock from "./components/Rock";
 import AfterChoice from "./components/AfterChoice";
 import MakingMove from "./components/MakingMove";
-import useCheckContext from "./hooks/useCheckContext";
+import useContextProvider from "./hooks/useContextProvider";
 import rockIcon from "./images/icon-rock.svg";
 import paperIcon from "./images/icon-paper.svg";
 import scissorsIcon from "./images/icon-scissors.svg";
@@ -15,8 +15,8 @@ import Lizard from "./components/bonus/Lizard";
 import Spock from "./components/bonus/Spock";
 import Loader from "./components/Loader";
 
-const GameBoard = ({ bonusState }) => {
-	const { playerMove, computerMove, isOnePlayer } = useCheckContext();
+const GameBoard = () => {
+	const { playerMove, computerMove, isOnePlayer, bonusState } = useContextProvider();
 	const [showAfterChoice, setShowAfterChoice] = useState(null);
 
 	useEffect(() => {
@@ -60,31 +60,31 @@ const GameBoard = ({ bonusState }) => {
 								{bonusState === false ? (
 									<img
 										src={
-											(playerMove === "r" && rockIcon) ||
-											(playerMove === "p" && paperIcon) ||
-											(playerMove === "s" && scissorsIcon)
+											(playerMove === "r" ? rockIcon : "") ||
+											(playerMove === "p" ? paperIcon : "") ||
+											(playerMove === "s" ? scissorsIcon : "")
 										}
 										alt={
-											(playerMove === "r" && "rock") ||
-											(playerMove === "p" && "paper") ||
-											(playerMove === "s" && "scissors")
+											(playerMove === "r" ? "rock" : "") ||
+											(playerMove === "p" ? "paper" : "") ||
+											(playerMove === "s" ? "scissors" : "")
 										}
 									/>
 								) : (
 									<img
 										src={
-											(playerMove === "r" && rockIcon) ||
-											(playerMove === "p" && paperIcon) ||
-											(playerMove === "s" && scissorsIcon) ||
-											(playerMove === "l" && lizardIcon) ||
-											(playerMove === "sp" && spockIcon)
+											(playerMove === "r" ? rockIcon : "") ||
+											(playerMove === "p" ? paperIcon : "") ||
+											(playerMove === "s" ? scissorsIcon : "") ||
+											(playerMove === "l" ? lizardIcon : "") ||
+											(playerMove === "sp" ? spockIcon : "")
 										}
 										alt={
-											(playerMove === "r" && "rock") ||
-											(playerMove === "p" && "paper") ||
-											(playerMove === "s" && "scissors") ||
-											(playerMove === "l" && "lizard") ||
-											(playerMove === "sp" && "spock")
+											(playerMove === "r" ? "rock" : "") ||
+											(playerMove === "p" ? "paper" : "") ||
+											(playerMove === "s" ? "scissors" : "") ||
+											(playerMove === "l" ? "lizard" : "") ||
+											(playerMove === "sp" ? "spock" : "")
 										}
 									/>
 								)}

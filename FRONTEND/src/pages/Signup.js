@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Axios from "axios";
-import useCheckContext from "../hooks/useCheckContext";
+import "../styles/Form.css";
 
-
-const Login = () => {
-	const { setUserExists } = useCheckContext();
+const Signup = () => {
 	const Schema = yup.object().shape({
 		email: yup
 			.string()
@@ -32,7 +30,7 @@ const Login = () => {
 		confirmPassword: yup
 			.string()
 			.required("This field is required")
-			.oneOf([yup.ref("password"), null], "Password does not match"),
+			.oneOf([yup.ref("password")], "Password does not match"),
 	});
 
 	const {
@@ -48,6 +46,7 @@ const Login = () => {
 		try {
 			const response = await Axios.post(
 				"https://rock-paper-scissors-app-iybf.onrender.com/api/user/signup",
+				// "http://localhost:4001/api/user/signup",
 				{
 					email: data?.email,
 					username: data?.username,
@@ -61,15 +60,15 @@ const Login = () => {
 				setError({ email: "", username: "", password: "" });
 				localStorage.setItem("user", JSON.stringify(user));
 				localStorage.setItem("token", JSON.stringify(user.token));
-				setUserExists(true);
 			}
+			window.location.href = "/";
 		} catch (err) {
 			const error = err.response?.data?.error;
 
 			if (error) {
-				setError({ email: error?.email, username: error?.username });
+				setError({ email: error?.email, username: error?.username, password: null });
 			} else {
-				setError({ email: null, username: null });
+				setError({ email: null, username: null, password: null });
 			}
 		}
 	};
@@ -130,4 +129,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default Signup;

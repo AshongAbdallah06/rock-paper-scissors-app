@@ -1,7 +1,7 @@
 import React from "react";
 import profileIcon from "../images/person-circle-outline.svg";
 import Axios from "axios";
-import useCheckContext from "../hooks/useCheckContext";
+import useContextProvider from "../hooks/useContextProvider";
 import { useSearchParams } from "react-router-dom";
 import imageIcon from "../images/image-outline.svg";
 
@@ -16,9 +16,11 @@ const EditProfile = ({
 	newBio,
 	setNewBio,
 }) => {
-	const { user } = useCheckContext();
+	const { user } = useContextProvider();
 
 	const handleFileChange = (e) => {
+		if (!e.target.files) return;
+
 		const file = e.target.files[0]; // Get the selected file
 		if (file) {
 			const reader = new FileReader();
@@ -33,11 +35,12 @@ const EditProfile = ({
 		try {
 			const res = await Axios.patch(
 				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/edit/profile/${user?.username}`,
+				// `http://localhost:4001/api/user/edit/profile/${user?.username}`,
 				{
 					img,
-					location: newLocation.trim(),
+					location: newLocation ? newLocation.trim() : "",
 					age: newAge,
-					bio: newBio.trim(),
+					bio: newBio ? newBio.trim() : "",
 				}
 			);
 			const updatedUser = res.data;
@@ -79,7 +82,7 @@ const EditProfile = ({
 					/>
 					<input
 						type="file"
-						onChange={handleFileChange}
+						onChange={(e) => handleFileChange(e)}
 						title="Select a photo"
 					/>
 				</div>
@@ -113,7 +116,7 @@ const EditProfile = ({
 								id="location"
 								name="location"
 								placeholder="Enter your location"
-								defaultValue={newLocation}
+								defaultValue={newLocation || ""}
 								onChange={(e) => setNewLocation(e.target.value)}
 							/>
 						</div>
@@ -126,7 +129,7 @@ const EditProfile = ({
 								min={0}
 								max={99}
 								placeholder="Enter your age"
-								defaultValue={newAge}
+								defaultValue={newAge || 18}
 								onChange={(e) => setNewAge(Number(e.target.value))}
 							/>
 						</div>
@@ -138,8 +141,8 @@ const EditProfile = ({
 							id="bio"
 							name="bio"
 							placeholder="Tell us something about yourself"
-							rows="3"
-							defaultValue={newBio}
+							rows={3}
+							defaultValue={newBio || ""}
 							maxLength={255}
 							onChange={(e) => setNewBio(e.target.value)}
 						/>
@@ -159,9 +162,9 @@ const EditProfile = ({
 							Cancel
 						</button>
 						{(img !== user?.image ||
-							newLocation.trim() !== user?.location ||
+							(newLocation && newLocation.trim() !== user?.location) ||
 							newAge !== user?.age ||
-							newBio.trim() !== user?.bio) && (
+							(newBio && newBio.trim() !== user?.bio)) && (
 							<button
 								type="submit"
 								className="btn save-btn"

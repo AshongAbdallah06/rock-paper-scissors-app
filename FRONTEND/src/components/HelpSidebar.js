@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import Logo from "../components/Logo";
 import statsIcon from "../images/stats-chart-outline.svg";
 import upIcon from "../images/chevron-up-outline.svg";
@@ -12,8 +12,8 @@ import playIcon from "../images/play-outline.svg";
 import { Link } from "react-router-dom";
 
 const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
-	const [showFeaturesDropdown, setShowFeaturesDropdown] = useState(null);
-	const [showIntroDropdown, setShowIntroDropdown] = useState(null);
+	const [showFeaturesDropdown, setShowFeaturesDropdown] = useState(false);
+	const [showIntroDropdown, setShowIntroDropdown] = useState(false);
 
 	return (
 		<div className="sidebar">
@@ -55,6 +55,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 			{showIntroDropdown && (
 				<>
 					<Link
+						to=""
 						className={`link sub-link ${
 							page === "introduction" && feature === "overview" ? "active" : ""
 						}`}
@@ -72,6 +73,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 						Overview
 					</Link>
 					<Link
+						to=""
 						className={`link sub-link ${
 							page === "introduction" && feature === "rules" ? "active" : ""
 						}`}
@@ -89,6 +91,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 						Rules
 					</Link>
 					<Link
+						to=""
 						className={`link sub-link ${
 							page === "introduction" && feature === "how-to-play" ? "active" : ""
 						}`}
@@ -109,6 +112,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 			)}
 
 			<Link
+				to=""
 				className="help-link"
 				onClick={() => {
 					setPage("features");
@@ -145,6 +149,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 			{showFeaturesDropdown && (
 				<>
 					<Link
+						to=""
 						className={`link sub-link ${
 							page === "features" && feature === "leaderboard" ? "active" : ""
 						}`}
@@ -160,6 +165,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 						Leaderboard
 					</Link>
 					<Link
+						to=""
 						className={`link sub-link ${
 							page === "features" && feature === "profile" ? "active" : ""
 						}`}
@@ -175,6 +181,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 						Profile
 					</Link>
 					<Link
+						to=""
 						className={`link sub-link ${
 							page === "features" && feature === "modes" ? "active" : ""
 						}`}
@@ -190,6 +197,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 						Modes
 					</Link>
 					<Link
+						to=""
 						className={`link sub-link ${
 							page === "features" && feature === "live-chat" ? "active" : ""
 						}`}
@@ -208,6 +216,7 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 			)}
 
 			<Link
+				to=""
 				className={`help-link ${page === "contact" ? "active" : ""}`}
 				onClick={() => {
 					setPage("contact");

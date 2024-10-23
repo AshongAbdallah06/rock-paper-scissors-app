@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import scissorsIcon from "../images/icon-scissors.svg";
-import useCheckContext from "../hooks/useCheckContext";
+import useCheckContext from "../hooks/useContextProvider";
 import useFunctions from "../hooks/useFunctions";
 
 const Scissors = ({ bonusState }) => {
@@ -11,7 +11,6 @@ const Scissors = ({ bonusState }) => {
 		<div
 			className={!bonusState ? "gameOpt" : "gameOpt-bonus"}
 			onClick={() => {
-				// ;
 				sendMoveAck(socket);
 				moveOnclick("s");
 			}}

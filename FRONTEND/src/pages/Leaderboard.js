@@ -3,21 +3,20 @@ import { Link } from "react-router-dom";
 import logo from "../images/logo.svg";
 import filterLogo from "../images/filter-outline.svg";
 import back from "../images/arrow-back-outline.svg";
-import useCheckContext from "../hooks/useCheckContext";
+import useContextProvider from "../hooks/useContextProvider";
 import useFunctions from "../hooks/useFunctions";
-import Scores from "../components/Scores";
+import ScoresDisplay from "../components/Scores";
 import FilterDropdown from "../components/FilterDropdown";
 
 const Leaderboard = () => {
-	const { setScores, socket, user } = useCheckContext();
-	const { getAllScores } = useFunctions();
+	const { setScores, socket, user } = useContextProvider();
+	const { getAllScores, getStorageItem } = useFunctions();
 
-	const [optChanges, setOptChanges] = useState(null);
+	const [optChanges, setOptChanges] = useState(getStorageItem("optChanges", "losses"));
 
 	const [renderRoutes, setRenderRoutes] = useState(false);
 	useEffect(() => {
 		getAllScores(socket, setScores);
-		setOptChanges("wins");
 
 		setRenderRoutes(false);
 		const timer = setTimeout(() => {
@@ -26,6 +25,10 @@ const Leaderboard = () => {
 
 		return () => clearTimeout(timer);
 	}, []);
+
+	useEffect(() => {
+		localStorage.setItem("optChanges", JSON.stringify(optChanges));
+	}, [optChanges]);
 
 	const [showFilterDropdown, setShowFilterDropdown] = useState(false);
 
@@ -84,7 +87,11 @@ const Leaderboard = () => {
 							)}
 						</header>
 
-						<div className="header-labels">
+						<div
+							className={`header-labels ${
+								optChanges === "games_played" && "two-grid"
+							}`}
+						>
 							<p>Username</p>
 							<p>
 								{(!optChanges || optChanges) === "wins" && "Wins"}
@@ -92,10 +99,10 @@ const Leaderboard = () => {
 								{optChanges === "ties" && "Ties"}
 								{optChanges === "games_played" && "Games Played"}
 							</p>
-							<p>Percent %</p>
+							{optChanges !== "games_played" ? <p>Percent %</p> : ""}
 						</div>
 
-						<Scores optChanges={optChanges} />
+						<ScoresDisplay optChanges={optChanges} />
 					</div>
 				</div>
 			)}

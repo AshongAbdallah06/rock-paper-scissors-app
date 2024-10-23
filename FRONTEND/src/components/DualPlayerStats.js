@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from "react";
-import profileIcon from "../images/person-circle-outline.svg";
-import logo from "../images/logo.svg";
-import useCheckContext from "../hooks/useCheckContext";
+import React, { FC, useEffect, useState } from "react";
+import useContextProvider from "../hooks/useContextProvider";
 import Axios from "axios";
 import closeIcon from "../images/icon-close nav.svg";
 import { Link } from "react-router-dom";
 
 const DualPlayerStats = ({ setShowDualPlayerStats }) => {
-	const { getPlayerStats, dualPlayerStats, p1Username, p2Username, user } = useCheckContext();
+	const { getPlayerStats, dualPlayerStats, p1Username, p2Username, user } = useContextProvider();
 
 	const [twoUsersDetected, setTwoUsersDetected] = useState(null);
 
@@ -64,8 +62,8 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 									<img
 										src={
 											user?.username === dualPlayerStats?.player1_username
-												? user?.image
-												: opponentProfile?.image
+												? user?.image || ""
+												: opponentProfile?.image || ""
 										}
 										alt="Profile"
 										className="profile-pic"
@@ -112,8 +110,8 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 									<img
 										src={
 											user?.username === dualPlayerStats?.player2_username
-												? user?.image
-												: opponentProfile?.image
+												? user?.image || ""
+												: opponentProfile?.image || ""
 										}
 										alt="Profile"
 										className="profile-pic"
@@ -174,7 +172,7 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 			) : (
 				<div className="stats-container no-display">
 					<h1>Sorry...😒 Nothing to display here.</h1>
-					<span>Match with another player to view stats.</span>
+					<span>Compete with another player to view stats.</span>
 				</div>
 			)}
 		</div>

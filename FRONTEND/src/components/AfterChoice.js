@@ -1,11 +1,12 @@
-import { React } from "react";
-import useCheckContext from "../hooks/useCheckContext";
+import React, { FC } from "react";
+import useContextProvider from "../hooks/useContextProvider";
 
 const AfterChoice = ({ bonusState }) => {
 	const {
 		playerMove,
 		setPlayerMove,
 		playerMoveImage,
+		computerMove,
 		computerMoveImage,
 		result,
 		setComputerMove,
@@ -16,9 +17,7 @@ const AfterChoice = ({ bonusState }) => {
 		p1Username,
 		p2Username,
 		user,
-	} = useCheckContext();
-
-	// Get usernames
+	} = useContextProvider();
 
 	return (
 		<div className="Desktop-step2">
@@ -42,22 +41,24 @@ const AfterChoice = ({ bonusState }) => {
 				>
 					{!bonusState ? (
 						<img
-							src={playerMoveImage}
+							src={playerMoveImage || ""}
 							alt={
-								(playerMove === "r" && "rock") ||
-								(playerMove === "p" && "paper") ||
-								(playerMove === "s" && "scissors")
+								playerMove
+									? (playerMove === "r" ? "rock" : "") ||
+									  (playerMove === "p" ? "paper" : "") ||
+									  (playerMove === "s" ? "scissors" : "")
+									: ""
 							}
 						/>
 					) : (
 						<img
-							src={playerMoveImage}
+							src={playerMoveImage || ""}
 							alt={
-								(playerMove === "r" && "rock") ||
-								(playerMove === "p" && "paper") ||
-								(playerMove === "s" && "scissors") ||
-								(playerMove === "l" && "lizard") ||
-								(playerMove === "sp" && "spock")
+								(playerMove === "r" ? "rock" : "") ||
+								(playerMove === "p" ? "paper" : "") ||
+								(playerMove === "s" ? "scissors" : "") ||
+								(playerMove === "l" ? "lizard" : "") ||
+								(playerMove === "sp" ? "spock" : "")
 							}
 						/>
 					)}
@@ -111,22 +112,26 @@ const AfterChoice = ({ bonusState }) => {
 				>
 					{!bonusState ? (
 						<img
-							src={computerMoveImage}
+							src={computerMoveImage || ""}
 							alt={
-								(playerMove === "r" && "rock") ||
-								(playerMove === "p" && "paper") ||
-								(playerMove === "s" && "scissors")
+								computerMove
+									? (computerMove === "r" ? "rock" : "") ||
+									  (computerMove === "p" ? "paper" : "") ||
+									  (computerMove === "s" ? "scissors" : "")
+									: ""
 							}
 						/>
 					) : (
 						<img
-							src={computerMoveImage}
+							src={computerMoveImage || ""}
 							alt={
-								(playerMove === "r" && "rock") ||
-								(playerMove === "p" && "paper") ||
-								(playerMove === "s" && "scissors") ||
-								(playerMove === "l" && "lizard") ||
-								(playerMove === "sp" && "spock")
+								computerMove
+									? (computerMove === "r" ? "rock" : "") ||
+									  (computerMove === "p" ? "paper" : "") ||
+									  (computerMove === "s" ? "scissors" : "") ||
+									  (computerMove === "l" ? "lizard" : "") ||
+									  (computerMove === "sp" ? "spock" : "")
+									: ""
 							}
 						/>
 					)}

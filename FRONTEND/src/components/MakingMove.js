@@ -1,5 +1,5 @@
 import React from "react";
-import useCheckContext from "../hooks/useCheckContext";
+import useCheckContext from "../hooks/useContextProvider";
 import LoadingDots from "./LoadingDots";
 
 const MakingMove = () => {

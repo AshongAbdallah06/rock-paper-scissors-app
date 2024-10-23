@@ -1,38 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import { ChangeEvent, FC, KeyboardEvent, useEffect, useRef, useState } from "react";
 import closeIcon from "../images/icon-close-chat.svg";
-import useCheckContext from "../hooks/useCheckContext";
+import useContextProvider from "../hooks/useContextProvider";
 import trashCan from "../images/trash-outline.svg";
 
-const Chat = ({ setChatIsShowing }) => {
-	const { socket, roomID, user } = useCheckContext();
+const Chat = ({ setChatIsShowing, messages, setShowMessageAlert, setMessages }) => {
+	const { socket, roomID, user, p1Username, p2Username } = useContextProvider();
 
 	const [textMessage, setTextMessage] = useState("");
-	const [messages, setMessages] = useState(
-		JSON.parse(localStorage.getItem(`room-${roomID}-${user.username}-messages`)) || []
-	);
+	const [chatIsFetched, setChatIsFetched] = useState(false);
 
 	useEffect(() => {
-		socket.on("message", (message) => {
-			setMessages((prevMessages) => [...prevMessages, message]);
-		});
-
-		// Delete all messages
-		socket.on("deleteMessage", () => {
-			localStorage.removeItem(`room-${roomID}-${user.username}-messages`);
-			setMessages([]);
-		});
-
-		return () => {
-			socket.off("message");
-		};
-	}, [socket]);
-
-	const messagesEndRef = useRef(null);
+		setTimeout(() => {
+			setChatIsFetched(true);
+		}, 2000);
+	}, []);
 	useEffect(() => {
 		localStorage.setItem(`room-${roomID}-${user.username}-messages`, JSON.stringify(messages));
-
-		// Scroll to bottom
-		messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
 	}, [messages]);
 
 	const sendMessage = () => {
@@ -42,11 +25,12 @@ const Chat = ({ setChatIsShowing }) => {
 	};
 
 	const deleteChat = () => {
-		socket.emit("deleteMessage");
 		localStorage.removeItem(`room-${roomID}-${user.username}-messages`);
 		setMessages([]);
-	};
 
+		messages.length > 0 &&
+			socket.emit("message", { username: user.username, textMessage: " deleted the chat." });
+	};
 	return (
 		<aside>
 			<div className="content">
@@ -58,6 +42,7 @@ const Chat = ({ setChatIsShowing }) => {
 						className="close-icon"
 						onClick={() => {
 							setChatIsShowing(false);
+							setShowMessageAlert(false);
 						}}
 					/>
 				</header>
@@ -80,49 +65,79 @@ const Chat = ({ setChatIsShowing }) => {
 					</button>
 				</div>
 
-				<div className="chat-container">
-					<div className="messages">
-						{messages.map((message, index) => (
-							<div
-								className="person"
-								key={index}
-							>
-								<p className="username">
-									<span
-										className="name"
-										style={{
-											textTransform: "capitalize",
-											fontWeight: "normal",
-										}}
-									>
-										{message?.username === user.username
-											? "You"
-											: message?.username}
-									</span>
-								</p>
-								<p className="message">{message.textMessage}</p>
-								<div ref={messagesEndRef} />
-							</div>
-						))}
+				{chatIsFetched && (
+					<>
+						<div className="chat-container">
+							{p1Username && p2Username ? (
+								<>
+									<div className="messages">
+										{messages.map(({ textMessage, username }, index) => (
+											<>
+												<div
+													className={`${
+														textMessage.includes("deleted")
+															? "deleted"
+															: username === user?.username
+															? "person you"
+															: "person other"
+													}`}
+													key={index}
+												>
+													<p className="username">
+														{username === user.username
+															? "You"
+															: username}
+													</p>
+													<p className="message">{textMessage}</p>
+												</div>
+											</>
+										))}
+									</div>
+
+									<div className="input-container">
+										<input
+											value={textMessage}
+											placeholder="Enter text message"
+											onChange={(e) => {
+												setTextMessage(e.target.value);
+											}}
+											onKeyDown={(e) => {
+												if (e.key === "Enter" && textMessage !== "") {
+													sendMessage();
+												}
+											}}
+										></input>
+										<button
+											onClick={() => {
+												textMessage !== "" && sendMessage();
+											}}
+										>
+											Send
+										</button>
+									</div>
+								</>
+							) : (
+								<div className="messages left">Your Opponent left</div>
+							)}
+						</div>
+					</>
+				)}
+				{!chatIsFetched && (
+					<div className="lds-spinner">
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
+						<div></div>
 					</div>
-				</div>
-				<div className="input-container">
-					<textarea
-						type="text"
-						value={textMessage}
-						placeholder="Enter text message"
-						onChange={(e) => {
-							setTextMessage(e.target.value);
-						}}
-					></textarea>
-					<button
-						onClick={() => {
-							textMessage !== "" && sendMessage();
-						}}
-					>
-						Send
-					</button>
-				</div>
+				)}
 			</div>
 		</aside>
 	);

@@ -3,28 +3,38 @@ import Dialog from "../components/Dialog";
 import Chat from "../components/Chat";
 import ScoreBoard from "../components/ScoreBoard";
 import GameBoard from "../GameBoard";
-import useCheckContext from "../hooks/useCheckContext";
-import CopiedAlert from "../components/CopiedAlert";
+import useContextProvider from "../hooks/useContextProvider";
 import BonusDialog from "../components/bonus/Dialog";
 import Nav from "../components/Nav";
 import useFunctions from "../hooks/useFunctions";
 import Footer from "../components/Footer";
 import DualPlayerStats from "../components/DualPlayerStats";
+import AlertComponent from "../components/AlertComponent";
+import ChangeMode from "../components/ChangeMode";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
-	const { isOnePlayer, moveAck, leftRoom, setLeftRoom, socket, user, setIsRulesModalShow } =
-		useCheckContext();
-	const { joinRoom } = useFunctions();
+	const {
+		isOnePlayer,
+		moveAck,
+		leftRoom,
+		socket,
+		user,
+		setIsRulesModalShow,
+		alertCounter,
+		setAlertCounter,
+		roomID,
+		bonusState,
+	} = useContextProvider();
+	const { getStorageItem } = useFunctions();
 
 	useEffect(() => {
 		localStorage.setItem("player-mode", JSON.stringify(isOnePlayer ? "single" : "dual"));
 	}, [isOnePlayer]);
 
-	const [showCopiedAlert, setShowCopiedAlert] = useState(false);
 	const [showWhoLeft, setShowWhoLeft] = useState(false);
 
-	const hasLeftRoom = leftRoom !== false;
+	const hasLeftRoom = leftRoom && leftRoom.includes("has left the room");
 	useEffect(() => {
 		setShowWhoLeft(true);
 
@@ -33,11 +43,16 @@ const Home = () => {
 		}, 2000);
 	}, [hasLeftRoom]);
 
-	const bonus = JSON.parse(localStorage.getItem("bonus"));
-
 	const [renderRoutes, setRenderRoutes] = useState(false);
 
 	useEffect(() => {
+		if (alertCounter === 0) {
+			setAlertCounter(alertCounter + 1);
+			alert(
+				"Server may take a little time to respond; about a 50s to 1min. You may want to reload the page after 50s to refetch score accurately."
+			);
+		}
+
 		setRenderRoutes(false);
 		const timer = setTimeout(() => {
 			setRenderRoutes(true);
@@ -50,10 +65,6 @@ const Home = () => {
 			}
 		});
 
-		if (isOnePlayer) {
-			joinRoom(socket, user.username, setLeftRoom);
-		}
-
 		if (!localStorage.getItem("bonus")) {
 			localStorage.setItem("bonus", JSON.stringify(false));
 		}
@@ -64,9 +75,38 @@ const Home = () => {
 		};
 	}, []);
 
+	const [messages, setMessages] = useState(
+		getStorageItem(`room-${roomID}-${user.username}-messages`, [])
+	);
+
+	useEffect(() => {
+		localStorage.setItem(`room-${roomID}-${user.username}-messages`, JSON.stringify(messages));
+	}, [messages]);
+
+	useEffect(() => {
+		socket.on("message", (message) => {
+			setMessages((prevMessages) => [...prevMessages, message]);
+			setShowMessageAlert(true);
+
+			setTimeout(() => {
+				setShowMessageAlert(false);
+			}, 5000);
+		});
+
+		return () => {
+			socket.off("message");
+		};
+	}, [socket]);
+
+	const [showMessageAlert, setShowMessageAlert] = useState(false);
+
+	useEffect(() => {
+		localStorage.setItem("alertCounter", JSON.stringify(alertCounter));
+	}, [alertCounter]);
+
 	const [sidebarIsShowing, setSidebarIsShowing] = useState(false);
-	const [bonusState, setBonusState] = useState(!bonus ? false : true);
 	const [showDualPlayerStats, setShowDualPlayerStats] = useState(false);
+	const [showChangeModePopup, setShowChangeModePopup] = useState(false);
 
 	return (
 		<>
@@ -79,18 +119,37 @@ const Home = () => {
 						sidebarIsShowing={sidebarIsShowing}
 						setSidebarIsShowing={setSidebarIsShowing}
 					/>
-
-					{!isOnePlayer && moveAck && <p className="copied-alert">{moveAck.msg}</p>}
-					{!isOnePlayer && leftRoom && showWhoLeft && (
-						<p className="copied-alert">{leftRoom}</p>
+					{!isOnePlayer && showMessageAlert && !chatIsShowing && (
+						<AlertComponent
+							message="You have a new message"
+							message1="Click here to view."
+							setChatIsShowing={setChatIsShowing}
+							messages={messages}
+						/>
 					)}
+
+					{!isOnePlayer && moveAck && <p className="alert">{moveAck}</p>}
+					{!isOnePlayer && leftRoom && showWhoLeft && <p className="alert">{leftRoom}</p>}
 
 					<ScoreBoard />
 
-					<GameBoard bonusState={bonusState} />
+					<GameBoard />
 
+					{showChangeModePopup && (
+						<ChangeMode
+							setShowChangeModePopup={setShowChangeModePopup}
+							setSidebarIsShowing={setSidebarIsShowing}
+						/>
+					)}
 					{!bonusState ? <Dialog /> : <BonusDialog />}
-					{chatIsShowing ? <Chat setChatIsShowing={setChatIsShowing} /> : ""}
+					{chatIsShowing && (
+						<Chat
+							setMessages={setMessages}
+							setChatIsShowing={setChatIsShowing}
+							messages={messages}
+							setShowMessageAlert={setShowMessageAlert}
+						/>
+					)}
 
 					{sidebarIsShowing && (
 						<Footer
@@ -98,9 +157,8 @@ const Home = () => {
 							setSidebarIsShowing={setSidebarIsShowing}
 							setChatIsShowing={setChatIsShowing}
 							chatIsShowing={chatIsShowing}
-							bonusState={bonusState}
-							setBonusState={setBonusState}
 							setShowDualPlayerStats={setShowDualPlayerStats}
+							setShowChangeModePopup={setShowChangeModePopup}
 						/>
 					)}
 

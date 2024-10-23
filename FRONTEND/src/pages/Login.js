@@ -4,10 +4,8 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Axios from "axios";
-import useCheckContext from "../hooks/useCheckContext";
 
 const Login = () => {
-	const { setUserExists } = useCheckContext();
 	const Schema = yup.object().shape({
 		email: yup
 			.string()
@@ -33,6 +31,7 @@ const Login = () => {
 	} = useForm({
 		resolver: yupResolver(Schema),
 	});
+
 	const [error, setError] = useState({ email: "", password: "" });
 
 	const onsubmit = async (data) => {
@@ -51,9 +50,8 @@ const Login = () => {
 				setError({ email: "", password: "" });
 				localStorage.setItem("user", JSON.stringify(user));
 				localStorage.setItem("token", JSON.stringify(user.token));
-
-				setUserExists(true);
 			}
+			window.location.href = "/";
 		} catch (err) {
 			const errors = err.response?.data?.error;
 

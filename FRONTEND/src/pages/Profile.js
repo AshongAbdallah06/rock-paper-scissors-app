@@ -1,17 +1,16 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import profileIcon from "../images/person-circle-outline.svg";
 import singleIcon from "../images/person-outline-black.svg";
 import dualIcon from "../images/people-outline-black.svg";
 import logo from "../images/logo.svg";
 import { Link, useSearchParams } from "react-router-dom";
 
-import useCheckContext from "../hooks/useCheckContext";
+import useContextProvider from "../hooks/useContextProvider";
 import EditProfile from "./EditProfile";
 import useFunctions from "../hooks/useFunctions";
-import Axios from "axios";
 
 const Profile = () => {
-	const { currentUserStats, user } = useCheckContext();
+	const { currentUserStats, user } = useContextProvider();
 	const [renderRoutes, setRenderRoutes] = useState(false);
 	const { allGamesPlayed, allLosses, allTies, allWins, getAllDualPlayerStats } = useFunctions();
 
@@ -29,8 +28,8 @@ const Profile = () => {
 
 	const [edit, setEdit] = useState(false);
 	const [newLocation, setNewLocation] = useState(user?.location || "");
-	const [newAge, setNewAge] = useState(user?.age || "");
-	const [newBio, setNewBio] = useState(user?.bio || "");
+	const [newAge, setNewAge] = useState(user?.age || null);
+	const [newBio, setNewBio] = useState(user?.bio || null);
 
 	const [searchParams, setSearchParams] = useSearchParams("");
 
@@ -139,11 +138,9 @@ const Profile = () => {
 						</div>
 					) : (
 						<EditProfile
-							edit={edit}
 							setEdit={setEdit}
 							img={img}
 							setImg={setImg}
-							user={user}
 							newLocation={newLocation}
 							newAge={newAge}
 							newBio={newBio}
