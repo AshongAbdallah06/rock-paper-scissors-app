@@ -55,7 +55,7 @@ const Context = ({ children }) => {
 		wins: 0,
 		losses: 0,
 		ties: 0,
-		lastPlayed: null,
+		lastPlayed: "",
 	});
 	const [dualPlayerStats, setDualPlayerStats] = useState({
 		player1_username: usernames?.p1Username,
@@ -244,10 +244,13 @@ const Context = ({ children }) => {
 
 				if (result === "Tie") {
 					updatedStats.ties = (updatedStats.ties || 0) + 1;
+					updatedStats.lastPlayed = new Date().toISOString();
 				} else if (result === "Player wins") {
 					updatedStats.wins = (updatedStats.wins || 0) + 1;
+					updatedStats.lastPlayed = new Date().toISOString();
 				} else if (result === "Computer wins") {
 					updatedStats.losses = (updatedStats.losses || 0) + 1;
+					updatedStats.lastPlayed = new Date().toISOString();
 				}
 
 				updatedStats.gamesPlayed =

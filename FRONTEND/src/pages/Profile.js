@@ -4,13 +4,13 @@ import singleIcon from "../images/person-outline-black.svg";
 import dualIcon from "../images/people-outline-black.svg";
 import logo from "../images/logo.svg";
 import { Link, useSearchParams } from "react-router-dom";
-
+import { formatDistanceToNow } from "date-fns";
 import useContextProvider from "../hooks/useContextProvider";
 import EditProfile from "./EditProfile";
 import useFunctions from "../hooks/useFunctions";
 
 const Profile = () => {
-	const { currentUserStats, user } = useContextProvider();
+	const { currentUserStats, user, getUserStats } = useContextProvider();
 	const [renderRoutes, setRenderRoutes] = useState(false);
 	const { allGamesPlayed, allLosses, allTies, allWins, getAllDualPlayerStats } = useFunctions();
 
@@ -21,7 +21,9 @@ const Profile = () => {
 		}, 100);
 
 		getAllDualPlayerStats(user?.username);
+		getUserStats(user.username);
 		setImg(user?.image);
+
 		return () => clearTimeout(timer);
 	}, []);
 	const [img, setImg] = useState(user?.image || null);
@@ -30,8 +32,14 @@ const Profile = () => {
 	const [newLocation, setNewLocation] = useState(user?.location || "");
 	const [newAge, setNewAge] = useState(user?.age || null);
 	const [newBio, setNewBio] = useState(user?.bio || null);
+	const [lastPlayed, setLastPlayed] = useState(user?.bio || "");
 
 	const [searchParams, setSearchParams] = useSearchParams("");
+
+	useEffect(() => {
+		if (!currentUserStats?.gamesPlayed) return;
+		setLastPlayed(formatDistanceToNow(currentUserStats.lastPlayed, { addSuffix: true }));
+	}, [currentUserStats]);
 
 	return (
 		<>
@@ -57,14 +65,17 @@ const Profile = () => {
 									/>
 								</div>
 
-								<h1 className="profile-name">
+								<h3 className="profile-name">
 									{user?.username},{" "}
 									{newAge && <span className="age">{newAge}</span>}
-								</h1>
+								</h3>
 								<p className="profile-location">{newLocation || "From Earth"}</p>
 								<p className="profile-bio">
 									{newBio ||
 										"I’m a mysterious individual who has yet to fill out my bio. One thing’s for certain: I love to play rock-paper-scissors!"}
+								</p>
+								<p style={{ color: "#dc3545", fontWeight: "bold" }}>
+									Last played: {lastPlayed.toLocaleString()}
 								</p>
 							</div>
 
