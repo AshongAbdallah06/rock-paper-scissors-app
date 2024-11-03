@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import logo from "../images/logo.svg";
 import useContextProvider from "../hooks/useContextProvider";
+import logo from "../images/logo.svg";
 
 const ScoreBoard = () => {
 	const {
@@ -28,7 +28,7 @@ const ScoreBoard = () => {
 
 	useEffect(() => {
 		if (!user) return;
-		getUserStats(user?.username);
+		user?.username && getUserStats(user?.username);
 	}, [isOnePlayer, user?.username]);
 
 	return (

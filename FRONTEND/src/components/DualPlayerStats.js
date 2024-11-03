@@ -1,8 +1,8 @@
-import React, { FC, useEffect, useState } from "react";
-import useContextProvider from "../hooks/useContextProvider";
 import Axios from "axios";
-import closeIcon from "../images/icon-close nav.svg";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import useContextProvider from "../hooks/useContextProvider";
+import closeIcon from "../images/icon-close nav.svg";
 
 const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 	const { getPlayerStats, dualPlayerStats, p1Username, p2Username, user } = useContextProvider();
@@ -35,12 +35,14 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 	};
 
 	useEffect(() => {
-		if (p1Username && p2Username) {
-			getPlayerStats(p1Username, p2Username);
-			setTwoUsersDetected(true);
-			getUserProfiles();
-		} else {
-			setTwoUsersDetected(false);
+		if (user) {
+			if (p1Username && p2Username) {
+				getPlayerStats(p1Username, p2Username);
+				setTwoUsersDetected(true);
+				getUserProfiles();
+			} else {
+				setTwoUsersDetected(false);
+			}
 		}
 	}, []);
 

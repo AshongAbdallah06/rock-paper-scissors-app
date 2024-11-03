@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
-import Paper from "./components/Paper";
-import Scissors from "./components/Scissors";
-import Rock from "./components/Rock";
 import AfterChoice from "./components/AfterChoice";
-import MakingMove from "./components/MakingMove";
-import useContextProvider from "./hooks/useContextProvider";
-import rockIcon from "./images/icon-rock.svg";
-import paperIcon from "./images/icon-paper.svg";
-import scissorsIcon from "./images/icon-scissors.svg";
-import lizardIcon from "./images/icon-lizard.svg";
-import spockIcon from "./images/icon-spock.svg";
-import LoadingDots from "./components/LoadingDots";
 import Lizard from "./components/bonus/Lizard";
 import Spock from "./components/bonus/Spock";
 import Loader from "./components/Loader";
+import LoadingDots from "./components/LoadingDots";
+import MakingMove from "./components/MakingMove";
+import Paper from "./components/Paper";
+import Rock from "./components/Rock";
+import Scissors from "./components/Scissors";
+import useContextProvider from "./hooks/useContextProvider";
+import lizardIcon from "./images/icon-lizard.svg";
+import paperIcon from "./images/icon-paper.svg";
+import rockIcon from "./images/icon-rock.svg";
+import scissorsIcon from "./images/icon-scissors.svg";
+import spockIcon from "./images/icon-spock.svg";
 
 const GameBoard = () => {
 	const { playerMove, computerMove, isOnePlayer, bonusState } = useContextProvider();

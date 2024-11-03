@@ -1,4 +1,3 @@
-import { FC } from "react";
 import useContextProvider from "../hooks/useContextProvider";
 
 const ChangeMode = ({ setShowChangeModePopup, setSidebarIsShowing }) => {

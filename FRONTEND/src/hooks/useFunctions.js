@@ -1,10 +1,10 @@
-import scissorsIcon from "../images/icon-scissors.svg";
+import Axios from "axios";
+import { useState } from "react";
+import lizardIcon from "../images/icon-lizard.svg";
 import paperIcon from "../images/icon-paper.svg";
 import rockIcon from "../images/icon-rock.svg";
-import lizardIcon from "../images/icon-lizard.svg";
+import scissorsIcon from "../images/icon-scissors.svg";
 import spockIcon from "../images/icon-spock.svg";
-import { useState } from "react";
-import Axios from "axios";
 
 const useFunctions = () => {
 	const user = JSON.parse(localStorage.getItem("user"));

@@ -1,17 +1,17 @@
 import React from "react";
-import paperIcon from "../images/icon-paper.svg";
 import useContextProvider from "../hooks/useContextProvider";
 import useFunctions from "../hooks/useFunctions";
+import paperIcon from "../images/icon-paper.svg";
 
 const Paper = ({ bonusState }) => {
-	const { moveOnclick, socket } = useContextProvider();
+	const { moveOnclick, socket, userExists } = useContextProvider();
 	const { sendMoveAck } = useFunctions();
 
 	return (
 		<div
 			className={!bonusState ? "gameOpt" : "gameOpt-bonus"}
 			onClick={() => {
-				sendMoveAck(socket);
+				userExists && sendMoveAck(socket);
 				moveOnclick("p");
 			}}
 		>

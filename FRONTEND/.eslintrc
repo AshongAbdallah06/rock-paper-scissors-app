@@ -1,0 +1,15 @@
+{
+	"env": {
+		"browser": true, // for browser globals like 'window' and 'console'
+		"node": true // for Node.js globals like 'process' and 'console'
+	},
+	"parser": "@typescript-eslint/parser",
+	"plugins": ["@typescript-eslint"],
+	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+	"rules": {
+		"@typescript-eslint/no-unused-vars": [
+			"warn",
+			{ "vars": "all", "args": "after-used", "ignoreRestSiblings": true }
+		]
+	}
+}

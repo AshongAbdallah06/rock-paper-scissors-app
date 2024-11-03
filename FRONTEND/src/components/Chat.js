@@ -1,10 +1,11 @@
-import { ChangeEvent, FC, KeyboardEvent, useEffect, useRef, useState } from "react";
-import closeIcon from "../images/icon-close-chat.svg";
+/* eslint-disable no-mixed-spaces-and-tabs */
+import { useEffect, useState } from "react";
 import useContextProvider from "../hooks/useContextProvider";
+import closeIcon from "../images/icon-close-chat.svg";
 import trashCan from "../images/trash-outline.svg";
 
 const Chat = ({ setChatIsShowing, messages, setShowMessageAlert, setMessages }) => {
-	const { socket, roomID, user, p1Username, p2Username } = useContextProvider();
+	const { socket, roomID, user, p1Username, p2Username, userExists } = useContextProvider();
 
 	const [textMessage, setTextMessage] = useState("");
 	const [chatIsFetched, setChatIsFetched] = useState(false);
@@ -15,15 +16,21 @@ const Chat = ({ setChatIsShowing, messages, setShowMessageAlert, setMessages }) 
 		}, 2000);
 	}, []);
 	useEffect(() => {
-		localStorage.setItem(`room-${roomID}-${user.username}-messages`, JSON.stringify(messages));
+		userExists &&
+			localStorage.setItem(
+				`room-${roomID}-${user.username}-messages`,
+				JSON.stringify(messages)
+			);
 	}, [messages]);
 
+	// ! find this
 	const sendMessage = () => {
 		socket.emit("message", { username: user.username, textMessage });
 
 		setTextMessage("");
 	};
 
+	// ! find this
 	const deleteChat = () => {
 		localStorage.removeItem(`room-${roomID}-${user.username}-messages`);
 		setMessages([]);
@@ -31,6 +38,7 @@ const Chat = ({ setChatIsShowing, messages, setShowMessageAlert, setMessages }) 
 		messages.length > 0 &&
 			socket.emit("message", { username: user.username, textMessage: " deleted the chat." });
 	};
+
 	return (
 		<aside>
 			<div className="content">
@@ -55,7 +63,11 @@ const Chat = ({ setChatIsShowing, messages, setShowMessageAlert, setMessages }) 
 					<button
 						className="delete"
 						title="Delete Chat"
-						onClick={deleteChat}
+						onClick={
+							userExists
+								? deleteChat
+								: alert("You need to login to perform this action")
+						}
 					>
 						<img
 							src={trashCan}
@@ -75,18 +87,20 @@ const Chat = ({ setChatIsShowing, messages, setShowMessageAlert, setMessages }) 
 											<>
 												<div
 													className={`${
-														textMessage.includes("deleted")
+														userExists &&
+														(textMessage.includes("deleted")
 															? "deleted"
 															: username === user?.username
 															? "person you"
-															: "person other"
+															: "person other")
 													}`}
 													key={index}
 												>
 													<p className="username">
-														{username === user.username
-															? "You"
-															: username}
+														{userExists &&
+															(username === user.username
+																? "You"
+																: username)}
 													</p>
 													<p className="message">{textMessage}</p>
 												</div>
@@ -103,13 +117,17 @@ const Chat = ({ setChatIsShowing, messages, setShowMessageAlert, setMessages }) 
 											}}
 											onKeyDown={(e) => {
 												if (e.key === "Enter" && textMessage !== "") {
-													sendMessage();
+													user
+														? sendMessage()
+														: alert(
+																"You need to login to perform this action."
+														  );
 												}
 											}}
 										></input>
 										<button
 											onClick={() => {
-												textMessage !== "" && sendMessage();
+												userExists && textMessage !== "" && sendMessage();
 											}}
 										>
 											Send

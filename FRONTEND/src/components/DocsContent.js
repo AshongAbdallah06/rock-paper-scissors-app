@@ -1,7 +1,7 @@
-import React, { FC, RefObject } from "react";
+import React from "react";
+import Contact from "../pages/Contact";
 import Introduction from "./Docs/Introduction";
 import Other from "./Docs/Other";
-import Contact from "../pages/Contact";
 
 const DocsContent = ({ page, setPage, docsContentRef, feature, setFeature, setSearchParams }) => {
 	return (

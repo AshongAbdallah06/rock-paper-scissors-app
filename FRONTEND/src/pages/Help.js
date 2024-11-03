@@ -28,6 +28,10 @@ const Help = () => {
 		const timer = setTimeout(() => {
 			setRenderRoutes(true);
 		}, 100);
+
+		return () => {
+			clearTimeout(timer);
+		};
 	}, []);
 	return (
 		<div className="help-section">

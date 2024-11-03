@@ -1,32 +1,34 @@
+import { formatDistanceToNow } from "date-fns";
 import { useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import useContextProvider from "../hooks/useContextProvider";
+import useFunctions from "../hooks/useFunctions";
+import logo from "../images/logo.svg";
+import dualIcon from "../images/people-outline-black.svg";
 import profileIcon from "../images/person-circle-outline.svg";
 import singleIcon from "../images/person-outline-black.svg";
-import dualIcon from "../images/people-outline-black.svg";
-import logo from "../images/logo.svg";
-import { Link, useSearchParams } from "react-router-dom";
-import { formatDistanceToNow } from "date-fns";
-import useContextProvider from "../hooks/useContextProvider";
 import EditProfile from "./EditProfile";
-import useFunctions from "../hooks/useFunctions";
 
 const Profile = () => {
 	const { currentUserStats, user, getUserStats } = useContextProvider();
 	const [renderRoutes, setRenderRoutes] = useState(false);
 	const { allGamesPlayed, allLosses, allTies, allWins, getAllDualPlayerStats } = useFunctions();
 
+	const [img, setImg] = useState(user?.image || null);
 	useEffect(() => {
 		setRenderRoutes(false);
 		const timer = setTimeout(() => {
 			setRenderRoutes(true);
 		}, 100);
 
-		getAllDualPlayerStats(user?.username);
-		getUserStats(user.username);
-		setImg(user?.image);
+		if (user?.username) {
+			getAllDualPlayerStats(user?.username);
+			getUserStats(user.username);
+			setImg(user?.image);
+		}
 
 		return () => clearTimeout(timer);
 	}, []);
-	const [img, setImg] = useState(user?.image || null);
 
 	const [edit, setEdit] = useState(false);
 	const [newLocation, setNewLocation] = useState(user?.location || "");

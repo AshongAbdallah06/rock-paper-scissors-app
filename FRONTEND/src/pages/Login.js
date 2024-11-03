@@ -1,9 +1,10 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import * as yup from "yup";
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Axios from "axios";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import * as yup from "yup";
+import Logo from "../components/Logo";
 
 const Login = () => {
 	const Schema = yup.object().shape({
@@ -68,6 +69,8 @@ const Login = () => {
 			className="auth-form"
 			onSubmit={handleSubmit(onsubmit)}
 		>
+			<Logo />
+
 			<Link
 				to="/signup"
 				className="link-item links"

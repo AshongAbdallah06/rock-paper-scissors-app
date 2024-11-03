@@ -1,18 +1,20 @@
-import React, { FC, useEffect } from "react";
-import lizardIcon from "../../images/icon-lizard.svg";
+import React from "react";
 import useContextProvider from "../../hooks/useContextProvider";
 import useFunctions from "../../hooks/useFunctions";
+import lizardIcon from "../../images/icon-lizard.svg";
 
 const Lizard = ({ bonusState }) => {
-	const { moveOnclick, socket } = useContextProvider();
+	const { moveOnclick, socket, userExists } = useContextProvider();
 	const { sendMoveAck } = useFunctions();
 
 	return (
 		<div
 			className={!bonusState ? "gameOpt" : "gameOpt-bonus"}
 			onClick={() => {
-				sendMoveAck(socket);
-				moveOnclick("l");
+				userExists && sendMoveAck(socket);
+				userExists
+					? moveOnclick("l")
+					: alert("You need to login in to be able to use this move.");
 			}}
 		>
 			<img

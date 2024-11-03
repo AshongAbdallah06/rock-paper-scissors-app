@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import profileIcon from "../images/person-circle-outline.svg";
 import Axios from "axios";
-import useContextProvider from "../hooks/useContextProvider";
+import React, { useState } from "react";
 import { useSearchParams } from "react-router-dom";
+import useContextProvider from "../hooks/useContextProvider";
 import imageIcon from "../images/image-outline.svg";
+import profileIcon from "../images/person-circle-outline.svg";
 
 const EditProfile = ({
 	setEdit,

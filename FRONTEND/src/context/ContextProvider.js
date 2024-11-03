@@ -1,6 +1,6 @@
+import Axios from "axios";
 import React, { createContext, useEffect, useState } from "react";
 import io from "socket.io-client";
-import Axios from "axios";
 import useFunctions from "../hooks/useFunctions";
 
 const socket = io("https://rock-paper-scissors-app-iybf.onrender.com");
@@ -147,14 +147,17 @@ const Context = ({ children }) => {
 	}, [isOnePlayer, gameState.p1, gameState.p2]);
 
 	const moveOnclick = (move) => {
-		if (!isOnePlayer) {
-			if (!playerMove) {
-				setPlayerMove(move);
-			} else if (!computerMove) {
-				setComputerMove(move);
+		if (user) {
+			if (!isOnePlayer) {
+				if (!playerMove) {
+					setPlayerMove(move);
+				} else if (!computerMove) {
+					setComputerMove(move);
+				}
+				socket.emit("move", { username: user?.username, move });
 			}
-			socket.emit("move", { username: user?.username, move });
-		} else {
+		}
+		if (isOnePlayer) {
 			setPlayerMove(move);
 			generateComputerMove(setComputerMove, bonusState);
 		}

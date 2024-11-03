@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import video from "../../images/outcomes/Leaderboard.mp4";
-import arrowForward from "../../images/arrow-forward-outline.svg";
+import { Link } from "react-router-dom";
 import arrowBack from "../../images/arrow-back-outline.svg";
-import bonusRules from "../../images/image-rules-bonus.svg";
-import profileView from "../../images/profile.png";
-import demo1 from "../../images/select-change-mode.png";
-import demo2 from "../../images/select-dual.png";
-import demo3 from "../../images/room-id.png";
+import arrowForward from "../../images/arrow-forward-outline.svg";
 import demo4Normal from "../../images/dual-play-home-bonus.png";
 import demo4Bonus from "../../images/dual-play-home-normal.png";
+import bonusRules from "../../images/image-rules-bonus.svg";
 import demo5 from "../../images/live-chat.png";
-import { Link } from "react-router-dom";
+import video from "../../images/outcomes/Leaderboard.mp4";
+import profileView from "../../images/profile.png";
+import demo3 from "../../images/room-id.png";
+import demo1 from "../../images/select-change-mode.png";
+import demo2 from "../../images/select-dual.png";
 
 const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }) => {
 	const [gameMode, setGameMode] = useState("normal");

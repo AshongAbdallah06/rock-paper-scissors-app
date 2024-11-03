@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import arrowForward from "../../images/arrow-forward-outline.svg";
 import rulesNormal from "../../images/image-rules.svg";
 import normalGamePlay from "../../images/outcomes/Media1.mp4";
 import bonusGamePlay from "../../images/outcomes/bonus-game-play.mp4";
-import arrowForward from "../../images/arrow-forward-outline.svg";
-import { useSearchParams } from "react-router-dom";
 
 const Introduction = ({ setPage, setSearchParams, feature }) => {
 	const [gameMode, setGameMode] = useState("normal");

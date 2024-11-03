@@ -1,12 +1,12 @@
+import Axios from "axios";
 import React, { useEffect, useState } from "react";
-import profileIcon from "../images/person-circle-outline.svg";
-import logo from "../images/logo.svg";
 import { Link } from "react-router-dom";
 import useContextProvider from "../hooks/useContextProvider";
-import singleIcon from "../images/person-outline-black.svg";
-import dualIcon from "../images/people-outline-black.svg";
 import useFunctions from "../hooks/useFunctions";
-import Axios from "axios";
+import logo from "../images/logo.svg";
+import dualIcon from "../images/people-outline-black.svg";
+import profileIcon from "../images/person-circle-outline.svg";
+import singleIcon from "../images/person-outline-black.svg";
 
 const Profile = () => {
 	const { selectedUserStats } = useContextProvider();
@@ -24,7 +24,6 @@ const Profile = () => {
 				"https://rock-paper-scissors-app-iybf.onrender.com/api/user/profiles",
 				{ username }
 			);
-			const updatedUser = res.data;
 			const opponentData = res.data;
 
 			if (opponentData) {

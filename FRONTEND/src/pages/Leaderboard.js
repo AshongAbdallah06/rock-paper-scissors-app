@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import logo from "../images/logo.svg";
-import filterLogo from "../images/filter-outline.svg";
-import back from "../images/arrow-back-outline.svg";
+import FilterDropdown from "../components/FilterDropdown";
+import ScoresDisplay from "../components/Scores";
 import useContextProvider from "../hooks/useContextProvider";
 import useFunctions from "../hooks/useFunctions";
-import ScoresDisplay from "../components/Scores";
-import FilterDropdown from "../components/FilterDropdown";
+import back from "../images/arrow-back-outline.svg";
+import filterLogo from "../images/filter-outline.svg";
+import logo from "../images/logo.svg";
 
 const Leaderboard = () => {
 	const { setScores, socket, user } = useContextProvider();

@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import useContextProvider from "../hooks/useContextProvider";
 
 const AlertComponent = ({ message, message1, setChatIsShowing, messages }) => {
@@ -7,13 +7,15 @@ const AlertComponent = ({ message, message1, setChatIsShowing, messages }) => {
 	const [isEqual, setIsEqual] = useState(false);
 
 	useEffect(() => {
-		if (message === "You have a new message") {
-			setIsNotificationAlert(true);
+		if (user) {
+			if (message === "You have a new message") {
+				setIsNotificationAlert(true);
 
-			if (messages) {
-				messages[messages.length - 1]?.username === user.username
-					? setIsEqual(true)
-					: setIsEqual(false);
+				if (messages) {
+					messages[messages.length - 1]?.username === user.username
+						? setIsEqual(true)
+						: setIsEqual(false);
+				}
 			}
 		}
 	}, [messages]);

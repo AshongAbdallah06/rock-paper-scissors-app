@@ -1,15 +1,15 @@
-import React, { FC, useState } from "react";
-import Logo from "../components/Logo";
-import statsIcon from "../images/stats-chart-outline.svg";
-import upIcon from "../images/chevron-up-outline.svg";
-import downIcon from "../images/chevron-down-outline.svg";
-import chatIcon from "../images/chatbubbles-outline.svg";
-import modeIcon from "../images/game-controller-outline.svg";
-import rulesIcon from "../images/book-outline.svg";
-import profileIcon from "../images/person-circle-outline.svg";
-import overviewIcon from "../images/document-text-outline.svg";
-import playIcon from "../images/play-outline.svg";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Logo from "../components/Logo";
+import rulesIcon from "../images/book-outline.svg";
+import chatIcon from "../images/chatbubbles-outline.svg";
+import downIcon from "../images/chevron-down-outline.svg";
+import upIcon from "../images/chevron-up-outline.svg";
+import overviewIcon from "../images/document-text-outline.svg";
+import modeIcon from "../images/game-controller-outline.svg";
+import profileIcon from "../images/person-circle-outline.svg";
+import playIcon from "../images/play-outline.svg";
+import statsIcon from "../images/stats-chart-outline.svg";
 
 const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 	const [showFeaturesDropdown, setShowFeaturesDropdown] = useState(false);

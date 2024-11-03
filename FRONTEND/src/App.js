@@ -1,31 +1,31 @@
 import { useEffect, useState } from "react";
-import { Routes, Route, Navigate, useLocation } from "react-router-dom";
-import useContextProvider from "./hooks/useContextProvider";
-import Login from "./pages/Login";
-import Signup from "./pages/Signup";
-import PlayerSelection from "./pages/PlayerSelection";
-import Room from "./pages/Room";
-import Home from "./pages/Home";
-import Leaderboard from "./pages/Leaderboard";
-import Profile from "./pages/Profile";
-import PlayerProfile from "./pages/PlayerProfile";
-import NotFound from "./pages/NotFound";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import Loader from "./components/Loader";
 import Logo from "./components/Logo";
+import useContextProvider from "./hooks/useContextProvider";
 import Help from "./pages/Help";
+import Home from "./pages/Home";
+import Leaderboard from "./pages/Leaderboard";
+import Login from "./pages/Login";
+import NotFound from "./pages/NotFound";
+import PlayerProfile from "./pages/PlayerProfile";
+import PlayerSelection from "./pages/PlayerSelection";
+import Profile from "./pages/Profile";
+import Room from "./pages/Room";
+import Signup from "./pages/Signup";
 import "./styles/Animation.css";
+import "./styles/Chat.css";
+import "./styles/Form.css";
+import "./styles/Help.css";
 import "./styles/Home.css";
 import "./styles/Leaderboard.css";
-import "./styles/Profile.css";
-import "./styles/Help.css";
 import "./styles/Mobile.css";
-import "./styles/Chat.css";
-import "./styles/Sidebar.css";
+import "./styles/Profile.css";
 import "./styles/Room.css";
-import "./styles/Form.css";
+import "./styles/Sidebar.css";
 
 function PrivateRoute({ userExists, children }) {
-	return userExists ? <>{children}</> : <Navigate to="/login" />;
+	return userExists ? <>{children}</> : <Navigate to="/" />;
 }
 
 function PublicRoute({ userExists, children }) {
@@ -77,8 +77,7 @@ const LoadingApp = ({ isAppRendered, setIsAppRendered, children }) => {
 };
 
 const App = () => {
-	const { playerIsChosen, roomIsSelected, userExists, isOnePlayer, user, authorize } =
-		useContextProvider();
+	const { userExists, isOnePlayer, user, authorize } = useContextProvider();
 	const [isRendered, setIsRendered] = useState(false);
 	const [isAppRendered, setIsAppRendered] = useState(false);
 
@@ -96,24 +95,12 @@ const App = () => {
 					<Route
 						path="/"
 						element={
-							<PrivateRoute userExists={userExists}>
-								{playerIsChosen ? (
-									roomIsSelected ? (
-										<>
-											<Loading
-												isRendered={isRendered}
-												setIsRendered={setIsRendered}
-											>
-												<Home />
-											</Loading>
-										</>
-									) : (
-										<Navigate to="/select-room" />
-									)
-								) : (
-									<Navigate to="/select-player-mode" />
-								)}
-							</PrivateRoute>
+							<Loading
+								isRendered={isRendered}
+								setIsRendered={setIsRendered}
+							>
+								<Home />
+							</Loading>
 						}
 					/>
 
@@ -159,14 +146,12 @@ const App = () => {
 					<Route
 						path={"/help"}
 						element={
-							<PrivateRoute userExists={userExists}>
-								<Loading
-									isRendered={isRendered}
-									setIsRendered={setIsRendered}
-								>
-									<Help />
-								</Loading>
-							</PrivateRoute>
+							<Loading
+								isRendered={isRendered}
+								setIsRendered={setIsRendered}
+							>
+								<Help />
+							</Loading>
 						}
 					/>
 

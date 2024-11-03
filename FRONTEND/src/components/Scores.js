@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import useContextProvider from "../hooks/useContextProvider";
 import { Link, useSearchParams } from "react-router-dom";
+import useContextProvider from "../hooks/useContextProvider";
 
 const ScoresDisplay = ({ optChanges }) => {
 	const { scores, getUserStats, setScores, socket, user } = useContextProvider();
@@ -78,7 +78,7 @@ const ScoresDisplay = ({ optChanges }) => {
 						className={`user ${optChanges === "games_played" && "two-grid"}`}
 						key={score?.username}
 						onClick={() => {
-							getUserStats(score?.username);
+							user?.username && getUserStats(score?.username);
 						}}
 					>
 						<p

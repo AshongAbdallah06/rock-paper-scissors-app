@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Logo from "../components/Logo";
 
 const NotFound = () => {
 	const [renderUnknownRoutes, setRenderUnknownRoutes] = useState(false);
@@ -16,12 +17,14 @@ const NotFound = () => {
 	return (
 		renderUnknownRoutes && (
 			<div style={{ color: "white", textAlign: "center" }}>
+				<Logo />
+
 				<h1>Page not found</h1>
 				<Link
-					to="/select-player-mode"
-					style={{ color: "white" }}
+					to="/"
+					style={{ color: "white", textDecoration: "underline" }}
 				>
-					Select Player Mode
+					Go Home
 				</Link>
 			</div>
 		)

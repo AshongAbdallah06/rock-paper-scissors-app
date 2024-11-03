@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import Dialog from "../components/Dialog";
+import AlertComponent from "../components/AlertComponent";
+import BonusDialog from "../components/bonus/Dialog";
+import ChangeMode from "../components/ChangeMode";
 import Chat from "../components/Chat";
+import Dialog from "../components/Dialog";
+import DualPlayerStats from "../components/DualPlayerStats";
+import Footer from "../components/Footer";
+import Nav from "../components/Nav";
 import ScoreBoard from "../components/ScoreBoard";
 import GameBoard from "../GameBoard";
 import useContextProvider from "../hooks/useContextProvider";
-import BonusDialog from "../components/bonus/Dialog";
-import Nav from "../components/Nav";
 import useFunctions from "../hooks/useFunctions";
-import Footer from "../components/Footer";
-import DualPlayerStats from "../components/DualPlayerStats";
-import AlertComponent from "../components/AlertComponent";
-import ChangeMode from "../components/ChangeMode";
 
 const Home = () => {
 	const [chatIsShowing, setChatIsShowing] = useState(false);
@@ -25,6 +25,7 @@ const Home = () => {
 		setAlertCounter,
 		roomID,
 		bonusState,
+		userExists,
 	} = useContextProvider();
 	const { getStorageItem } = useFunctions();
 
@@ -76,11 +77,15 @@ const Home = () => {
 	}, []);
 
 	const [messages, setMessages] = useState(
-		getStorageItem(`room-${roomID}-${user.username}-messages`, [])
+		userExists && getStorageItem(`room-${roomID}-${user.username}-messages`, [])
 	);
 
 	useEffect(() => {
-		localStorage.setItem(`room-${roomID}-${user.username}-messages`, JSON.stringify(messages));
+		userExists &&
+			localStorage.setItem(
+				`room-${roomID}-${user.username}-messages`,
+				JSON.stringify(messages)
+			);
 	}, [messages]);
 
 	useEffect(() => {
@@ -115,10 +120,12 @@ const Home = () => {
 					{showDualPlayerStats && (
 						<DualPlayerStats setShowDualPlayerStats={setShowDualPlayerStats} />
 					)}
+
 					<Nav
 						sidebarIsShowing={sidebarIsShowing}
 						setSidebarIsShowing={setSidebarIsShowing}
 					/>
+
 					{!isOnePlayer && showMessageAlert && !chatIsShowing && (
 						<AlertComponent
 							message="You have a new message"

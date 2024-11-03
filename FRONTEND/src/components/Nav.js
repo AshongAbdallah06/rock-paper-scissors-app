@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import useContextProvider from "../hooks/useContextProvider";
 import menuBar from "../images/menu-outline.svg";
 

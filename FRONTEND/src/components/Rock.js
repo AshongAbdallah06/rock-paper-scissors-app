@@ -1,17 +1,17 @@
-import React, { useEffect } from "react";
-import rockIcon from "../images/icon-rock.svg";
+import React from "react";
 import useCheckContext from "../hooks/useContextProvider";
 import useFunctions from "../hooks/useFunctions";
+import rockIcon from "../images/icon-rock.svg";
 
 const Rock = ({ bonusState }) => {
-	const { moveOnclick, socket } = useCheckContext();
+	const { moveOnclick, socket, userExists } = useCheckContext();
 	const { sendMoveAck } = useFunctions();
 
 	return (
 		<div
 			className={!bonusState ? "gameOpt" : "gameOpt-bonus"}
 			onClick={() => {
-				sendMoveAck(socket);
+				userExists && sendMoveAck(socket);
 				moveOnclick("r");
 			}}
 		>
