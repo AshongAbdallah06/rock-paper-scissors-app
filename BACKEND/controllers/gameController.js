@@ -1,18 +1,10 @@
 const pool = require("../db");
 
 const getHome = async (req, res) => {
-	const { username } = req.params;
-
 	try {
-		const userScoreDetails = await pool.query("SELECT * FROM SCORES WHERE USERNAME = $1", [
-			username,
-		]);
-		const userInfoDetails = await pool.query("SELECT * FROM USERS WHERE USERNAME = $1", [
-			username,
-		]);
+		const userInfoDetails = await pool.query("SELECT * FROM USERS WHERE ID = $1", [req.user]);
 
-		if (userScoreDetails.rowCount > 0 && userInfoDetails.rowCount > 0)
-			res.status(201).json({ msg: "ok" });
+		if (userInfoDetails.rowCount > 0) res.status(201).json({ msg: "ok" });
 	} catch (error) {
 		res.status(401).json(error);
 	}
