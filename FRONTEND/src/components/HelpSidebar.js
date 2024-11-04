@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "../components/Logo";
+import useContextProvider from "../hooks/useContextProvider";
 import rulesIcon from "../images/book-outline.svg";
 import chatIcon from "../images/chatbubbles-outline.svg";
 import downIcon from "../images/chevron-down-outline.svg";
@@ -14,6 +15,7 @@ import statsIcon from "../images/stats-chart-outline.svg";
 const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 	const [showFeaturesDropdown, setShowFeaturesDropdown] = useState(false);
 	const [showIntroDropdown, setShowIntroDropdown] = useState(false);
+	const { userExists } = useContextProvider();
 
 	return (
 		<div className="sidebar">
@@ -215,16 +217,18 @@ const HelpSidebar = ({ page, setPage, setFeature, feature }) => {
 				</>
 			)}
 
-			<Link
-				to=""
-				className={`help-link ${page === "contact" ? "active" : ""}`}
-				onClick={() => {
-					setPage("contact");
-					setFeature("contact");
-				}}
-			>
-				Contact
-			</Link>
+			{userExists && (
+				<Link
+					to=""
+					className={`help-link ${page === "contact" ? "active" : ""}`}
+					onClick={() => {
+						setPage("contact");
+						setFeature("contact");
+					}}
+				>
+					Contact
+				</Link>
+			)}
 		</div>
 	);
 };

@@ -77,7 +77,8 @@ const LoadingApp = ({ isAppRendered, setIsAppRendered, children }) => {
 };
 
 const App = () => {
-	const { userExists, isOnePlayer, user, authorize } = useContextProvider();
+	const { userExists, isOnePlayer, user, authorize, playerIsChosen, roomIsSelected } =
+		useContextProvider();
 	const [isRendered, setIsRendered] = useState(false);
 	const [isAppRendered, setIsAppRendered] = useState(false);
 
@@ -95,16 +96,23 @@ const App = () => {
 					<Route
 						path="/"
 						element={
-							<Loading
-								isRendered={isRendered}
-								setIsRendered={setIsRendered}
-							>
+							userExists ? (
+								playerIsChosen ? (
+									roomIsSelected ? (
+										<Home />
+									) : (
+										<Room />
+									)
+								) : (
+									<PlayerSelection />
+								)
+							) : (
 								<Home />
-							</Loading>
+							)
 						}
 					/>
 
-					<Route
+					{/* <Route
 						path="/select-player-mode"
 						element={
 							<PrivateRoute userExists={userExists}>
@@ -112,36 +120,37 @@ const App = () => {
 									isRendered={isRendered}
 									setIsRendered={setIsRendered}
 								>
-									<PlayerSelection />
+									{!playerIsChosen && <PlayerSelection />}
 								</Loading>
 							</PrivateRoute>
 						}
-					/>
+					/> */}
 
 					<Route
 						path="/select-room"
 						element={
 							<PrivateRoute userExists={userExists}>
 								<Logo />
-
-								{!isOnePlayer ? <Room /> : <Navigate to="/" />}
+								<Room />
 							</PrivateRoute>
 						}
 					/>
 
-					<Route
-						path="/leaderboard"
-						element={
-							<PrivateRoute userExists={userExists}>
-								<Loading
-									isRendered={isRendered}
-									setIsRendered={setIsRendered}
-								>
-									{isOnePlayer ? <Leaderboard /> : <Navigate to="/" />}
-								</Loading>
-							</PrivateRoute>
-						}
-					/>
+					{userExists && (
+						<Route
+							path="/leaderboard"
+							element={
+								<PrivateRoute userExists={userExists}>
+									<Loading
+										isRendered={isRendered}
+										setIsRendered={setIsRendered}
+									>
+										{isOnePlayer ? <Leaderboard /> : <Navigate to="/" />}
+									</Loading>
+								</PrivateRoute>
+							}
+						/>
+					)}
 
 					<Route
 						path={"/help"}
@@ -155,21 +164,23 @@ const App = () => {
 						}
 					/>
 
-					<Route
-						path={`/p/${user?.username}`}
-						element={
-							<PrivateRoute userExists={userExists}>
-								<Loading
-									isRendered={isRendered}
-									setIsRendered={setIsRendered}
-								>
-									<Profile />
-								</Loading>
-							</PrivateRoute>
-						}
-					/>
+					{userExists && (
+						<Route
+							path={`/p/${user?.username}`}
+							element={
+								<PrivateRoute userExists={userExists}>
+									<Loading
+										isRendered={isRendered}
+										setIsRendered={setIsRendered}
+									>
+										<Profile />
+									</Loading>
+								</PrivateRoute>
+							}
+						/>
+					)}
 
-					{isOnePlayer && (
+					{userExists && (
 						<Route
 							path="/p/:username"
 							element={

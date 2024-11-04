@@ -7,6 +7,7 @@ import Dialog from "../components/Dialog";
 import DualPlayerStats from "../components/DualPlayerStats";
 import Footer from "../components/Footer";
 import Nav from "../components/Nav";
+import ReadDocsAlert from "../components/ReadDocsAlert";
 import ScoreBoard from "../components/ScoreBoard";
 import GameBoard from "../GameBoard";
 import useContextProvider from "../hooks/useContextProvider";
@@ -26,6 +27,8 @@ const Home = () => {
 		roomID,
 		bonusState,
 		userExists,
+		setIsOnePlayer,
+		setBonusState,
 	} = useContextProvider();
 	const { getStorageItem } = useFunctions();
 
@@ -70,6 +73,13 @@ const Home = () => {
 			localStorage.setItem("bonus", JSON.stringify(false));
 		}
 
+		if (!userExists) {
+			localStorage.setItem("player-mode", JSON.stringify("single"));
+			localStorage.setItem("bonus", JSON.stringify(false));
+			setIsOnePlayer(true);
+			setBonusState(false);
+		}
+
 		return () => {
 			socket.off("join-room");
 			clearTimeout(timer);
@@ -112,6 +122,9 @@ const Home = () => {
 	const [sidebarIsShowing, setSidebarIsShowing] = useState(false);
 	const [showDualPlayerStats, setShowDualPlayerStats] = useState(false);
 	const [showChangeModePopup, setShowChangeModePopup] = useState(false);
+	const [readDocsAlert, setReadDocsAlert] = useState(
+		JSON.parse(localStorage.getItem("readDocsAlertCounter"))
+	);
 
 	return (
 		<>
@@ -141,6 +154,14 @@ const Home = () => {
 					<ScoreBoard />
 
 					<GameBoard />
+
+					{readDocsAlert !== 1 && (
+						<ReadDocsAlert
+							setReadDocsAlert={setReadDocsAlert}
+							readDocsAlert={readDocsAlert}
+							setSidebarIsShowing={setSidebarIsShowing}
+						/>
+					)}
 
 					{showChangeModePopup && (
 						<ChangeMode

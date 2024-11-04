@@ -25,7 +25,9 @@ h3 {
 	cursor: pointer;
 	transition: background-color 0.3s ease;
 }
-
+.fast-links:hover {
+	text-decoration: underline;
+}
 .dots span {
 	display: inline-block;
 	animation: blink 1.5s infinite;
@@ -401,7 +403,7 @@ img[alt="scissors"] {
 	text-align: center;
 }
 .change-mode-modal .buttons {
-	margin-top: 2rem;
+	margin-top: 0.5rem;
 	gap: 1rem;
 	width: 15rem;
 }

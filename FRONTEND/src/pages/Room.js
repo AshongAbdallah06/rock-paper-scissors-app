@@ -14,6 +14,7 @@ const PlayerSelection = () => {
 		bonusState,
 		socket,
 		user,
+		userExists,
 	} = useContextProvider();
 	const { joinRoom } = useFunctions();
 
@@ -47,8 +48,8 @@ const PlayerSelection = () => {
 		<form
 			onSubmit={(e) => {
 				e.preventDefault();
-				roomID && !isOnePlayer && joinRoom(socket, roomID, bonusState);
-				roomID && setRoomIsSelected(true);
+				userExists && roomID && !isOnePlayer && joinRoom(socket, roomID, bonusState);
+				userExists && roomID && setRoomIsSelected(true);
 			}}
 		>
 			<div className="room">
@@ -82,13 +83,14 @@ const PlayerSelection = () => {
 				<Link
 					className="btn join"
 					onClick={() => {
-						if (roomID) {
-							!isOnePlayer && joinRoom(socket, roomID, bonusState);
-							setRoomIsSelected(true);
-							setIsOnePlayer(false);
-						} else if (roomID === "") {
-							alert("Please enter an ID for the room");
-						}
+						if (userExists)
+							if (roomID) {
+								!isOnePlayer && joinRoom(socket, roomID, bonusState);
+								setRoomIsSelected(true);
+								setIsOnePlayer(false);
+							} else if (roomID === "") {
+								alert("Please enter an ID for the room");
+							}
 					}}
 					to={roomID ? "/" : ""}
 				>

@@ -30,12 +30,13 @@ const Footer = ({
 		setPlayerIsChosen,
 		bonusState,
 		setBonusState,
+		userExists,
 	} = useContextProvider();
 	const { leaveRoom, logout } = useFunctions();
 
 	return (
 		<footer className="footer-sidebar">
-			{user?.username ? (
+			{userExists ? (
 				<>
 					<h1>Menu</h1>
 					<br />
@@ -211,9 +212,11 @@ const Footer = ({
 						<button
 							className="Btn logout-btn"
 							onClick={() => {
-								leaveRoom(socket);
-								setRoomID(null);
-								setRoomIsSelected(false);
+								if (userExists) {
+									leaveRoom(socket);
+									setRoomID(null);
+									setRoomIsSelected(false);
+								}
 							}}
 						>
 							<div className="sign">

@@ -9,10 +9,10 @@ const Contact = ({ setPage, setFeature }) => {
 			<form>
 				<h1>Leave a message</h1>
 				<div className="form-group">
-					<label htmlFor="title">Title</label>
+					<label htmlFor="title">Email</label>
 					<input
 						type="text"
-						placeholder="Enter title here"
+						placeholder="Enter email address here"
 					/>
 				</div>
 				<div className="form-group">

@@ -10,7 +10,7 @@ import singleIcon from "../images/person-outline-black.svg";
 import EditProfile from "./EditProfile";
 
 const Profile = () => {
-	const { currentUserStats, user, getUserStats } = useContextProvider();
+	const { currentUserStats, user, getUserStats, userExists } = useContextProvider();
 	const [renderRoutes, setRenderRoutes] = useState(false);
 	const { allGamesPlayed, allLosses, allTies, allWins, getAllDualPlayerStats } = useFunctions();
 
@@ -21,7 +21,7 @@ const Profile = () => {
 			setRenderRoutes(true);
 		}, 100);
 
-		if (user?.username) {
+		if (userExists) {
 			getAllDualPlayerStats(user?.username);
 			getUserStats(user.username);
 			setImg(user?.image);

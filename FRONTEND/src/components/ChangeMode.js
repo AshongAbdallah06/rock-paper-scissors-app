@@ -1,8 +1,7 @@
 import useContextProvider from "../hooks/useContextProvider";
 
 const ChangeMode = ({ setShowChangeModePopup, setSidebarIsShowing }) => {
-	const { setIsRulesModalShow, setIsOnePlayer, setPlayerIsChosen, setRoomIsSelected } =
-		useContextProvider();
+	const { setIsOnePlayer, setPlayerIsChosen, setRoomIsSelected } = useContextProvider();
 
 	return (
 		<>
@@ -24,10 +23,7 @@ const ChangeMode = ({ setShowChangeModePopup, setSidebarIsShowing }) => {
 							className="btn yes"
 							onClick={() => {
 								setShowChangeModePopup(false);
-
-								setTimeout(() => {
-									setIsOnePlayer(true);
-								}, 2000);
+								setIsOnePlayer(true);
 								setPlayerIsChosen(true);
 								setRoomIsSelected(true);
 								setSidebarIsShowing(false);

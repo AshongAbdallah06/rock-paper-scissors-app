@@ -9,12 +9,12 @@ import profileIcon from "../images/person-circle-outline.svg";
 import singleIcon from "../images/person-outline-black.svg";
 
 const Profile = () => {
-	const { selectedUserStats } = useContextProvider();
+	const { selectedUserStats, userExists } = useContextProvider();
 	const { allGamesPlayed, allLosses, allTies, allWins, getAllDualPlayerStats } = useFunctions();
 	const [renderRoutes, setRenderRoutes] = useState(false);
 
 	useEffect(() => {
-		localStorage.setItem("selectedUser", JSON.stringify(selectedUserStats));
+		userExists && localStorage.setItem("selectedUser", JSON.stringify(selectedUserStats));
 	}, [selectedUserStats]);
 
 	const [opponentProfile, setOpponentProfile] = useState(null);
@@ -44,8 +44,10 @@ const Profile = () => {
 			setRenderRoutes(true);
 		}, 100);
 
-		getUserProfiles(selectedUserStats?.username);
-		getAllDualPlayerStats(selectedUserStats?.username);
+		if (userExists) {
+			getUserProfiles(selectedUserStats?.username);
+			getAllDualPlayerStats(selectedUserStats?.username);
+		}
 		return () => clearTimeout(timer);
 	}, []);
 	const [img, setImg] = useState(JSON.parse(localStorage.getItem("image")) || "");

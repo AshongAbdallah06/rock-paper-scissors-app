@@ -1,3 +1,4 @@
+/* eslint-disable no-mixed-spaces-and-tabs */
 import React from "react";
 import useContextProvider from "../hooks/useContextProvider";
 
@@ -27,9 +28,7 @@ const AfterChoice = ({ bonusState }) => {
 				<h1>
 					{isOnePlayer
 						? "YOU PICKED"
-						: `${
-								userExists && p1Username === user?.username ? "You" : p1Username
-						  } Picked`}
+						: `${p1Username === user?.username ? "You" : p1Username} Picked`}
 				</h1>
 				<div
 					className={`picked ${
@@ -37,11 +36,9 @@ const AfterChoice = ({ bonusState }) => {
 							? result === "Player wins"
 								? "winner"
 								: ""
-							: user
-							? result === "Player1 wins"
-								? "winner"
-								: ""
-							: "Login to play dual player mode"
+							: result === "Player1 wins"
+							? "winner"
+							: ""
 					}`}
 				>
 					{!bonusState ? (
@@ -74,17 +71,13 @@ const AfterChoice = ({ bonusState }) => {
 				<h1>
 					{isOnePlayer
 						? result === "Player wins" && "YOU WIN"
-						: user
-						? gameState.result === "Player1 wins" &&
-						  `${p1Username === user?.username ? "YOU WIN" : "YOU LOSE"}`
-						: "Login to play dual player mode"}
+						: gameState.result === "Player1 wins" &&
+						  `${p1Username === user?.username ? "YOU WIN" : "YOU LOSE"}`}
 
 					{isOnePlayer
 						? result === "Computer wins" && "YOU LOSE"
-						: user
-						? gameState.result === "Player2 wins" &&
-						  `${p2Username === user?.username ? "YOU WIN" : "YOU LOSE"}`
-						: "Login to play dual player mode"}
+						: gameState.result === "Player2 wins" &&
+						  `${p2Username === user?.username ? "YOU WIN" : "YOU LOSE"}`}
 
 					{isOnePlayer ? result === "Tie" && "TIE" : gameState.result === "Tie" && "Tie"}
 				</h1>
@@ -94,7 +87,7 @@ const AfterChoice = ({ bonusState }) => {
 						setComputerMove(null);
 						setResult("");
 
-						clearMoves();
+						userExists && !isOnePlayer && clearMoves();
 					}}
 				>
 					PLAY AGAIN
@@ -106,9 +99,7 @@ const AfterChoice = ({ bonusState }) => {
 				<h1>
 					{isOnePlayer
 						? "THE HOUSE PICKED"
-						: user
-						? `${p2Username === user?.username ? "You" : p2Username} Picked`
-						: "Login to play dual player mode"}
+						: `${p2Username === user?.username ? "You" : p2Username} Picked`}
 				</h1>
 				<div
 					className={`hPicked ${
@@ -116,11 +107,9 @@ const AfterChoice = ({ bonusState }) => {
 							? result === "Computer wins"
 								? "winner"
 								: ""
-							: user
-							? result === "Player2 wins"
-								? "winner"
-								: ""
-							: "Login to play dual player mode"
+							: result === "Player2 wins"
+							? "winner"
+							: ""
 					}`}
 				>
 					{!bonusState ? (

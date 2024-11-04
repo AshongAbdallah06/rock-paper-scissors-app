@@ -1,9 +1,11 @@
 import React from "react";
+import useContextProvider from "../hooks/useContextProvider";
 import Contact from "../pages/Contact";
 import Introduction from "./Docs/Introduction";
 import Other from "./Docs/Other";
 
 const DocsContent = ({ page, setPage, docsContentRef, feature, setFeature, setSearchParams }) => {
+	const { userExists } = useContextProvider();
 	return (
 		<div className="content">
 			{page === "introduction" && (
@@ -22,7 +24,7 @@ const DocsContent = ({ page, setPage, docsContentRef, feature, setFeature, setSe
 					setSearchParams={setSearchParams}
 				/>
 			)}
-			{page === "contact" && (
+			{userExists && page === "contact" && (
 				<Contact
 					setFeature={setFeature}
 					setPage={setPage}

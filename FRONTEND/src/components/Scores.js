@@ -3,7 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import useContextProvider from "../hooks/useContextProvider";
 
 const ScoresDisplay = ({ optChanges }) => {
-	const { scores, getUserStats, setScores, socket, user } = useContextProvider();
+	const { scores, getUserStats, setScores, socket, user, userExists } = useContextProvider();
 
 	const [searchParams, setSearchParams] = useSearchParams();
 
@@ -15,15 +15,16 @@ const ScoresDisplay = ({ optChanges }) => {
 
 	const [scoresIsFetched, setScoresIsFetched] = useState(false);
 	useEffect(() => {
-		if (optChanges === "wins") {
-			optChangesFunc("getScores", "wins");
-		} else if (optChanges === "losses") {
-			optChangesFunc("getScoresByLosses", "losses");
-		} else if (optChanges === "ties") {
-			optChangesFunc("getScoresByTies", "ties");
-		} else if (optChanges === "games_played") {
-			optChangesFunc("getScoresByGamesPlayed", "games_played");
-		}
+		if (userExists)
+			if (optChanges === "wins") {
+				optChangesFunc("getScores", "wins");
+			} else if (optChanges === "losses") {
+				optChangesFunc("getScoresByLosses", "losses");
+			} else if (optChanges === "ties") {
+				optChangesFunc("getScoresByTies", "ties");
+			} else if (optChanges === "games_played") {
+				optChangesFunc("getScoresByGamesPlayed", "games_played");
+			}
 
 		setTimeout(() => {
 			setScoresIsFetched(true);
@@ -78,7 +79,7 @@ const ScoresDisplay = ({ optChanges }) => {
 						className={`user ${optChanges === "games_played" && "two-grid"}`}
 						key={score?.username}
 						onClick={() => {
-							user?.username && getUserStats(score?.username);
+							userExists && getUserStats(score?.username);
 						}}
 					>
 						<p

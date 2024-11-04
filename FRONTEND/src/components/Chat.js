@@ -117,7 +117,7 @@ const Chat = ({ setChatIsShowing, messages, setShowMessageAlert, setMessages }) 
 											}}
 											onKeyDown={(e) => {
 												if (e.key === "Enter" && textMessage !== "") {
-													user
+													userExists
 														? sendMessage()
 														: alert(
 																"You need to login to perform this action."

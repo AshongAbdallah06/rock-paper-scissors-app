@@ -5,7 +5,8 @@ import useContextProvider from "../hooks/useContextProvider";
 import closeIcon from "../images/icon-close nav.svg";
 
 const DualPlayerStats = ({ setShowDualPlayerStats }) => {
-	const { getPlayerStats, dualPlayerStats, p1Username, p2Username, user } = useContextProvider();
+	const { getPlayerStats, dualPlayerStats, p1Username, p2Username, user, userExists } =
+		useContextProvider();
 
 	const [twoUsersDetected, setTwoUsersDetected] = useState(null);
 
@@ -35,7 +36,7 @@ const DualPlayerStats = ({ setShowDualPlayerStats }) => {
 	};
 
 	useEffect(() => {
-		if (user) {
+		if (userExists) {
 			if (p1Username && p2Username) {
 				getPlayerStats(p1Username, p2Username);
 				setTwoUsersDetected(true);

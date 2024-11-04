@@ -9,14 +9,14 @@ import filterLogo from "../images/filter-outline.svg";
 import logo from "../images/logo.svg";
 
 const Leaderboard = () => {
-	const { setScores, socket, user } = useContextProvider();
+	const { setScores, socket, user, userExists } = useContextProvider();
 	const { getAllScores, getStorageItem } = useFunctions();
 
 	const [optChanges, setOptChanges] = useState(getStorageItem("optChanges", "losses"));
 
 	const [renderRoutes, setRenderRoutes] = useState(false);
 	useEffect(() => {
-		getAllScores(socket, setScores);
+		if (userExists) getAllScores(socket, setScores);
 
 		setRenderRoutes(false);
 		const timer = setTimeout(() => {

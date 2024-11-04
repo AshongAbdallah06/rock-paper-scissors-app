@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import useContextProvider from "../../hooks/useContextProvider";
 import arrowBack from "../../images/arrow-back-outline.svg";
 import arrowForward from "../../images/arrow-forward-outline.svg";
 import demo4Normal from "../../images/dual-play-home-bonus.png";
@@ -18,6 +19,7 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 	const modesRef = useRef(null);
 	const leaderboardRef = useRef("leaderboard");
 	const liveChatRef = useRef("live-chat");
+	const { userExists } = useContextProvider();
 
 	useEffect(() => {
 		if (feature === "leaderboard") {
@@ -337,15 +339,17 @@ const Other = ({ setPage, feature, setFeature, docsContentRef, setSearchParams }
 					Previous
 				</button>
 
-				<button
-					className="next-btn"
-					onClick={() => {
-						setPage("contact");
-					}}
-				>
-					Next
-					<img src={arrowForward} />
-				</button>
+				{userExists && (
+					<button
+						className="next-btn"
+						onClick={() => {
+							setPage("contact");
+						}}
+					>
+						Next
+						<img src={arrowForward} />
+					</button>
+				)}
 			</div>
 		</>
 	);

@@ -79,47 +79,49 @@ const Context = ({ children }) => {
 	const [errorOccurred, setErrorOccurred] = useState(null);
 
 	useEffect(() => {
-		socket.on("move", (newGameState) => {
-			setGameState(newGameState);
-		});
+		if (!isOnePlayer) {
+			socket.on("move", (newGameState) => {
+				setGameState(newGameState);
+			});
 
-		socket.on("move-made", ({ msg }) => {
-			setMoveAck(msg);
-			setTimeout(() => {
-				setMoveAck("");
-			}, 3000);
-		});
+			socket.on("move-made", ({ msg }) => {
+				setMoveAck(msg);
+				setTimeout(() => {
+					setMoveAck("");
+				}, 3000);
+			});
 
-		socket.emit("getDualPlayerStats");
+			socket.emit("getDualPlayerStats");
 
-		socket.on("getDualPlayerStats", (data) => {
-			setDualPlayerStats(data[0]);
-		});
+			socket.on("getDualPlayerStats", (data) => {
+				setDualPlayerStats(data[0]);
+			});
 
-		// Handle username updates
-		socket.on("updateUsernames", (data) => {
-			!data?.p1Username && setP1Username(null);
+			// Handle username updates
+			socket.on("updateUsernames", (data) => {
+				!data?.p1Username && setP1Username(null);
 
-			if (data?.p1Username && !data?.p2Username) {
-				setP1Username(data?.p1Username);
-				setP2Username(null);
-			}
-			if (data?.p1Username && data?.p2Username && data?.p1Username !== data?.p2Username) {
-				setP1Username(data?.p1Username);
-				setP2Username(data?.p2Username);
+				if (data?.p1Username && !data?.p2Username) {
+					setP1Username(data?.p1Username);
+					setP2Username(null);
+				}
+				if (data?.p1Username && data?.p2Username && data?.p1Username !== data?.p2Username) {
+					setP1Username(data?.p1Username);
+					setP2Username(data?.p2Username);
 
-				getPlayerStats(data?.p1Username, data?.p2Username);
-			}
-		});
+					getPlayerStats(data?.p1Username, data?.p2Username);
+				}
+			});
 
-		// Cleanup on unmount
-		return () => {
-			socket.off("move");
-			socket.off("getDualPlayerStats");
-			socket.off("updateUsernames");
+			// Cleanup on unmount
+			return () => {
+				socket.off("move");
+				socket.off("getDualPlayerStats");
+				socket.off("updateUsernames");
 
-			socket.off("move-made");
-		};
+				socket.off("move-made");
+			};
+		}
 	}, [socket]);
 
 	const [bonusState, setBonusState] = useState(getStorageItem("bonus", false));
@@ -147,7 +149,7 @@ const Context = ({ children }) => {
 	}, [isOnePlayer, gameState.p1, gameState.p2]);
 
 	const moveOnclick = (move) => {
-		if (user) {
+		if (userExists) {
 			if (!isOnePlayer) {
 				if (!playerMove) {
 					setPlayerMove(move);
@@ -155,9 +157,11 @@ const Context = ({ children }) => {
 					setComputerMove(move);
 				}
 				socket.emit("move", { username: user?.username, move });
+			} else {
+				setPlayerMove(move);
+				generateComputerMove(setComputerMove, bonusState);
 			}
-		}
-		if (isOnePlayer) {
+		} else {
 			setPlayerMove(move);
 			generateComputerMove(setComputerMove, bonusState);
 		}
@@ -198,12 +202,14 @@ const Context = ({ children }) => {
 			alert("No user present");
 			return;
 		}
-		if (
-			isOnePlayer &&
-			currentUserStats.username === user?.username &&
-			currentUserStats.gamesPlayed > 0
-		) {
-			socket.emit("updateStats", currentUserStats);
+		if (userExists) {
+			if (
+				isOnePlayer &&
+				currentUserStats.username === user?.username &&
+				currentUserStats.gamesPlayed > 0
+			) {
+				socket.emit("updateStats", currentUserStats);
+			}
 		}
 	}, [currentUserStats, isOnePlayer]);
 
@@ -302,8 +308,10 @@ const Context = ({ children }) => {
 	useEffect(() => {
 		if (!dualPlayerStats) return;
 
-		if (dualPlayerStats?.games_played > 0) {
-			socket.emit("updateDualPlayerStats", dualPlayerStats);
+		if (userExists) {
+			if (dualPlayerStats?.games_played > 0) {
+				socket.emit("updateDualPlayerStats", dualPlayerStats);
+			}
 		}
 	}, [dualPlayerStats]);
 
@@ -318,14 +326,16 @@ const Context = ({ children }) => {
 	}, [gameState]);
 
 	const clearMoves = () => {
-		socket.emit("clearMoves");
+		if (userExists) {
+			socket.emit("clearMoves");
+		}
 	};
 
 	const authorize = async () => {
 		try {
 			await Axios.get(
-				`https://rock-paper-scissors-app-iybf.onrender.com/api/user/${user?.username}`,
-				// `http://localhost:4001/api/user/${user?.username}`,
+				`https://rock-paper-scissors-app-iybf.onrender.com/api/user`,
+				// `http://localhost:4001/api/user`,
 				{
 					headers: {
 						Authorization: `Bearer ${
@@ -343,7 +353,7 @@ const Context = ({ children }) => {
 	};
 
 	useEffect(() => {
-		getAllScores(socket, setScores);
+		if (userExists) getAllScores(socket, setScores);
 	}, [socket, result, playerMove]);
 
 	return (
