@@ -11,17 +11,17 @@ const { v4: uuid } = require("uuid");
 const app = express();
 const server = http.createServer(app);
 
-const io = socketIo(server, {
-	cors: {
-		origin: "*",
-	},
-});
-
 const allowedOrigins = [
-	"http://localhost:3000",
 	"https://rock-paper-scissors-app-git-f-2d75bc-ashongabdallah06s-projects.vercel.app",
 	"https://rock-paper-scissors-app-nine.vercel.app",
+	"https://rock-paper-scissors-typescript-app.vercel.app"
 ];
+
+const io = socketIo(server, {
+	cors: {
+		origin: allowedOrigins,
+	},
+});
 
 const corsOptions = {
 	origin: function (origin, callback) {
